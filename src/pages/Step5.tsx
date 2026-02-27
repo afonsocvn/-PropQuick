@@ -9,30 +9,24 @@ export default function Step5() {
       <header className="sticky top-0 z-50 w-full bg-surface-light dark:bg-surface-dark border-b border-secondary/20 px-6 py-4 shadow-sm">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="size-8 text-primary dark:text-secondary">
-              <span className="material-symbols-outlined text-4xl">topic</span>
-            </div>
-            <h2 className="text-primary dark:text-white text-xl font-bold tracking-tight">ProposalGen</h2>
+            <Link to="/" className="flex items-center gap-3">
+              <div className="size-8 text-primary dark:text-secondary hover:text-primary/80 transition-colors">
+                <span className="material-symbols-outlined text-4xl">topic</span>
+              </div>
+              <h2 className="text-primary dark:text-white text-xl font-bold tracking-tight hover:text-primary/80 transition-colors">Propose.ly</h2>
+            </Link>
           </div>
           <nav className="hidden md:flex items-center gap-8">
-            <a className="text-slate-600 dark:text-slate-200 hover:text-primary dark:hover:text-secondary font-medium transition-colors" href="#">Home</a>
-            <a className="text-primary dark:text-secondary font-bold transition-colors" href="#">Proposals</a>
-            <a className="text-slate-600 dark:text-slate-200 hover:text-primary dark:hover:text-secondary font-medium transition-colors" href="#">Clients</a>
-            <a className="text-slate-600 dark:text-slate-200 hover:text-primary dark:hover:text-secondary font-medium transition-colors" href="#">Profile</a>
+            <Link to="/" className="text-slate-600 dark:text-slate-200 hover:text-primary dark:hover:text-secondary font-medium transition-colors">Home</Link>
+            <Link to="/proposals" className="text-primary dark:text-secondary font-bold transition-colors">Proposals</Link>
           </nav>
-          <div className="flex items-center gap-4">
-            <button className="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-full border border-primary text-primary hover:bg-primary/5 dark:border-secondary dark:text-secondary font-semibold text-sm transition-all">
-              <span>Save Draft</span>
-            </button>
-            <div className="h-10 w-10 rounded-full bg-slate-200 dark:bg-slate-700 bg-cover bg-center ring-2 ring-offset-2 ring-primary dark:ring-secondary cursor-pointer" data-alt="User profile avatar" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuCWDpwFvUN0k3vBMdr65-RtN9aqOqKv42rsag3ZV2p13l6C4liA4jbp33Ac4k-BdWtTBsWBgK6zYhnvOMbskUT5ZJzpe5-SX02ZMQ83-88aRvaFpD0T7hWBhlm5dcgbxs_yYFVSPmJ_Jp4se4KKxj2YF5ltoBhkv8P0P2LohfhTB8Bl2ss4TNAamyjSeL02pPp7dXgQMksLVRV636ordFWScu-rrZLM1bKY9EMe-YQK1PvSkUni75B17dKYR8bPjbnQh-3uBXtlmBBz')" }}></div>
-          </div>
         </div>
       </header>
       <main className="flex-grow flex flex-col items-center py-10 px-4 md:px-8">
         <div className="w-full max-w-[960px] flex flex-col gap-8">
           <div className="bg-surface-light dark:bg-surface-dark p-6 rounded-xl shadow-sm border border-secondary/10">
             <div className="flex justify-between items-center mb-4">
-              <span className="text-slate-900 dark:text-white font-semibold text-lg">Step 5 of 6</span>
+              <span className="text-slate-900 dark:text-white font-semibold text-lg">Step 3 of 4</span>
               <span className="text-primary dark:text-secondary font-medium">Investment &amp; Payment Terms</span>
             </div>
             <div className="h-3 w-full bg-secondary/20 rounded-full overflow-hidden">
@@ -89,10 +83,12 @@ export default function Step5() {
                     <span className="material-symbols-outlined text-primary">calendar_month</span>
                     Payment Schedule
                   </h3>
-                  <button className="text-sm font-semibold text-primary hover:text-primary/80 flex items-center gap-1 transition-colors">
-                    <span className="material-symbols-outlined text-lg">add_circle</span>
-                    Add Milestone
-                  </button>
+                  {data.pricingStructure === 'milestone' && (
+                    <button className="text-sm font-semibold text-primary hover:text-primary/80 flex items-center gap-1 transition-colors">
+                      <span className="material-symbols-outlined text-lg">add_circle</span>
+                      Add Milestone
+                    </button>
+                  )}
                 </div>
                 <div className="overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700">
                   <table className="w-full text-left border-collapse">
@@ -111,7 +107,7 @@ export default function Step5() {
                         </td>
                         <td className="p-4">
                           <div className="relative">
-                            <span className="absolute left-0 top-1/2 -translate-y-1/2 text-accent font-bold">$</span>
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 text-accent font-bold">{data.currency ? data.currency.match(/\((.*?)\)/)?.[1] || '$' : '$'}</span>
                             <input name="milestone1Amount" value={data.milestone1Amount || '1500'} onChange={handleChange} className="w-full pl-4 bg-transparent border-0 border-b border-dashed border-slate-300 focus:border-primary focus:ring-0 p-0 text-slate-900 dark:text-white font-medium text-right" placeholder="0.00" type="number" />
                           </div>
                         </td>
@@ -128,34 +124,36 @@ export default function Step5() {
                           </button>
                         </td>
                       </tr>
-                      <tr className="group hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors">
-                        <td className="p-4">
-                          <input name="milestone2Name" value={data.milestone2Name || 'Final Delivery'} onChange={handleChange} className="w-full bg-transparent border-0 border-b border-dashed border-slate-300 focus:border-primary focus:ring-0 p-0 text-slate-900 dark:text-white font-medium placeholder-slate-400" placeholder="e.g. Final Payment" type="text" />
-                        </td>
-                        <td className="p-4">
-                          <div className="relative">
-                            <span className="absolute left-0 top-1/2 -translate-y-1/2 text-accent font-bold">$</span>
-                            <input name="milestone2Amount" value={data.milestone2Amount || '1500'} onChange={handleChange} className="w-full pl-4 bg-transparent border-0 border-b border-dashed border-slate-300 focus:border-primary focus:ring-0 p-0 text-slate-900 dark:text-white font-medium text-right" placeholder="0.00" type="number" />
-                          </div>
-                        </td>
-                        <td className="p-4">
-                          <select name="milestone2Date" value={data.milestone2Date || 'Project Completion'} onChange={handleChange} className="w-full bg-transparent border-0 border-b border-dashed border-slate-300 focus:border-primary focus:ring-0 p-0 text-slate-600 dark:text-slate-300 text-sm cursor-pointer">
-                            <option>Project Completion</option>
-                            <option>Net 15</option>
-                            <option>Net 30</option>
-                          </select>
-                        </td>
-                        <td className="p-4 text-center">
-                          <button className="text-slate-400 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100">
-                            <span className="material-symbols-outlined text-xl">delete</span>
-                          </button>
-                        </td>
-                      </tr>
+                      {data.pricingStructure === 'milestone' && (
+                        <tr className="group hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors">
+                          <td className="p-4">
+                            <input name="milestone2Name" value={data.milestone2Name || 'Final Delivery'} onChange={handleChange} className="w-full bg-transparent border-0 border-b border-dashed border-slate-300 focus:border-primary focus:ring-0 p-0 text-slate-900 dark:text-white font-medium placeholder-slate-400" placeholder="e.g. Final Payment" type="text" />
+                          </td>
+                          <td className="p-4">
+                            <div className="relative">
+                              <span className="absolute left-0 top-1/2 -translate-y-1/2 text-accent font-bold">{data.currency ? data.currency.match(/\((.*?)\)/)?.[1] || '$' : '$'}</span>
+                              <input name="milestone2Amount" value={data.milestone2Amount || '1500'} onChange={handleChange} className="w-full pl-4 bg-transparent border-0 border-b border-dashed border-slate-300 focus:border-primary focus:ring-0 p-0 text-slate-900 dark:text-white font-medium text-right" placeholder="0.00" type="number" />
+                            </div>
+                          </td>
+                          <td className="p-4">
+                            <select name="milestone2Date" value={data.milestone2Date || 'Project Completion'} onChange={handleChange} className="w-full bg-transparent border-0 border-b border-dashed border-slate-300 focus:border-primary focus:ring-0 p-0 text-slate-600 dark:text-slate-300 text-sm cursor-pointer">
+                              <option>Project Completion</option>
+                              <option>Net 15</option>
+                              <option>Net 30</option>
+                            </select>
+                          </td>
+                          <td className="p-4 text-center">
+                            <button className="text-slate-400 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100">
+                              <span className="material-symbols-outlined text-xl">delete</span>
+                            </button>
+                          </td>
+                        </tr>
+                      )}
                     </tbody>
                     <tfoot>
                       <tr className="bg-slate-50 dark:bg-slate-900/50">
                         <td className="p-4 font-bold text-slate-700 dark:text-slate-300 text-right">Total Investment</td>
-                        <td className="p-4 font-bold text-slate-900 dark:text-white text-right text-lg border-t-2 border-primary/30">${(Number(data.milestone1Amount || 1500) + Number(data.milestone2Amount || 1500)).toLocaleString()}</td>
+                        <td className="p-4 font-bold text-slate-900 dark:text-white text-right text-lg border-t-2 border-primary/30">{data.currency ? data.currency.match(/\((.*?)\)/)?.[1] || '$' : '$'}{(Number(data.milestone1Amount || 1500) + (data.pricingStructure === 'milestone' ? Number(data.milestone2Amount || 1500) : 0)).toLocaleString()}</td>
                         <td colSpan={2}></td>
                       </tr>
                     </tfoot>
@@ -172,7 +170,7 @@ export default function Step5() {
                 <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
                   Breaking payments into milestones helps build trust. A 50% deposit is standard for new clients to secure your time.
                 </p>
-                <a className="text-sm text-primary font-bold hover:underline" href="#">Read our pricing guide</a>
+
               </div>
               <div className="bg-surface-light dark:bg-surface-dark p-6 rounded-xl shadow-sm border border-secondary/10">
                 <h4 className="font-bold text-slate-900 dark:text-white mb-4">Settings</h4>

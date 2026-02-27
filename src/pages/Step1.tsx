@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useProposalData } from '../hooks/useProposalData';
 
@@ -20,42 +21,44 @@ export default function Step1() {
       <header className="w-full bg-white border-b border-[#e5e7eb] px-6 py-4 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto flex items-center justify-center md:justify-start">
           <div className="flex items-center gap-3">
-            <div className="size-8 text-primary flex items-center justify-center">
-              <span className="material-symbols-outlined text-3xl">description</span>
-            </div>
-            <h2 className="text-primary font-serif text-2xl font-bold tracking-tight">Propose.ly</h2>
+            <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+              <div className="size-8 text-primary flex items-center justify-center">
+                <span className="material-symbols-outlined text-3xl">description</span>
+              </div>
+              <h2 className="text-primary font-serif text-2xl font-bold tracking-tight">Propose.ly</h2>
+            </Link>
           </div>
         </div>
       </header>
       <main className="flex-grow flex flex-col items-center justify-start pt-10 pb-20 px-4 md:px-0">
         <div className="w-full max-w-2xl mb-12">
           <div className="flex justify-between items-end mb-2 px-1">
-            <span className="text-gray-500 font-medium text-sm">Passo 1 de 5</span>
-            <span className="text-primary font-bold text-sm">20% Completo</span>
+            <span className="text-gray-500 font-medium text-sm">Step 1 of 4</span>
+            <span className="text-primary font-bold text-sm">25% Complete</span>
           </div>
           <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-            <div className="h-full bg-primary rounded-full transition-all duration-500 ease-out" style={{ width: '20%' }}></div>
+            <div className="h-full bg-primary rounded-full transition-all duration-500 ease-out" style={{ width: '25%' }}></div>
           </div>
         </div>
         <div className="w-full max-w-3xl bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
           <div className="text-center mb-10">
-            <h1 className="font-serif text-3xl md:text-4xl text-text-dark font-bold mb-4">Vamos começar com o básico</h1>
-            <p className="text-gray-600 text-lg max-w-xl mx-auto">Conte-nos um pouco sobre você para personalizarmos a sua proposta. Estas informações aparecerão no cabeçalho do documento.</p>
+            <h1 className="font-serif text-3xl md:text-4xl text-text-dark font-bold mb-4">Let's start with the basics</h1>
+            <p className="text-gray-600 text-lg max-w-xl mx-auto">Tell us a little about yourself so we can personalize your proposal. This information will appear in the document header.</p>
           </div>
           <form className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="flex flex-col gap-2">
-                <label className="font-semibold text-gray-700 text-sm ml-1">Nome da Empresa / Negócio</label>
+                <label className="font-semibold text-gray-700 text-sm ml-1">Company / Business Name</label>
                 <div className="relative group">
                   <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">business</span>
-                  <input name="companyName" value={data.companyName || ''} onChange={handleChange} className="w-full pl-12 pr-4 py-3.5 bg-background-light border-0 border-b-2 border-gray-200 focus:border-primary focus:ring-0 rounded-t-lg transition-colors placeholder:text-gray-400 text-gray-800 text-base" placeholder="Ex: Acme Design Studio" type="text"/>
+                  <input name="companyName" value={data.companyName || ''} onChange={handleChange} className="w-full pl-12 pr-4 py-3.5 bg-background-light border-0 border-b-2 border-gray-200 focus:border-primary focus:ring-0 rounded-t-lg transition-colors placeholder:text-gray-400 text-gray-800 text-base" placeholder="Ex: Acme Design Studio" type="text" />
                 </div>
               </div>
               <div className="flex flex-col gap-2">
-                <label className="font-semibold text-gray-700 text-sm ml-1">Função / Especialidade</label>
+                <label className="font-semibold text-gray-700 text-sm ml-1">Role / Specialty</label>
                 <div className="relative group">
                   <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">badge</span>
-                  <input name="role" value={data.role || ''} onChange={handleChange} className="w-full pl-12 pr-4 py-3.5 bg-background-light border-0 border-b-2 border-gray-200 focus:border-primary focus:ring-0 rounded-t-lg transition-colors placeholder:text-gray-400 text-gray-800 text-base" placeholder="Ex: UX/UI Designer Senior" type="text"/>
+                  <input name="role" value={data.role || ''} onChange={handleChange} className="w-full pl-12 pr-4 py-3.5 bg-background-light border-0 border-b-2 border-gray-200 focus:border-primary focus:ring-0 rounded-t-lg transition-colors placeholder:text-gray-400 text-gray-800 text-base" placeholder="Ex: Senior UX/UI Designer" type="text" />
                 </div>
               </div>
             </div>
@@ -64,22 +67,22 @@ export default function Step1() {
                 <label className="font-semibold text-gray-700 text-sm ml-1">Email</label>
                 <div className="relative group">
                   <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">mail</span>
-                  <input name="email" value={data.email || ''} onChange={handleChange} className="w-full pl-12 pr-4 py-3.5 bg-background-light border-0 border-b-2 border-gray-200 focus:border-primary focus:ring-0 rounded-t-lg transition-colors placeholder:text-gray-400 text-gray-800 text-base" placeholder="voce@exemplo.com" type="email"/>
+                  <input name="email" value={data.email || ''} onChange={handleChange} className="w-full pl-12 pr-4 py-3.5 bg-background-light border-0 border-b-2 border-gray-200 focus:border-primary focus:ring-0 rounded-t-lg transition-colors placeholder:text-gray-400 text-gray-800 text-base" placeholder="you@example.com" type="email" />
                 </div>
               </div>
               <div className="flex flex-col gap-2">
-                <label className="font-semibold text-gray-700 text-sm ml-1">Telefone</label>
+                <label className="font-semibold text-gray-700 text-sm ml-1">Phone</label>
                 <div className="relative group">
                   <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">call</span>
-                  <input name="phone" value={data.phone || ''} onChange={handleChange} className="w-full pl-12 pr-4 py-3.5 bg-background-light border-0 border-b-2 border-gray-200 focus:border-primary focus:ring-0 rounded-t-lg transition-colors placeholder:text-gray-400 text-gray-800 text-base" placeholder="+55 (11) 99999-9999" type="tel"/>
+                  <input name="phone" value={data.phone || ''} onChange={handleChange} className="w-full pl-12 pr-4 py-3.5 bg-background-light border-0 border-b-2 border-gray-200 focus:border-primary focus:ring-0 rounded-t-lg transition-colors placeholder:text-gray-400 text-gray-800 text-base" placeholder="+1 (555) 999-9999" type="tel" />
                 </div>
               </div>
             </div>
             <div className="flex flex-col gap-2">
-              <label className="font-semibold text-gray-700 text-sm ml-1">Website / Portfólio</label>
+              <label className="font-semibold text-gray-700 text-sm ml-1">Website / Portfolio</label>
               <div className="relative group">
                 <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">language</span>
-                <input name="website" value={data.website || ''} onChange={handleChange} className="w-full pl-12 pr-4 py-3.5 bg-background-light border-0 border-b-2 border-gray-200 focus:border-primary focus:ring-0 rounded-t-lg transition-colors placeholder:text-gray-400 text-gray-800 text-base" placeholder="https://seusite.com" type="url"/>
+                <input name="website" value={data.website || ''} onChange={handleChange} className="w-full pl-12 pr-4 py-3.5 bg-background-light border-0 border-b-2 border-gray-200 focus:border-primary focus:ring-0 rounded-t-lg transition-colors placeholder:text-gray-400 text-gray-800 text-base" placeholder="https://yourwebsite.com" type="url" />
               </div>
             </div>
             <div className="pt-6 border-t border-gray-100 mt-8">
@@ -87,9 +90,9 @@ export default function Step1() {
                 <div className="flex flex-col">
                   <span className="font-serif text-lg font-bold text-gray-800 flex items-center gap-2">
                     <span className="material-symbols-outlined text-primary">add_photo_alternate</span>
-                    Incluir logótipo?
+                    Include Logo?
                   </span>
-                  <p className="text-sm text-gray-500 mt-1 max-w-md">Adicione sua marca pessoal para dar um toque mais profissional à proposta.</p>
+                  <p className="text-sm text-gray-500 mt-1 max-w-md">Add your personal brand to give a more professional touch to the proposal.</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input name="includeLogo" checked={data.includeLogo || false} onChange={handleChange} className="sr-only peer" type="checkbox" />
@@ -103,18 +106,22 @@ export default function Step1() {
                   </div>
                   <div className="flex text-sm text-gray-600 justify-center">
                     <label className="relative cursor-pointer rounded-md font-medium text-primary hover:text-primary-light focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary" htmlFor="file-upload">
-                      <span>Fazer upload do arquivo</span>
+                      <span>Upload a file</span>
                       <input className="sr-only" id="file-upload" name="file-upload" type="file" accept="image/*" onChange={handleLogoUpload} />
                     </label>
-                    <p className="pl-1">ou arraste e solte</p>
+                    <p className="pl-1">or drag and drop</p>
                   </div>
-                  <p className="text-xs text-gray-500">PNG, JPG, GIF até 10MB</p>
+                  <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-end gap-4 pt-4 mt-8">
+            <div className="flex items-center justify-between pt-4 mt-8">
+              <Link to="/" className="text-gray-500 hover:text-gray-800 font-medium transition-colors flex items-center gap-2">
+                <span className="material-symbols-outlined text-sm font-bold">arrow_back</span>
+                Back
+              </Link>
               <Link to="/step3" className="bg-primary hover:bg-[#256663] text-white px-8 py-3 rounded-full font-bold shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all flex items-center gap-2">
-                Próximo passo
+                Next Step
                 <span className="material-symbols-outlined text-sm font-bold">arrow_forward</span>
               </Link>
             </div>
@@ -123,12 +130,12 @@ export default function Step1() {
         <div className="mt-12 flex items-center justify-center gap-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
           <div className="flex items-center gap-2 text-gray-400">
             <span className="material-symbols-outlined">lock</span>
-            <span className="text-xs font-medium uppercase tracking-wider">Dados Seguros</span>
+            <span className="text-xs font-medium uppercase tracking-wider">Secure Data</span>
           </div>
           <div className="h-4 w-px bg-gray-300"></div>
           <div className="flex items-center gap-2 text-gray-400">
             <span className="material-symbols-outlined">verified_user</span>
-            <span className="text-xs font-medium uppercase tracking-wider">Privacidade Garantida</span>
+            <span className="text-xs font-medium uppercase tracking-wider">Privacy Guaranteed</span>
           </div>
         </div>
       </main>
