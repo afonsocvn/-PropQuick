@@ -69,6 +69,69 @@ export default function Step3() {
                   <span className="block text-sm font-bold text-[#233333] group-focus-within:text-primary transition-colors">Project Title</span>
                   <input name="projectTitle" value={data.projectTitle || ''} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-[#d1dbdb] bg-[#fcfdfd] text-[#233333] placeholder:text-text-muted/60 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="Ex: E-commerce Redesign for Clothing Store" type="text" />
                 </label>
+                {/* Company Description + Image */}
+                <div className="space-y-3">
+                  <span className="block text-sm font-bold text-[#233333]">About Your Company <span className="text-text-muted font-normal">(optional)</span></span>
+                  <textarea name="companyDescription" value={data.companyDescription || ''} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-[#d1dbdb] bg-[#fcfdfd] text-[#233333] placeholder:text-text-muted/60 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none min-h-[90px] resize-y" placeholder="Briefly describe your company or services. This will appear in the proposal document."></textarea>
+                  <div>
+                    <span className="block text-sm font-semibold text-[#233333] mb-2">Company Image <span className="text-text-muted font-normal">(optional)</span></span>
+                    <label className="flex items-center gap-3 px-4 py-3 border border-dashed border-primary/40 rounded-lg cursor-pointer hover:bg-primary/5 transition-colors">
+                      <span className="material-symbols-outlined text-primary">add_photo_alternate</span>
+                      <span className="text-sm text-primary font-semibold">{data.companyImageUrl ? 'Change image' : 'Upload company image'}</span>
+                      <input type="file" accept="image/*" className="sr-only" onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const reader = new FileReader();
+                          reader.onloadend = () => updateData('companyImageUrl', reader.result);
+                          reader.readAsDataURL(file);
+                        }
+                      }} />
+                    </label>
+                    {data.companyImageUrl && (
+                      <div className="mt-3 space-y-2">
+                        <div className="flex items-center gap-3">
+                          <img src={data.companyImageUrl} alt="Company" className="h-16 rounded-lg object-contain border border-gray-100" />
+                          <button type="button" onClick={() => updateData('companyImageUrl', null)} className="text-xs text-red-500 hover:underline">Remove</button>
+                        </div>
+                        <div>
+                          <span className="block text-xs font-semibold text-[#233333] mb-1.5">Image size in document</span>
+                          <div className="grid grid-cols-2 gap-2">
+                            {([
+                              { key: 'small', label: 'Small', desc: '\u223864\u00d764 px — side by side' },
+                              { key: 'medium', label: 'Medium', desc: '\u223896\u00d796 px — side by side' },
+                              { key: 'large', label: 'Large', desc: '\u2238128\u00d7128 px — side by side' },
+                              { key: 'wide', label: 'Full Width', desc: 'Banner across full page' },
+                            ] as const).map(({ key, label, desc }) => (
+                              <button
+                                key={key}
+                                type="button"
+                                onClick={() => updateData('companyImageSize', key)}
+                                className={`px-3 py-2 rounded-lg text-left border transition-colors ${(data.companyImageSize || 'medium') === key
+                                    ? 'bg-primary/10 text-primary border-primary'
+                                    : 'bg-white text-[#233333] border-[#d1dbdb] hover:border-primary'
+                                  }`}
+                              >
+                                <span className="block text-xs font-bold">{label}</span>
+                                <span className="block text-[10px] opacity-60 mt-0.5">{desc}</span>
+                              </button>
+                            ))}
+                          </div>
+                          <p className="text-xs text-text-muted">
+                            {(data.companyImageSize || 'medium') === 'wide' ? 'Image spans the full page width.' : `Image appears as a ${data.companyImageSize || 'medium'} thumbnail beside the description.`}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  {/* Website */}
+                  <div>
+                    <span className="block text-sm font-semibold text-[#233333] mb-2">Website / Portfolio <span className="text-text-muted font-normal">(optional)</span></span>
+                    <div className="relative group">
+                      <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-primary transition-colors">language</span>
+                      <input name="website" value={data.website || ''} onChange={handleChange} className="w-full pl-12 pr-4 py-3 rounded-lg border border-[#d1dbdb] bg-[#fcfdfd] text-[#233333] placeholder:text-text-muted/60 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="https://yourwebsite.com" type="url" />
+                    </div>
+                  </div>
+                </div>
                 <label className="block space-y-2 group">
                   <span className="block text-sm font-bold text-[#233333] group-focus-within:text-primary transition-colors">Context</span>
                   <textarea name="projectContext" value={data.projectContext || ''} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-[#d1dbdb] bg-[#fcfdfd] text-[#233333] placeholder:text-text-muted/60 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none min-h-[120px] resize-y" placeholder="Briefly describe the client's current scenario. Ex: The client has an old site that is not responsive and is losing mobile sales..."></textarea>
@@ -79,7 +142,14 @@ export default function Step3() {
             <div className="space-y-6">
               <div className="flex items-center gap-2 border-b border-[#f0f2f2] pb-3 mb-4">
                 <span className="material-symbols-outlined text-primary">warning</span>
-                <h3 className="text-lg font-bold text-[#233333]">The Challenge</h3>
+                <input
+                  name="challengesTitle"
+                  value={data.challengesTitle || ''}
+                  onChange={handleChange}
+                  placeholder="The Challenge"
+                  className="text-lg font-bold text-[#233333] bg-transparent border-none outline-none focus:ring-0 flex-1"
+                />
+                <span className="text-xs text-text-muted italic">(editable title)</span>
               </div>
               <div className="space-y-4">
                 <p className="text-sm text-text-muted">List the main problems this project aims to solve.</p>
@@ -109,7 +179,14 @@ export default function Step3() {
             <div className="space-y-6">
               <div className="flex items-center gap-2 border-b border-[#f0f2f2] pb-3 mb-4">
                 <span className="material-symbols-outlined text-primary">flag</span>
-                <h3 className="text-lg font-bold text-[#233333]">Objectives</h3>
+                <input
+                  name="objectivesTitle"
+                  value={data.objectivesTitle || ''}
+                  onChange={handleChange}
+                  placeholder="Objectives"
+                  className="text-lg font-bold text-[#233333] bg-transparent border-none outline-none focus:ring-0 flex-1"
+                />
+                <span className="text-xs text-text-muted italic">(editable title)</span>
               </div>
               <div className="space-y-4">
                 <p className="text-sm text-text-muted">What are the success goals for this project?</p>

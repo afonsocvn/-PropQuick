@@ -186,9 +186,36 @@ export default function Step5() {
                       </select>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 py-2">
-                    <input name="includeTaxes" checked={data.includeTaxes || false} onChange={handleChange} className="h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary" id="tax" type="checkbox" />
-                    <label className="text-sm text-slate-700 dark:text-slate-300 font-medium" htmlFor="tax">Include estimated taxes</label>
+                  <div className="py-2 space-y-2">
+                    <div className="flex items-center gap-3">
+                      <input name="includeTaxes" checked={data.includeTaxes || false} onChange={handleChange} className="h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary" id="tax" type="checkbox" />
+                      <label className="text-sm text-slate-700 dark:text-slate-300 font-medium" htmlFor="tax">Values include estimated taxes</label>
+                    </div>
+                    {data.includeTaxes ? (
+                      <p className="text-xs text-green-700 bg-green-50 px-3 py-1.5 rounded-lg flex items-center gap-1">
+                        <span className="material-symbols-outlined text-sm">check_circle</span>
+                        The amounts shown already include estimated taxes.
+                      </p>
+                    ) : (
+                      <p className="text-xs text-amber-700 bg-amber-50 px-3 py-1.5 rounded-lg flex items-center gap-1">
+                        <span className="material-symbols-outlined text-sm">info</span>
+                        Proposal values do not include taxes. Taxes will be added separately.
+                      </p>
+                    )}
+                  </div>
+                  {/* Valid Until */}
+                  <div className="pt-2 border-t border-slate-100">
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Proposal Valid Until <span className="text-slate-400 font-normal normal-case">(optional)</span></label>
+                    <input
+                      name="validUntil"
+                      type="date"
+                      value={data.validUntil || ''}
+                      onChange={handleChange}
+                      className="block w-full rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm sm:text-sm py-2.5 px-3"
+                    />
+                    {data.validUntil && (
+                      <p className="text-xs text-slate-500 mt-1">This proposal expires on <strong>{new Date(data.validUntil).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</strong>.</p>
+                    )}
                   </div>
                 </div>
               </div>

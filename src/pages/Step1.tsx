@@ -48,14 +48,14 @@ export default function Step1() {
           <form className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="flex flex-col gap-2">
-                <label className="font-semibold text-gray-700 text-sm ml-1">Company / Business Name</label>
+                <label className="font-semibold text-gray-700 text-sm ml-1">Company / Business Name <span className="text-gray-400 font-normal">(optional)</span></label>
                 <div className="relative group">
                   <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">business</span>
                   <input name="companyName" value={data.companyName || ''} onChange={handleChange} className="w-full pl-12 pr-4 py-3.5 bg-background-light border-0 border-b-2 border-gray-200 focus:border-primary focus:ring-0 rounded-t-lg transition-colors placeholder:text-gray-400 text-gray-800 text-base" placeholder="Ex: Acme Design Studio" type="text" />
                 </div>
               </div>
               <div className="flex flex-col gap-2">
-                <label className="font-semibold text-gray-700 text-sm ml-1">Role / Specialty</label>
+                <label className="font-semibold text-gray-700 text-sm ml-1">Role / Specialty <span className="text-gray-400 font-normal">(optional)</span></label>
                 <div className="relative group">
                   <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">badge</span>
                   <input name="role" value={data.role || ''} onChange={handleChange} className="w-full pl-12 pr-4 py-3.5 bg-background-light border-0 border-b-2 border-gray-200 focus:border-primary focus:ring-0 rounded-t-lg transition-colors placeholder:text-gray-400 text-gray-800 text-base" placeholder="Ex: Senior UX/UI Designer" type="text" />
@@ -64,25 +64,42 @@ export default function Step1() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="flex flex-col gap-2">
-                <label className="font-semibold text-gray-700 text-sm ml-1">Email</label>
+                <label className="font-semibold text-gray-700 text-sm ml-1">Email <span className="text-gray-400 font-normal">(optional)</span></label>
                 <div className="relative group">
                   <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">mail</span>
                   <input name="email" value={data.email || ''} onChange={handleChange} className="w-full pl-12 pr-4 py-3.5 bg-background-light border-0 border-b-2 border-gray-200 focus:border-primary focus:ring-0 rounded-t-lg transition-colors placeholder:text-gray-400 text-gray-800 text-base" placeholder="you@example.com" type="email" />
                 </div>
               </div>
               <div className="flex flex-col gap-2">
-                <label className="font-semibold text-gray-700 text-sm ml-1">Phone</label>
+                <label className="font-semibold text-gray-700 text-sm ml-1">Phone <span className="text-gray-400 font-normal">(optional)</span></label>
                 <div className="relative group">
                   <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">call</span>
                   <input name="phone" value={data.phone || ''} onChange={handleChange} className="w-full pl-12 pr-4 py-3.5 bg-background-light border-0 border-b-2 border-gray-200 focus:border-primary focus:ring-0 rounded-t-lg transition-colors placeholder:text-gray-400 text-gray-800 text-base" placeholder="+1 (555) 999-9999" type="tel" />
                 </div>
               </div>
             </div>
-            <div className="flex flex-col gap-2">
-              <label className="font-semibold text-gray-700 text-sm ml-1">Website / Portfolio</label>
-              <div className="relative group">
-                <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">language</span>
-                <input name="website" value={data.website || ''} onChange={handleChange} className="w-full pl-12 pr-4 py-3.5 bg-background-light border-0 border-b-2 border-gray-200 focus:border-primary focus:ring-0 rounded-t-lg transition-colors placeholder:text-gray-400 text-gray-800 text-base" placeholder="https://yourwebsite.com" type="url" />
+
+            {/* Client + Version */}
+            <div className="pt-6 border-t border-gray-100 mt-2">
+              <p className="font-serif text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary">person_pin</span>
+                Proposal Details
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex flex-col gap-2">
+                  <label className="font-semibold text-gray-700 text-sm ml-1">Client Name <span className="text-gray-400 font-normal">(optional)</span></label>
+                  <div className="relative group">
+                    <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">group</span>
+                    <input name="clientName" value={data.clientName || ''} onChange={handleChange} className="w-full pl-12 pr-4 py-3.5 bg-background-light border-0 border-b-2 border-gray-200 focus:border-primary focus:ring-0 rounded-t-lg transition-colors placeholder:text-gray-400 text-gray-800 text-base" placeholder="Ex: Giggling Platypus Co." type="text" />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label className="font-semibold text-gray-700 text-sm ml-1">Proposal Version <span className="text-gray-400 font-normal">(optional)</span></label>
+                  <div className="relative group">
+                    <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">tag</span>
+                    <input name="proposalVersion" value={data.proposalVersion || ''} onChange={handleChange} className="w-full pl-12 pr-4 py-3.5 bg-background-light border-0 border-b-2 border-gray-200 focus:border-primary focus:ring-0 rounded-t-lg transition-colors placeholder:text-gray-400 text-gray-800 text-base" placeholder="Ex: v1.0 / Draft 2" type="text" />
+                  </div>
+                </div>
               </div>
             </div>
             <div className="pt-6 border-t border-gray-100 mt-8">
