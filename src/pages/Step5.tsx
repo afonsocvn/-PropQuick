@@ -2,7 +2,38 @@ import { Link } from 'react-router-dom';
 import { useProposalData } from '../hooks/useProposalData';
 
 export default function Step5() {
-  const { data, handleChange } = useProposalData();
+  const { data, handleChange, updateData } = useProposalData();
+
+  const milestones = data.milestones || [
+    { name: data.milestone1Name || 'Initial Deposit', amount: data.milestone1Amount || '1500', date: data.milestone1Date || 'Upon signing' },
+    ...(data.pricingStructure === 'milestone' ? [{ name: data.milestone2Name || 'Final Delivery', amount: data.milestone2Amount || '1500', date: data.milestone2Date || 'Project Completion' }] : [])
+  ];
+
+  const extras = data.extras || [];
+
+  const handleArrayChange = (key: 'milestones' | 'extras', index: number, field: string, value: string) => {
+    const newArray = [...(data[key] || (key === 'milestones' ? milestones : extras))];
+    newArray[index] = { ...newArray[index], [field]: value };
+    updateData(key, newArray);
+  };
+
+  const addArrayItem = (key: 'milestones' | 'extras') => {
+    const newArray = [...(data[key] || (key === 'milestones' ? milestones : extras))];
+    if (key === 'milestones') {
+      newArray.push({ name: '', amount: '', date: '' });
+    } else {
+      newArray.push({ name: '', amount: '', date: '' });
+    }
+    updateData(key, newArray);
+  };
+
+  const removeArrayItem = (key: 'milestones' | 'extras', index: number) => {
+    const newArray = [...(data[key] || (key === 'milestones' ? milestones : extras))];
+    newArray.splice(index, 1);
+    updateData(key, newArray);
+  };
+
+  const totalInvestment = milestones.reduce((sum: number, m: any) => sum + Number(m.amount || 0), 0);
 
   return (
     <div className="bg-background-light dark:bg-background-dark min-h-screen font-display text-text-main flex flex-col overflow-x-hidden">
@@ -27,14 +58,14 @@ export default function Step5() {
           <div className="bg-surface-light dark:bg-surface-dark p-6 rounded-xl shadow-sm border border-secondary/10">
             <div className="flex justify-between items-center mb-4">
               <span className="text-slate-900 dark:text-white font-semibold text-lg">Step 3 of 4</span>
-              <span className="text-primary dark:text-secondary font-medium">Investment &amp; Payment Terms</span>
+              <span className="text-primary dark:text-secondary font-medium">Pricing &amp; Milestones</span>
             </div>
             <div className="h-3 w-full bg-secondary/20 rounded-full overflow-hidden">
               <div className="h-full bg-primary w-[83%] rounded-full transition-all duration-500 ease-out"></div>
             </div>
           </div>
           <div className="text-center md:text-left space-y-2">
-            <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">Investment &amp; Payment Details</h1>
+            <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">Project Pricing &amp; Milestones</h1>
             <p className="text-slate-500 dark:text-slate-300 text-lg">Define how you want to structure the project costs and payment schedule.</p>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -81,10 +112,10 @@ export default function Step5() {
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
                     <span className="material-symbols-outlined text-primary">calendar_month</span>
-                    Payment Schedule
+                    Payment Milestones
                   </h3>
                   {data.pricingStructure === 'milestone' && (
-                    <button className="text-sm font-semibold text-primary hover:text-primary/80 flex items-center gap-1 transition-colors">
+                    <button onClick={() => addArrayItem('milestones')} className="text-sm font-semibold text-primary hover:text-primary/80 flex items-center gap-1 transition-colors">
                       <span className="material-symbols-outlined text-lg">add_circle</span>
                       Add Milestone
                     </button>
@@ -101,64 +132,96 @@ export default function Step5() {
                       </tr>
                     </thead>
                     <tbody className="bg-white dark:bg-slate-800 divide-y divide-slate-100 dark:divide-slate-700">
-                      <tr className="group hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors">
-                        <td className="p-4">
-                          <input name="milestone1Name" value={data.milestone1Name || 'Initial Deposit'} onChange={handleChange} className="w-full bg-transparent border-0 border-b border-dashed border-slate-300 focus:border-primary focus:ring-0 p-0 text-slate-900 dark:text-white font-medium placeholder-slate-400" placeholder="e.g. Deposit" type="text" />
-                        </td>
-                        <td className="p-4">
-                          <div className="relative">
-                            <span className="absolute left-0 top-1/2 -translate-y-1/2 text-accent font-bold">{data.currency ? data.currency.match(/\((.*?)\)/)?.[1] || '$' : '$'}</span>
-                            <input name="milestone1Amount" value={data.milestone1Amount || '1500'} onChange={handleChange} className="w-full pl-4 bg-transparent border-0 border-b border-dashed border-slate-300 focus:border-primary focus:ring-0 p-0 text-slate-900 dark:text-white font-medium text-right" placeholder="0.00" type="number" />
-                          </div>
-                        </td>
-                        <td className="p-4">
-                          <select name="milestone1Date" value={data.milestone1Date || 'Upon Signing'} onChange={handleChange} className="w-full bg-transparent border-0 border-b border-dashed border-slate-300 focus:border-primary focus:ring-0 p-0 text-slate-600 dark:text-slate-300 text-sm cursor-pointer">
-                            <option>Upon Signing</option>
-                            <option>Project Start</option>
-                            <option>Phase 1 Completion</option>
-                          </select>
-                        </td>
-                        <td className="p-4 text-center">
-                          <button className="text-slate-400 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100">
-                            <span className="material-symbols-outlined text-xl">delete</span>
-                          </button>
-                        </td>
-                      </tr>
-                      {data.pricingStructure === 'milestone' && (
-                        <tr className="group hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors">
+                      {milestones.map((milestone: any, index: number) => (
+                        <tr key={index} className="group hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors">
                           <td className="p-4">
-                            <input name="milestone2Name" value={data.milestone2Name || 'Final Delivery'} onChange={handleChange} className="w-full bg-transparent border-0 border-b border-dashed border-slate-300 focus:border-primary focus:ring-0 p-0 text-slate-900 dark:text-white font-medium placeholder-slate-400" placeholder="e.g. Final Payment" type="text" />
+                            <input value={milestone.name} onChange={(e) => handleArrayChange('milestones', index, 'name', e.target.value)} className="w-full bg-transparent border-0 border-b border-dashed border-slate-300 focus:border-primary focus:ring-0 p-0 text-slate-900 dark:text-white font-medium placeholder-slate-400" placeholder="e.g. Deposit" type="text" />
                           </td>
                           <td className="p-4">
                             <div className="relative">
                               <span className="absolute left-0 top-1/2 -translate-y-1/2 text-accent font-bold">{data.currency ? data.currency.match(/\((.*?)\)/)?.[1] || '$' : '$'}</span>
-                              <input name="milestone2Amount" value={data.milestone2Amount || '1500'} onChange={handleChange} className="w-full pl-4 bg-transparent border-0 border-b border-dashed border-slate-300 focus:border-primary focus:ring-0 p-0 text-slate-900 dark:text-white font-medium text-right" placeholder="0.00" type="number" />
+                              <input value={milestone.amount} onChange={(e) => handleArrayChange('milestones', index, 'amount', e.target.value)} className="w-full pl-4 bg-transparent border-0 border-b border-dashed border-slate-300 focus:border-primary focus:ring-0 p-0 text-slate-900 dark:text-white font-medium text-right" placeholder="0" type="number" />
                             </div>
                           </td>
                           <td className="p-4">
-                            <select name="milestone2Date" value={data.milestone2Date || 'Project Completion'} onChange={handleChange} className="w-full bg-transparent border-0 border-b border-dashed border-slate-300 focus:border-primary focus:ring-0 p-0 text-slate-600 dark:text-slate-300 text-sm cursor-pointer">
-                              <option>Project Completion</option>
-                              <option>Net 15</option>
-                              <option>Net 30</option>
-                            </select>
+                            <input value={milestone.date} onChange={(e) => handleArrayChange('milestones', index, 'date', e.target.value)} className="w-full bg-transparent border-0 border-b border-dashed border-slate-300 focus:border-primary focus:ring-0 p-0 text-slate-600 dark:text-slate-300 text-sm placeholder-slate-400" placeholder="e.g. Upon Signing" type="text" />
                           </td>
                           <td className="p-4 text-center">
-                            <button className="text-slate-400 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100">
-                              <span className="material-symbols-outlined text-xl">delete</span>
-                            </button>
+                            {(index > 0 || milestones.length > 1) && (
+                              <button onClick={() => removeArrayItem('milestones', index)} className="text-slate-400 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100">
+                                <span className="material-symbols-outlined text-xl">delete</span>
+                              </button>
+                            )}
                           </td>
                         </tr>
-                      )}
+                      ))}
                     </tbody>
                     <tfoot>
                       <tr className="bg-slate-50 dark:bg-slate-900/50">
                         <td className="p-4 font-bold text-slate-700 dark:text-slate-300 text-right">Total Investment</td>
-                        <td className="p-4 font-bold text-slate-900 dark:text-white text-right text-lg border-t-2 border-primary/30">{data.currency ? data.currency.match(/\((.*?)\)/)?.[1] || '$' : '$'}{(Number(data.milestone1Amount || 1500) + (data.pricingStructure === 'milestone' ? Number(data.milestone2Amount || 1500) : 0)).toLocaleString()}</td>
+                        <td className="p-4 font-bold text-slate-900 dark:text-white text-right text-lg border-t-2 border-primary/30">{data.currency ? data.currency.match(/\((.*?)\)/)?.[1] || '$' : '$'}{totalInvestment.toLocaleString()}</td>
                         <td colSpan={2}></td>
                       </tr>
                     </tfoot>
                   </table>
                 </div>
+              </section>
+
+              <section className="bg-surface-light dark:bg-surface-dark p-6 md:p-8 rounded-xl shadow-sm border border-secondary/10">
+                <div className="flex justify-between items-center mb-6">
+                  <div className="space-y-1">
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                      <span className="material-symbols-outlined text-primary">extension</span>
+                      Optional Extras
+                    </h3>
+                    <p className="text-sm text-slate-500">Provide add-ons that do not count towards the Total Investment.</p>
+                  </div>
+                  <button onClick={() => addArrayItem('extras')} className="text-sm font-semibold text-primary hover:text-primary/80 flex items-center gap-1 transition-colors">
+                    <span className="material-symbols-outlined text-lg">add_circle</span>
+                    Add Extra
+                  </button>
+                </div>
+                {extras.length > 0 ? (
+                  <div className="overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700">
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="bg-secondary/10 text-slate-700 dark:text-slate-200 border-b border-secondary/20">
+                          <th className="p-4 font-semibold text-sm">Extra Name</th>
+                          <th className="p-4 font-semibold text-sm w-32">Amount / Rate</th>
+                          <th className="p-4 font-semibold text-sm w-48">Notes</th>
+                          <th className="p-4 w-10"></th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white dark:bg-slate-800 divide-y divide-slate-100 dark:divide-slate-700">
+                        {extras.map((extra: any, index: number) => (
+                          <tr key={index} className="group hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors">
+                            <td className="p-4">
+                              <input value={extra.name} onChange={(e) => handleArrayChange('extras', index, 'name', e.target.value)} className="w-full bg-transparent border-0 border-b border-dashed border-slate-300 focus:border-primary focus:ring-0 p-0 text-slate-900 dark:text-white font-medium placeholder-slate-400" placeholder="e.g. Additional Page" type="text" />
+                            </td>
+                            <td className="p-4">
+                              <div className="relative">
+                                <span className="absolute left-0 top-1/2 -translate-y-1/2 text-accent font-bold">{data.currency ? data.currency.match(/\((.*?)\)/)?.[1] || '$' : '$'}</span>
+                                <input value={extra.amount} onChange={(e) => handleArrayChange('extras', index, 'amount', e.target.value)} className="w-full px-4 bg-transparent border-0 border-b border-dashed border-slate-300 focus:border-primary focus:ring-0 p-0 text-slate-900 dark:text-white font-medium text-right" placeholder="0" type="text" />
+                              </div>
+                            </td>
+                            <td className="p-4">
+                              <input value={extra.date} onChange={(e) => handleArrayChange('extras', index, 'date', e.target.value)} className="w-full bg-transparent border-0 border-b border-dashed border-slate-300 focus:border-primary focus:ring-0 p-0 text-slate-600 dark:text-slate-300 text-sm placeholder-slate-400" placeholder="e.g. per hour, %" type="text" />
+                            </td>
+                            <td className="p-4 text-center">
+                              <button onClick={() => removeArrayItem('extras', index)} className="text-slate-400 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100">
+                                <span className="material-symbols-outlined text-xl">delete</span>
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <div className="text-center py-6 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-lg">
+                    <p className="text-sm text-slate-500">No extras added. Click "Add Extra" to offer optional add-ons.</p>
+                  </div>
+                )}
               </section>
             </div>
             <div className="lg:col-span-1 space-y-6">

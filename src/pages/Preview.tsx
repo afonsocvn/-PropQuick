@@ -1,6 +1,68 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { useProposalData } from '../hooks/useProposalData';
+
+function PagedContent({ children, footer, wrapperClassName = '', contentClassName = '', sliceHeight = 842 }: { children: ReactNode, footer?: ReactNode, wrapperClassName?: string, contentClassName?: string, sliceHeight?: number }) {
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [pages, setPages] = useState(1);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      // The content might need a moment to render images/fonts, but a simple effect usually works
+      const resizeObserver = new ResizeObserver((entries) => {
+        for (let entry of entries) {
+          const height = entry.target.scrollHeight;
+          // Calculate how many 842px pages are needed
+          setPages(Math.max(1, Math.ceil(height / sliceHeight)));
+        }
+      });
+      resizeObserver.observe(contentRef.current);
+      return () => resizeObserver.disconnect();
+    }
+  }, [children, sliceHeight]);
+
+  return (
+    <div className="flex flex-col gap-8 w-full max-w-[595px] print:gap-0 print:block">
+      {/* Hidden measuring container - MUST exactly match the layout of the real pages! */}
+      <div
+        ref={contentRef}
+        className={`absolute opacity-0 pointer-events-none ${contentClassName} print:hidden`}
+        style={{ width: '595px', height: 'auto', minHeight: '842px' }}
+      >
+        {children}
+      </div>
+
+      {Array.from({ length: pages }).map((_, i) => (
+        <div
+          key={i}
+          className={`w-full h-[842px] overflow-hidden relative shadow-2xl bg-white print:shadow-none print:m-0 shrink-0 ${wrapperClassName} pb-16 ${i > 0 ? 'print:hidden' : 'print-dynamic-flow print:break-after-page'}`}
+          style={{ pageBreakInside: 'avoid' }}
+        >
+          <div
+            className={`w-full ${i > 0 ? 'absolute left-0' : 'relative print:static print:top-0'} ${contentClassName}`}
+            style={{
+              top: i > 0 ? `-${i * sliceHeight}px` : '0px',
+              height: i > 0 ? 'auto' : '100%',
+              minHeight: '842px'
+            }}
+          >
+            {children}
+          </div>
+          {footer && i === pages - 1 && (
+            <div className={`absolute bottom-0 left-0 w-full z-20 print-footer`}>
+              {footer}
+            </div>
+          )}
+          {footer && i < pages - 1 && (
+            <div className={`absolute bottom-0 left-0 w-full z-20 print:hidden`}>
+              {footer}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function Preview() {
   const { data } = useProposalData();
@@ -15,6 +77,13 @@ export default function Preview() {
   const challenges = data.challenges || ['Low and high fidelity wireframing.', 'Creation of a scalable Design System.'];
   const objectives = data.objectives || ['UX Audit and user research.'];
   const currencySymbol = data.currency ? data.currency.match(/\((.*?)\)/)?.[1] || '$' : '$';
+
+  const milestones = data.milestones || [
+    { name: data.milestone1Name || 'Initial Deposit', amount: data.milestone1Amount || '1500', date: data.milestone1Date || 'Upon signing' },
+    ...(data.pricingStructure === 'milestone' ? [{ name: data.milestone2Name || 'Final Delivery', amount: data.milestone2Amount || '1500', date: data.milestone2Date || 'Project Completion' }] : [])
+  ];
+  const extras = data.extras || [];
+  const totalInvestment = milestones.reduce((sum: number, m: any) => sum + Number(m.amount || 0), 0);
 
   return (
     <div className="bg-surface-off font-display text-text-dark antialiased min-h-screen flex flex-col print:bg-white">
@@ -194,7 +263,7 @@ export default function Preview() {
         </div>
 
         {/* RIGHT: DOCUMENT PREVIEW */}
-        <div className="w-full lg:w-2/3 bg-surface-light rounded-2xl border border-secondary/20 shadow-sm p-6 lg:p-8 flex flex-col print:w-full print:border-none print:shadow-none print:p-0">
+        <div className="w-full lg:w-2/3 bg-surface-light rounded-2xl border border-secondary/20 shadow-sm p-6 lg:p-8 flex flex-col print:w-full print:border-none print:shadow-none print:p-0 print:block">
           <div className="flex items-center justify-between mb-6 print:hidden">
             <h3 className="text-lg font-bold text-text-dark flex items-center gap-2">
               <span className="material-symbols-outlined text-secondary">visibility</span>
@@ -218,9 +287,9 @@ export default function Preview() {
             </div>
           </div>
 
-          <div className="flex-grow bg-[#E5E5E5] rounded-xl p-4 lg:p-8 overflow-y-auto custom-scrollbar flex justify-center print:bg-white print:p-0 print:overflow-visible relative">
+          <div className="flex-grow bg-[#E5E5E5] rounded-xl p-4 lg:p-8 overflow-y-auto custom-scrollbar flex justify-center print:bg-white print:p-0 print:overflow-visible relative print:block">
             <div
-              className="flex flex-col gap-8 items-center transition-all duration-300 origin-top print:transform-none print:gap-0 print:filter-none"
+              className="flex flex-col gap-8 items-center transition-all duration-300 origin-top print:transform-none print:gap-0 print:filter-none print:block"
               style={{ transform: `scale(${zoom})` }}
             >
               {/* ====== LAYOUT 1: EDITORIAL ====== */}
@@ -228,7 +297,7 @@ export default function Preview() {
                 <>
                   {/* PAGE 1 - Editorial Cover */}
                   <div
-                    className="w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative overflow-hidden print:shadow-none print:max-w-none print:w-[210mm] print:h-[297mm] break-after-page"
+                    className="w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative overflow-hidden print:shadow-none print-dynamic-flow break-after-page"
                     style={{ backgroundColor: '#d8d8d8' }}
                   >
                     {/* Decorative outline circles - top right */}
@@ -284,42 +353,46 @@ export default function Preview() {
                     </div>
                   </div>
 
-                  {/* PAGE 2 - Context + Challenges */}
-                  <div className="bg-white w-full max-w-[595px] min-h-[842px] shadow-2xl p-16 flex flex-col relative print:shadow-none print:max-w-none print:w-[210mm] print:min-h-[297mm] print:break-after-page">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-bl-[100px]"></div>
-
+                  {/* PAGE 2 - Company Info + Context */}
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl py-16 px-16 flex flex-col relative overflow-hidden print:shadow-none print-dynamic-flow break-after-page">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-bl-[100px] print:hidden"></div>
                     {/* Company image + description */}
                     {(data.companyImageUrl || data.companyDescription) && (() => {
                       const imgSize = data.companyImageSize || 'medium';
                       const imgFull = imgSize === 'wide';
                       const imgClass = imgSize === 'small' ? 'h-16 w-16' : imgSize === 'large' ? 'h-32 w-32' : 'h-24 w-24';
                       return (
-                        <div className={`mb-5 ${imgFull ? 'flex flex-col gap-3' : 'flex gap-4 items-start'}`}>
+                        <div className={`mb-5 z-10 relative ${imgFull ? 'flex flex-col gap-3' : 'flex gap-4 items-start'}`}>
                           {data.companyImageUrl && (
                             imgFull
-                              ? <img src={data.companyImageUrl} alt="Company" className="w-full rounded-lg object-contain border border-gray-100" style={{ maxHeight: '140px' }} />
-                              : <img src={data.companyImageUrl} alt="Company" className={`${imgClass} object-contain rounded-lg border border-gray-100 flex-shrink-0`} />
+                              ? <img src={data.companyImageUrl} alt="Company" className="w-full rounded-lg object-cover object-center border border-gray-100 bg-white" style={{ height: '140px' }} />
+                              : <img src={data.companyImageUrl} alt="Company" className={`${imgClass} object-cover object-center rounded-lg border border-gray-100 flex-shrink-0 bg-white`} />
                           )}
                           {data.companyDescription && (
-                            <p className="text-xs text-gray-500 leading-relaxed italic">{data.companyDescription}</p>
+                            <p className="text-xs text-gray-500 leading-relaxed italic relative z-10">{data.companyDescription}</p>
                           )}
                         </div>
                       );
                     })()}
-
                     {/* Context */}
                     {data.projectContext && (
-                      <div className="mb-4">
+                      <div className="mb-4 relative z-10 flex-grow">
                         <h6 className="text-xs font-bold text-text-dark uppercase tracking-wider mb-2 border-b border-gray-100 pb-1">01. Context</h6>
                         <p className="text-sm text-gray-600 leading-relaxed">{data.projectContext}</p>
                       </div>
                     )}
+                    <div className="mt-auto pt-4 border-t border-gray-100 flex justify-between items-center text-[10px] text-gray-400">
+                      <span>{data.companyName || 'Propose.ly'} © {new Date().getFullYear()}</span>
+                      <span>Page 2</span>
+                    </div>
+                  </div>
 
-                    {/* Challenges */}
-                    {challenges.filter((c: string) => c.trim()).length > 0 && (
-                      <div className="mb-4">
+                  {/* PAGE 3 - Challenges */}
+                  {challenges.filter((c: string) => c.trim()).length > 0 && (
+                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl py-16 px-16 flex flex-col relative overflow-hidden print:shadow-none print-dynamic-flow break-after-page">
+                      <div className="mb-4 relative z-10 flex-grow">
                         <h6 className="text-xs font-bold text-text-dark uppercase tracking-wider mb-2 border-b border-gray-100 pb-1">02. {data.challengesTitle || 'The Challenge'}</h6>
-                        <ul className="text-sm text-gray-600 space-y-1">
+                        <ul className="text-sm text-gray-600 space-y-2 mt-4">
                           {challenges.filter((c: string) => c.trim()).map((c: string, i: number) => (
                             <li key={i} className="flex items-start gap-2">
                               <span className="w-1.5 h-1.5 rounded-full bg-secondary mt-1.5 flex-shrink-0"></span>
@@ -328,20 +401,19 @@ export default function Preview() {
                           ))}
                         </ul>
                       </div>
-                    )}
-
-                    <div className="mt-auto pt-4 border-t border-gray-100 flex justify-between items-center text-[10px] text-gray-400">
-                      <span>{data.companyName || 'Propose.ly'} © {new Date().getFullYear()}</span>
-                      <span>Page 2 of 4</span>
+                      <div className="mt-auto pt-4 border-t border-gray-100 flex justify-between items-center text-[10px] text-gray-400">
+                        <span>{data.companyName || 'Propose.ly'} © {new Date().getFullYear()}</span>
+                        <span>Page 3</span>
+                      </div>
                     </div>
-                  </div>
+                  )}
 
-                  {/* PAGE 3 - Objectives */}
+                  {/* PAGE 4 - Objectives */}
                   {objectives.filter((o: string) => o.trim()).length > 0 && (
-                    <div className="bg-white w-full max-w-[595px] min-h-[842px] shadow-2xl p-16 flex flex-col relative print:shadow-none print:max-w-none print:w-[210mm] print:min-h-[297mm] print:break-after-page">
-                      <div className="mb-4">
+                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl py-16 px-16 flex flex-col relative overflow-hidden print:shadow-none print-dynamic-flow break-after-page">
+                      <div className="mb-4 relative z-10 flex-grow">
                         <h6 className="text-xs font-bold text-text-dark uppercase tracking-wider mb-2 border-b border-gray-100 pb-1">03. {data.objectivesTitle || 'Objectives'}</h6>
-                        <ul className="text-sm text-gray-600 space-y-1">
+                        <ul className="text-sm text-gray-600 space-y-2 mt-4">
                           {objectives.filter((o: string) => o.trim()).map((o: string, i: number) => (
                             <li key={i} className="flex items-start gap-2">
                               <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0"></span>
@@ -350,11 +422,16 @@ export default function Preview() {
                           ))}
                         </ul>
                       </div>
+                      <div className="mt-auto pt-4 border-t border-gray-100 flex justify-between items-center text-[10px] text-gray-400">
+                        <span>{data.companyName || 'Propose.ly'} © {new Date().getFullYear()}</span>
+                        <span>Page 4</span>
+                      </div>
                     </div>
                   )}
 
-                  {/* PAGE 4 - Investment + Terms */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl p-12 flex flex-col print:shadow-none print:max-w-none print:w-[210mm] print:h-[297mm] break-after-page">
+
+                  {/* PAGE 3 - Investment + Terms */}
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl p-12 flex flex-col print:shadow-none print-dynamic-flow break-after-page">
                     <div className="mb-6 border-l-4 border-primary pl-4 py-1">
                       <h2 className="text-xl font-extrabold text-text-dark">Investment &amp; Terms</h2>
                     </div>
@@ -369,22 +446,31 @@ export default function Preview() {
                           </tr>
                         </thead>
                         <tbody>
-                          <tr className="border-b border-gray-100">
-                            <td className="py-3 text-gray-600">{data.milestone1Name || 'Initial Deposit'}</td>
-                            <td className="py-3 text-gray-600">{data.milestone1Date || 'Upon signing'}</td>
-                            <td className="py-3 text-gray-600 text-right">{currencySymbol}{data.milestone1Amount || '1500'}</td>
-                          </tr>
-                          {data.pricingStructure === 'milestone' && (
-                            <tr className="border-b border-gray-100">
-                              <td className="py-3 text-gray-600">{data.milestone2Name || 'Final Delivery'}</td>
-                              <td className="py-3 text-gray-600">{data.milestone2Date || 'Project Completion'}</td>
-                              <td className="py-3 text-gray-600 text-right">{currencySymbol}{data.milestone2Amount || '1500'}</td>
+                          {milestones.map((m: any, idx: number) => (
+                            <tr key={idx} className="border-b border-gray-100">
+                              <td className="py-3 text-gray-600">{m.name}</td>
+                              <td className="py-3 text-gray-600">{m.date}</td>
+                              <td className="py-3 text-gray-600 text-right">{currencySymbol}{m.amount}</td>
                             </tr>
-                          )}
+                          ))}
                           <tr>
                             <td colSpan={2} className="pt-4 font-bold text-gray-800 text-right uppercase tracking-wider text-xs">Total:</td>
-                            <td className="pt-4 font-bold text-primary text-right text-xl">{currencySymbol}{(Number(data.milestone1Amount || 1500) + (data.pricingStructure === 'milestone' ? Number(data.milestone2Amount || 1500) : 0)).toLocaleString()}</td>
+                            <td className="pt-4 font-bold text-primary text-right text-xl">{currencySymbol}{totalInvestment.toLocaleString()}</td>
                           </tr>
+                          {extras.length > 0 && (
+                            <>
+                              <tr>
+                                <td colSpan={3} className="pt-8 pb-2 text-xs font-bold text-text-dark uppercase tracking-wider border-b border-gray-100">Optional Add-ons</td>
+                              </tr>
+                              {extras.map((e: any, idx: number) => (
+                                <tr key={`extra-${idx}`} className="border-b border-gray-50 bg-gray-50/50">
+                                  <td className="py-3 text-gray-600 pl-2">{e.name}</td>
+                                  <td className="py-3 text-gray-500 text-xs">{e.date}</td>
+                                  <td className="py-3 text-gray-600 text-right pr-2">{currencySymbol}{e.amount}</td>
+                                </tr>
+                              ))}
+                            </>
+                          )}
                         </tbody>
                       </table>
                       <div className="mt-6 p-5 bg-gray-50 rounded-lg border border-dashed border-gray-200">
@@ -405,13 +491,13 @@ export default function Preview() {
                   </div>
 
                   {/* PAGE 4 - Signature */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl p-16 flex flex-col print:shadow-none print:max-w-none print:w-[210mm] print:h-[297mm]">
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl p-16 flex flex-col print:shadow-none print-dynamic-flow break-after-page">
                     <div className="mb-8 border-l-4 border-primary pl-6 py-2">
                       <h2 className="text-2xl font-extrabold text-text-dark">Agreement &amp; Signatures</h2>
                       <p className="text-sm text-gray-500 mt-1">By signing below, both parties agree to the terms outlined in this proposal.</p>
                     </div>
                     <div className="flex-grow flex flex-col justify-end gap-12 pb-10">
-                      <div className="grid grid-cols-2 gap-12">
+                      <div className="grid grid-cols-2 gap-12 avoid-break">
                         <div>
                           <p className="text-xs font-bold text-gray-700 uppercase tracking-wider mb-6">Client</p>
                           <div className="border-b-2 border-gray-300 mb-2 h-12"></div>
@@ -444,7 +530,7 @@ export default function Preview() {
               {layout === 2 && (
                 <>
                   {/* PAGE 1 - Minimal Cover */}
-                  <div className="bg-[#f0f0ed] w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative print:shadow-none print:max-w-none print:w-[210mm] print:h-[297mm] break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <div className="bg-[#f0f0ed] w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative print:shadow-none print-dynamic-flow break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
                     {/* Top bar */}
                     <div className="flex items-start justify-between px-10 pt-10">
                       <div className="flex items-center gap-3">
@@ -493,39 +579,46 @@ export default function Preview() {
                     </div>
                   </div>
 
-                  {/* PAGE 2 - Minimal Content: Context + Challenges + Objectives */}
-                  <div className="bg-white w-full max-w-[595px] min-h-[842px] shadow-2xl flex flex-col relative print:shadow-none print:max-w-none print:w-[210mm]" style={{ fontFamily: "'Inter', sans-serif" }}>
-                    {/* Thin top accent */}
+                  {/* PAGE 2 - Minimal Context */}
+                  <div className="bg-[#f0f0ed] w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
                     <div className="h-1 w-full bg-[#1a2332]"></div>
-                    <div className="flex-grow px-14 py-12 flex flex-col">
-                      <div className="mb-6">
-                        <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-2">Overview</p>
-                        <h2 className="text-2xl font-light text-[#1a2332] mb-3" style={{ letterSpacing: '-0.01em' }}>Project Context</h2>
-                        {(data.companyImageUrl || data.companyDescription) && (() => {
-                          const imgSize = data.companyImageSize || 'medium';
-                          const imgFull = imgSize === 'wide';
-                          const imgClass = imgSize === 'small' ? 'h-12 w-12' : imgSize === 'large' ? 'h-24 w-24' : 'h-16 w-16';
-                          return (
-                            <div className={`mb-3 ${imgFull ? 'flex flex-col gap-2' : 'flex gap-3 items-start'}`}>
-                              {data.companyImageUrl && (
-                                imgFull
-                                  ? <img src={data.companyImageUrl} alt="Company" className="w-full rounded object-contain border border-gray-100" style={{ maxHeight: '120px' }} />
-                                  : <img src={data.companyImageUrl} alt="Company" className={`${imgClass} object-contain rounded border border-gray-100 flex-shrink-0`} />
-                              )}
-                              {data.companyDescription && (
-                                <p className="text-xs text-gray-500 italic pb-2 border-b border-gray-100 flex-1">{data.companyDescription}</p>
-                              )}
-                            </div>
-                          );
-                        })()}
-                        <p className="text-sm text-gray-600 leading-relaxed">
-                          {data.projectContext || 'The goal of this proposal is to outline the strategy for the complete overhaul of the project.'}
-                        </p>
-                      </div>
+                    <div className="flex-grow px-14 pt-10 pb-0 flex flex-col">
+                      <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-2">Overview</p>
+                      <h2 className="text-2xl font-light text-[#1a2332] mb-4" style={{ letterSpacing: '-0.01em' }}>Project Context</h2>
+                      {(data.companyImageUrl || data.companyDescription) && (() => {
+                        const imgSize = data.companyImageSize || 'medium';
+                        const imgFull = imgSize === 'wide';
+                        const imgClass = imgSize === 'small' ? 'h-12 w-12' : imgSize === 'large' ? 'h-24 w-24' : 'h-16 w-16';
+                        return (
+                          <div className={`mb-3 ${imgFull ? 'flex flex-col gap-2' : 'flex gap-3 items-start'}`}>
+                            {data.companyImageUrl && (
+                              imgFull
+                                ? <img src={data.companyImageUrl} alt="Company" className="w-full rounded object-cover object-center border border-gray-100 bg-white" style={{ height: '120px' }} />
+                                : <img src={data.companyImageUrl} alt="Company" className={`${imgClass} object-cover object-center rounded border border-gray-100 flex-shrink-0 bg-white`} />
+                            )}
+                            {data.companyDescription && (
+                              <p className="text-xs text-gray-500 italic pb-2 border-b border-gray-100 flex-1">{data.companyDescription}</p>
+                            )}
+                          </div>
+                        );
+                      })()}
+                      <p className="text-sm text-gray-600 leading-relaxed flex-grow">
+                        {data.projectContext || 'The goal of this proposal is to outline the strategy for the complete overhaul of the project.'}
+                      </p>
+                    </div>
+                    <div className="bg-[#1a2332] px-12 py-4 flex justify-between items-center mt-auto">
+                      <span className="text-[10px] text-[#8899aa]">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
+                      <span className="text-[10px] text-[#8899aa]">Page 2</span>
+                    </div>
+                  </div>
 
-                      <div className="mb-4">
+                  {/* PAGE 3 - Minimal Challenges */}
+                  {challenges.filter((c: string) => c.trim()).length > 0 && (
+                    <div className="bg-[#f0f0ed] w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      <div className="h-1 w-full bg-[#1a2332]"></div>
+                      <div className="flex-grow px-14 pt-10 pb-0 flex flex-col">
                         <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-2">{data.challengesTitle || 'The Challenge'}</p>
-                        <ul className="space-y-1">
+                        <ul className="space-y-2 mt-2 flex-grow">
                           {challenges.filter((c: string) => c.trim()).map((challenge: string, index: number) => (
                             <li key={`chal-${index}`} className="flex items-start gap-3 text-sm text-gray-600">
                               <span className="text-[#1a2332] font-bold mt-0.5">—</span>
@@ -534,39 +627,38 @@ export default function Preview() {
                           ))}
                         </ul>
                       </div>
-                    </div>
-                    <div className="bg-[#1a2332] px-12 py-4 flex justify-between items-center">
-                      <span className="text-[10px] text-[#8899aa]">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
-                      <span className="text-[10px] text-[#8899aa]">Page 2 of 4</span>
-                    </div>
-                  </div>
-
-                  {/* PAGE 3 - Minimal Objectives */}
-                  {objectives.filter((o: string) => o.trim()).length > 0 && (
-                    <div className="bg-white w-full max-w-[595px] min-h-[842px] shadow-2xl flex flex-col print:shadow-none print:max-w-none print:w-[210mm] print:min-h-[297mm] print:break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
-                      <div className="h-1 w-full bg-[#1a2332]"></div>
-                      <div className="flex-grow px-14 py-12 flex flex-col">
-                        <div className="mb-4">
-                          <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-2">{data.objectivesTitle || 'Objectives'}</p>
-                          <ul className="space-y-1">
-                            {objectives.filter((o: string) => o.trim()).map((objective: string, index: number) => (
-                              <li key={`obj-${index}`} className="flex items-start gap-3 text-sm text-gray-600">
-                                <span className="text-[#1a2332] font-bold mt-0.5">—</span>
-                                <span>{objective}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                      <div className="bg-[#1a2332] px-12 py-4 flex justify-between items-center">
+                      <div className="bg-[#1a2332] px-12 py-4 flex justify-between items-center mt-auto">
                         <span className="text-[10px] text-[#8899aa]">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
-                        <span className="text-[10px] text-[#8899aa]">Page 3 of 4</span>
+                        <span className="text-[10px] text-[#8899aa]">Page 3</span>
                       </div>
                     </div>
                   )}
 
+                  {/* PAGE 4 - Minimal Objectives */}
+                  {objectives.filter((o: string) => o.trim()).length > 0 && (
+                    <div className="bg-[#f0f0ed] w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      <div className="h-1 w-full bg-[#1a2332]"></div>
+                      <div className="flex-grow px-14 pt-10 pb-0 flex flex-col">
+                        <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-2">{data.objectivesTitle || 'Objectives'}</p>
+                        <ul className="space-y-2 mt-2 flex-grow">
+                          {objectives.filter((o: string) => o.trim()).map((objective: string, index: number) => (
+                            <li key={`obj-${index}`} className="flex items-start gap-3 text-sm text-gray-600">
+                              <span className="text-[#1a2332] font-bold mt-0.5">—</span>
+                              <span>{objective}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="bg-[#1a2332] px-12 py-4 flex justify-between items-center mt-auto">
+                        <span className="text-[10px] text-[#8899aa]">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
+                        <span className="text-[10px] text-[#8899aa]">Page 4</span>
+                      </div>
+                    </div>
+                  )}
+
+
                   {/* PAGE 3 - Minimal Investment + Terms */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print:max-w-none print:w-[210mm] print:h-[297mm] break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
                     <div className="h-1 w-full bg-[#1a2332]"></div>
                     <div className="flex-grow px-12 py-10 flex flex-col">
                       <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-4">Investment</p>
@@ -579,24 +671,33 @@ export default function Preview() {
                           </tr>
                         </thead>
                         <tbody>
-                          <tr className="border-b border-gray-100">
-                            <td className="py-3 text-gray-700">{data.milestone1Name || 'Initial Deposit'}</td>
-                            <td className="py-3 text-gray-500 text-xs">{data.milestone1Date || 'Upon signing'}</td>
-                            <td className="py-3 text-right text-gray-700">{currencySymbol}{data.milestone1Amount || '1500'}</td>
-                          </tr>
-                          {data.pricingStructure === 'milestone' && (
-                            <tr className="border-b border-gray-100">
-                              <td className="py-3 text-gray-700">{data.milestone2Name || 'Final Delivery'}</td>
-                              <td className="py-3 text-gray-500 text-xs">{data.milestone2Date || 'Project Completion'}</td>
-                              <td className="py-3 text-right text-gray-700">{currencySymbol}{data.milestone2Amount || '1500'}</td>
+                          {milestones.map((m: any, idx: number) => (
+                            <tr key={idx} className="border-b border-gray-100">
+                              <td className="py-3 text-gray-700">{m.name}</td>
+                              <td className="py-3 text-gray-500 text-xs">{m.date}</td>
+                              <td className="py-3 text-right text-gray-700">{currencySymbol}{m.amount}</td>
                             </tr>
-                          )}
+                          ))}
                           <tr>
                             <td colSpan={2} className="pt-4 text-right text-xs font-bold uppercase tracking-wider text-[#1a2332]">Total</td>
                             <td className="pt-4 text-right font-bold text-[#1a2332] text-xl">
-                              {currencySymbol}{(Number(data.milestone1Amount || 1500) + (data.pricingStructure === 'milestone' ? Number(data.milestone2Amount || 1500) : 0)).toLocaleString()}
+                              {currencySymbol}{totalInvestment.toLocaleString()}
                             </td>
                           </tr>
+                          {extras.length > 0 && (
+                            <>
+                              <tr>
+                                <td colSpan={3} className="pt-8 pb-2 text-[10px] uppercase tracking-widest text-[#aaa] border-b border-gray-100">Optional Add-ons</td>
+                              </tr>
+                              {extras.map((e: any, idx: number) => (
+                                <tr key={`extra-${idx}`} className="border-b border-gray-50 bg-[#fafafa]">
+                                  <td className="py-3 text-gray-600 pl-2">{e.name}</td>
+                                  <td className="py-3 text-gray-400 text-xs">{e.date}</td>
+                                  <td className="py-3 text-gray-600 text-right pr-2">{currencySymbol}{e.amount}</td>
+                                </tr>
+                              ))}
+                            </>
+                          )}
                         </tbody>
                       </table>
                       <p className="text-[10px] text-gray-400 mt-4 leading-relaxed">
@@ -614,7 +715,7 @@ export default function Preview() {
                   </div>
 
                   {/* PAGE 4 - Signature - Minimal */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print:max-w-none print:w-[210mm] print:h-[297mm]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
                     <div className="h-1 w-full bg-[#1a2332]"></div>
                     <div className="flex-grow px-14 py-12 flex flex-col">
                       <div className="mb-8">
@@ -623,7 +724,7 @@ export default function Preview() {
                         <p className="text-xs text-gray-400 mt-2">By signing below, both parties agree to the terms outlined in this proposal.</p>
                       </div>
                       <div className="flex-grow flex flex-col justify-end pb-10">
-                        <div className="grid grid-cols-2 gap-12">
+                        <div className="grid grid-cols-2 gap-12 avoid-break">
                           <div>
                             <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-8">Client</p>
                             <div className="border-b-2 border-[#1a2332] mb-2 h-12"></div>
@@ -657,7 +758,7 @@ export default function Preview() {
               {layout === 3 && (
                 <>
                   {/* PAGE 1 - Warm Cover */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative print:shadow-none print:max-w-none print:w-[210mm] print:h-[297mm] break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative print:shadow-none print-dynamic-flow break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
                     {/* Top bar */}
                     <div className="flex items-start justify-between px-10 pt-10">
                       <div className="flex items-center gap-3">
@@ -706,38 +807,46 @@ export default function Preview() {
                     </div>
                   </div>
 
-                  {/* PAGE 2 - Warm Content: Context + Challenges + Objectives */}
-                  <div className="bg-white w-full max-w-[595px] min-h-[842px] shadow-2xl flex flex-col relative print:shadow-none print:max-w-none print:w-[210mm]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  {/* PAGE 2 - Warm Context */}
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
                     <div className="h-1 w-full" style={{ backgroundColor: '#f4a261' }}></div>
-                    <div className="flex-grow px-14 py-12 flex flex-col">
-                      <div className="mb-5">
-                        <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-2">Overview</p>
-                        <h2 className="text-2xl font-light text-gray-900 mb-3" style={{ letterSpacing: '-0.01em' }}>Project Context</h2>
-                        {(data.companyImageUrl || data.companyDescription) && (() => {
-                          const imgSize = data.companyImageSize || 'medium';
-                          const imgFull = imgSize === 'wide';
-                          const imgClass = imgSize === 'small' ? 'h-12 w-12' : imgSize === 'large' ? 'h-24 w-24' : 'h-16 w-16';
-                          return (
-                            <div className={`mb-3 ${imgFull ? 'flex flex-col gap-2' : 'flex gap-3 items-start'}`}>
-                              {data.companyImageUrl && (
-                                imgFull
-                                  ? <img src={data.companyImageUrl} alt="Company" className="w-full rounded object-contain border border-gray-100" style={{ maxHeight: '120px' }} />
-                                  : <img src={data.companyImageUrl} alt="Company" className={`${imgClass} object-contain rounded border border-gray-100 flex-shrink-0`} />
-                              )}
-                              {data.companyDescription && (
-                                <p className="text-xs text-gray-400 italic pb-2 border-b border-gray-100 flex-1">{data.companyDescription}</p>
-                              )}
-                            </div>
-                          );
-                        })()}
-                        <p className="text-sm text-gray-600 leading-relaxed">
-                          {data.projectContext || 'The goal of this proposal is to outline the strategy for the complete overhaul of the project.'}
-                        </p>
-                      </div>
+                    <div className="flex-grow px-14 pt-10 pb-0 flex flex-col">
+                      <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-2">Overview</p>
+                      <h2 className="text-2xl font-light text-gray-900 mb-4" style={{ letterSpacing: '-0.01em' }}>Project Context</h2>
+                      {(data.companyImageUrl || data.companyDescription) && (() => {
+                        const imgSize = data.companyImageSize || 'medium';
+                        const imgFull = imgSize === 'wide';
+                        const imgClass = imgSize === 'small' ? 'h-12 w-12' : imgSize === 'large' ? 'h-24 w-24' : 'h-16 w-16';
+                        return (
+                          <div className={`mb-3 ${imgFull ? 'flex flex-col gap-2' : 'flex gap-3 items-start'}`}>
+                            {data.companyImageUrl && (
+                              imgFull
+                                ? <img src={data.companyImageUrl} alt="Company" className="w-full rounded object-cover object-center border border-gray-100 bg-white" style={{ height: '120px' }} />
+                                : <img src={data.companyImageUrl} alt="Company" className={`${imgClass} object-cover object-center rounded border border-gray-100 flex-shrink-0 bg-white`} />
+                            )}
+                            {data.companyDescription && (
+                              <p className="text-xs text-gray-400 italic pb-2 border-b border-gray-100 flex-1">{data.companyDescription}</p>
+                            )}
+                          </div>
+                        );
+                      })()}
+                      <p className="text-sm text-gray-600 leading-relaxed flex-grow">
+                        {data.projectContext || 'The goal of this proposal is to outline the strategy for the complete overhaul of the project.'}
+                      </p>
+                    </div>
+                    <div className="px-12 py-4 flex justify-between items-center mt-auto" style={{ backgroundColor: '#f4a261' }}>
+                      <span className="text-[10px] text-orange-900/60">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
+                      <span className="text-[10px] text-orange-900/60">Page 2</span>
+                    </div>
+                  </div>
 
-                      <div className="mb-4">
+                  {/* PAGE 3 - Warm Challenges */}
+                  {challenges.filter((c: string) => c.trim()).length > 0 && (
+                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      <div className="h-1 w-full" style={{ backgroundColor: '#f4a261' }}></div>
+                      <div className="flex-grow px-14 pt-10 pb-0 flex flex-col">
                         <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-2">{data.challengesTitle || 'The Challenge'}</p>
-                        <ul className="space-y-1">
+                        <ul className="space-y-2 mt-2 flex-grow">
                           {challenges.filter((c: string) => c.trim()).map((challenge: string, index: number) => (
                             <li key={`chal-${index}`} className="flex items-start gap-3 text-sm text-gray-600">
                               <span className="font-bold mt-0.5" style={{ color: '#f4a261' }}>—</span>
@@ -746,39 +855,38 @@ export default function Preview() {
                           ))}
                         </ul>
                       </div>
-                    </div>
-                    <div className="px-12 py-4 flex justify-between items-center" style={{ backgroundColor: '#f4a261' }}>
-                      <span className="text-[10px] text-orange-900/60">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
-                      <span className="text-[10px] text-orange-900/60">Page 2 of 4</span>
-                    </div>
-                  </div>
-
-                  {/* PAGE 3 - Warm Objectives */}
-                  {objectives.filter((o: string) => o.trim()).length > 0 && (
-                    <div className="bg-white w-full max-w-[595px] min-h-[842px] shadow-2xl flex flex-col print:shadow-none print:max-w-none print:w-[210mm] print:min-h-[297mm] print:break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
-                      <div className="h-1 w-full" style={{ backgroundColor: '#f4a261' }}></div>
-                      <div className="flex-grow px-14 py-12 flex flex-col">
-                        <div className="mb-4">
-                          <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-2">{data.objectivesTitle || 'Objectives'}</p>
-                          <ul className="space-y-1">
-                            {objectives.filter((o: string) => o.trim()).map((objective: string, index: number) => (
-                              <li key={`obj-${index}`} className="flex items-start gap-3 text-sm text-gray-600">
-                                <span className="font-bold mt-0.5" style={{ color: '#f4a261' }}>—</span>
-                                <span>{objective}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                      <div className="px-12 py-4 flex justify-between items-center" style={{ backgroundColor: '#f4a261' }}>
+                      <div className="px-12 py-4 flex justify-between items-center mt-auto" style={{ backgroundColor: '#f4a261' }}>
                         <span className="text-[10px] text-orange-900/60">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
-                        <span className="text-[10px] text-orange-900/60">Page 3 of 4</span>
+                        <span className="text-[10px] text-orange-900/60">Page 3</span>
                       </div>
                     </div>
                   )}
 
+                  {/* PAGE 4 - Warm Objectives */}
+                  {objectives.filter((o: string) => o.trim()).length > 0 && (
+                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      <div className="h-1 w-full" style={{ backgroundColor: '#f4a261' }}></div>
+                      <div className="flex-grow px-14 pt-10 pb-0 flex flex-col">
+                        <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-2">{data.objectivesTitle || 'Objectives'}</p>
+                        <ul className="space-y-2 mt-2 flex-grow">
+                          {objectives.filter((o: string) => o.trim()).map((objective: string, index: number) => (
+                            <li key={`obj-${index}`} className="flex items-start gap-3 text-sm text-gray-600">
+                              <span className="font-bold mt-0.5" style={{ color: '#f4a261' }}>—</span>
+                              <span>{objective}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="px-12 py-4 flex justify-between items-center mt-auto" style={{ backgroundColor: '#f4a261' }}>
+                        <span className="text-[10px] text-orange-900/60">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
+                        <span className="text-[10px] text-orange-900/60">Page 4</span>
+                      </div>
+                    </div>
+                  )}
+
+
                   {/* PAGE 3 - Warm Investment + Terms */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print:max-w-none print:w-[210mm] print:h-[297mm] break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
                     <div className="h-1 w-full" style={{ backgroundColor: '#f4a261' }}></div>
                     <div className="flex-grow px-12 py-10 flex flex-col">
                       <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-4">Investment</p>
@@ -826,7 +934,7 @@ export default function Preview() {
                   </div>
 
                   {/* PAGE 4 - Signature - Warm */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print:max-w-none print:w-[210mm] print:h-[297mm]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
                     <div className="h-1 w-full" style={{ backgroundColor: '#f4a261' }}></div>
                     <div className="flex-grow px-14 py-12 flex flex-col">
                       <div className="mb-8">
@@ -835,7 +943,7 @@ export default function Preview() {
                         <p className="text-xs text-gray-400 mt-2">By signing below, both parties agree to the terms outlined in this proposal.</p>
                       </div>
                       <div className="flex-grow flex flex-col justify-end pb-10">
-                        <div className="grid grid-cols-2 gap-12">
+                        <div className="grid grid-cols-2 gap-12 avoid-break">
                           <div>
                             <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-8">Client</p>
                             <div className="h-12 mb-2" style={{ borderBottom: '2px solid #f4a261' }}></div>

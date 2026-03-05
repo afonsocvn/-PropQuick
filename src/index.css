@@ -26,17 +26,118 @@
   .custom-scrollbar::-webkit-scrollbar {
     width: 8px;
   }
+
   .custom-scrollbar::-webkit-scrollbar-track {
     background: #f1f1f1;
   }
+
   .custom-scrollbar::-webkit-scrollbar-thumb {
     background: #d1d5db;
     border-radius: 4px;
   }
+
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #9ca3af;
   }
+
   .aspect-a4 {
     aspect-ratio: 210 / 297;
   }
+}
+
+@media print {
+
+  /* === FORCE COLORS: Prevent browser from stripping backgrounds === */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* === A4 PAGE: Zero browser margins so our own padding controls spacing === */
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  /* === HIDE ALL UI: Only show the document pages === */
+  header,
+  nav,
+  aside,
+  footer,
+  [class*="print:hidden"],
+  .print\:hidden {
+    display: none !important;
+  }
+
+  html,
+  body,
+  #root {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    background: white !important;
+    width: 210mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* === RESET TRANSFORMS: kill the preview zoom scale === */
+  [style*="transform"] {
+    transform: none !important;
+  }
+
+  /* === LAYOUT WRAPPERS: remove screen-only padding and background === */
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    display: block !important;
+  }
+
+  /* === PAGE BLOCKS: exact A4 dimensions to match screen layout === */
+  .print-dynamic-flow {
+    width: 210mm !important;
+    height: 297mm !important;
+    max-width: 210mm !important;
+    aspect-ratio: auto !important;
+    overflow: hidden !important;
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* === SMART BREAKS: never clip paragraphs or list items === */
+  .avoid-break,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  li,
+  tr,
+  img,
+  .print-block-section {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* === FOOTERS: flow naturally below content === */
+  .print-footer {
+    position: relative !important;
+    bottom: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    margin-top: auto !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+}
+
+.break-after-page {
+  break-after: page;
+  page-break-after: always;
 }

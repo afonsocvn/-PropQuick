@@ -107,8 +107,8 @@ export default function Step3() {
                                 type="button"
                                 onClick={() => updateData('companyImageSize', key)}
                                 className={`px-3 py-2 rounded-lg text-left border transition-colors ${(data.companyImageSize || 'medium') === key
-                                    ? 'bg-primary/10 text-primary border-primary'
-                                    : 'bg-white text-[#233333] border-[#d1dbdb] hover:border-primary'
+                                  ? 'bg-primary/10 text-primary border-primary'
+                                  : 'bg-white text-[#233333] border-[#d1dbdb] hover:border-primary'
                                   }`}
                               >
                                 <span className="block text-xs font-bold">{label}</span>
@@ -116,8 +116,12 @@ export default function Step3() {
                               </button>
                             ))}
                           </div>
-                          <p className="text-xs text-text-muted">
+                          <p className="text-xs text-text-muted mb-2">
                             {(data.companyImageSize || 'medium') === 'wide' ? 'Image spans the full page width.' : `Image appears as a ${data.companyImageSize || 'medium'} thumbnail beside the description.`}
+                          </p>
+                          <p className="text-xs text-amber-600 bg-amber-50 p-2 rounded border border-amber-100 flex items-start gap-1">
+                            <span className="material-symbols-outlined text-sm">info</span>
+                            Note: The image will automatically fill its allocated space. If dimensions don't match exactly, it will be cropped.
                           </p>
                         </div>
                       </div>

@@ -68,7 +68,7 @@ export default function LandingPage() {
                 <p className="text-center text-gray-500 font-medium">Result: Exhaustion &amp; low return.</p>
               </div>
               <div className="bg-primary/5 border border-primary/20 rounded-2xl p-8 shadow-sm relative overflow-hidden">
-                <div className="absolute top-0 right-0 bg-accent text-amber-900 text-xs font-bold px-3 py-1 rounded-bl-lg">RECOMMENDED</div>
+                <div className="absolute top-0 right-0 bg-accent text-amber-900 text-xs font-bold px-3 py-1 rounded-bl-lg">FREE BETA</div>
                 <h3 className="text-primary font-serif text-xl font-bold mb-2">Propose.ly Way</h3>
                 <p className="text-sm text-primary/70 mb-6">Smart automation and premium design</p>
                 <ul className="space-y-4 mb-8">
@@ -82,7 +82,7 @@ export default function LandingPage() {
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="material-symbols-outlined text-primary shrink-0">savings</span>
-                    <span className="text-gray-800">Investment: Only <strong>€5.00</strong></span>
+                    <span className="text-gray-800">Investment: <strong>Free (Beta)</strong></span>
                   </li>
                 </ul>
                 <div className="bg-primary/10 h-px w-full my-6"></div>
@@ -104,17 +104,17 @@ export default function LandingPage() {
                 <div className="w-14 h-14 bg-accent/20 rounded-full flex items-center justify-center mb-6">
                   <span className="material-symbols-outlined text-amber-600 text-2xl">psychology</span>
                 </div>
-                <h3 className="font-serif text-xl font-bold text-gray-900 mb-3">Persuasive Copy</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Don't know what to write? Our templates already come with texts based on psychological sales triggers. Just fill in the blanks.
+                <h3 className="font-serif text-xl md:text-2xl font-bold text-gray-900 mb-3">Persuasive Copy</h3>
+                <p className="text-gray-600 md:text-lg leading-relaxed">
+                  Don't know how to structure your proposal? We provide a proven outline and guide you step-by-step to write persuasive content that converts.
                 </p>
               </div>
               <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
                 <div className="w-14 h-14 bg-primary-light/20 rounded-full flex items-center justify-center mb-6">
                   <span className="material-symbols-outlined text-primary text-2xl">palette</span>
                 </div>
-                <h3 className="font-serif text-xl font-bold text-gray-900 mb-3">Agency Design</h3>
-                <p className="text-gray-600 leading-relaxed">
+                <h3 className="font-serif text-xl md:text-2xl font-bold text-gray-900 mb-3">Agency Design</h3>
+                <p className="text-gray-600 md:text-lg leading-relaxed">
                   Forget broken layouts. Deliver a visually flawless document that conveys immediate authority to your client.
                 </p>
               </div>
@@ -122,8 +122,8 @@ export default function LandingPage() {
                 <div className="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center mb-6">
                   <span className="material-symbols-outlined text-blue-600 text-2xl">trending_up</span>
                 </div>
-                <h3 className="font-serif text-xl font-bold text-gray-900 mb-3">Focus on ROI</h3>
-                <p className="text-gray-600 leading-relaxed">
+                <h3 className="font-serif text-xl md:text-2xl font-bold text-gray-900 mb-3">Focus on ROI</h3>
+                <p className="text-gray-600 md:text-lg leading-relaxed">
                   We structure the proposal to show value, not just price. We help your clients see the return on investment.
                 </p>
               </div>
@@ -172,7 +172,7 @@ export default function LandingPage() {
                   </div>
                   <div className="md:w-1/2 text-center md:text-right">
                     <h4 className="font-bold text-lg text-gray-900">Download PDF</h4>
-                    <p className="text-gray-600">Pay €5 and download your PDF ready to close the deal.</p>
+                    <p className="text-gray-600">Download your professional PDF completely free during our Beta.</p>
                   </div>
                 </div>
               </div>
@@ -192,8 +192,8 @@ export default function LandingPage() {
             <span className="font-serif font-bold text-gray-700">Propose.ly</span>
           </div>
           <div className="flex flex-wrap justify-center gap-8 text-sm text-gray-500">
-            <a className="hover:text-primary transition-colors" href="#">Terms of Use</a>
-            <a className="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+            <Link className="hover:text-primary transition-colors" to="/terms">Terms of Use</Link>
+            <Link className="hover:text-primary transition-colors" to="/privacy">Privacy Policy</Link>
             <a className="hover:text-primary transition-colors" href="#">Contact</a>
             <a className="hover:text-primary transition-colors" href="#">Blog</a>
           </div>

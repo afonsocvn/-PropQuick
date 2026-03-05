@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  body { background: #f0f0f0; margin: 0; padding: 40px; display: flex; flex-direction: column; align-items: center; }
+  
+  .viewer {
+    width: 635px; /* 595 + 40 gap */
+    height: 842px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    /* Optional: Hide scrollbar but keep scroll functionality */
+    scrollbar-width: none; 
+    scroll-snap-type: x mandatory;
+  }
+  
+  .document {
+    column-width: 595px;
+    column-gap: 40px;
+    height: 842px; /* Fixed height forces new columns */
+    padding: 0;
+    margin: 0;
+    /* Drawing the physical pages underneath the columns */
+    /* Wait, the background is on the container which grows horizontally */
+    background: repeating-linear-gradient(to right, white, white 595px, transparent 595px, transparent 635px);
+    
+    /* Make the width dynamic based on columns */
+    min-width: 595px; 
+  }
+  
+  .content {
+    /* Style content to snap nicely */
+  }
+  
+  p, h1 {
+    page-break-inside: avoid;
+    break-inside: auto; /* Columns respect breaks! */
+  }
+
+  .chunk { scroll-snap-align: start; }
+</style>
+</head>
+<body>
+  <h1>Scroll horizontally!</h1>
+  <div class="viewer">
+    <div class="document">
+      <div class="content">
+        <h1>Heading 1</h1><p>Paragraph text goes here...</p>
+        <div style="height: 300px; background: lightblue;">Tall Block 1</div>
+        <h1>Heading 2</h1><p>More paragraph text.</p>
+        <div style="height: 400px; background: lightgreen;">Tall Block 2</div>
+        <h1>Heading 3</h1><p>Even more text.</p>
+        <div style="height: 600px; background: lightpink;">Super Tall Block (forces a new column)</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

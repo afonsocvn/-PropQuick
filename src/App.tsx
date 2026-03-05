@@ -9,6 +9,8 @@ import Step1 from './pages/Step1';
 import Step3 from './pages/Step3';
 import Step5 from './pages/Step5';
 import Preview from './pages/Preview';
+import TermsOfUse from './pages/TermsOfUse';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 export default function App() {
   return (
@@ -19,6 +21,8 @@ export default function App() {
         <Route path="/step3" element={<Step3 />} />
         <Route path="/step5" element={<Step5 />} />
         <Route path="/preview" element={<Preview />} />
+        <Route path="/terms" element={<TermsOfUse />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
       </Routes>
     </BrowserRouter>
   );
