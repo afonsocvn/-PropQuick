@@ -99,8 +99,8 @@ export default function Preview() {
   const totalInvestment = milestones.reduce((sum: number, m: any) => sum + Number(m.amount || 0), 0);
 
   return (
-    <div className="bg-surface-off font-display text-text-dark antialiased min-h-screen flex flex-col print:bg-white pt-10">
-      <main className="flex-grow flex flex-col lg:flex-row max-w-[1440px] mx-auto w-full p-6 lg:p-10 gap-8 print:p-0 print:m-0 print:block">
+    <div className="bg-surface-off font-display text-text-dark antialiased min-h-screen flex flex-col print:bg-white pt-10 print:pt-0 print:m-0">
+      <main className="flex-grow flex flex-col lg:flex-row max-w-[1440px] mx-auto w-full p-6 lg:p-10 gap-8 print:p-0 print:m-0 print:-m-4 print:block">
         {/* LEFT SIDEBAR */}
         <div className="w-full lg:w-1/3 flex flex-col gap-8 print:hidden">
           <div className="space-y-2">
@@ -259,7 +259,7 @@ export default function Preview() {
         </div>
 
         {/* RIGHT: DOCUMENT PREVIEW */}
-        <div className="w-full lg:w-2/3 bg-surface-light rounded-2xl border border-secondary/20 shadow-sm p-6 lg:p-8 flex flex-col print:w-full print:border-none print:shadow-none print:p-0 print:block">
+        <div className="w-full lg:w-2/3 bg-surface-light rounded-2xl border border-secondary/20 shadow-sm p-6 lg:p-8 flex flex-col print:w-full print:border-none print:shadow-none print:p-0 print:m-0 print:block">
           <div className="flex items-center justify-between mb-6 print:hidden">
             <h3 className="text-lg font-bold text-text-dark flex items-center gap-2">
               <span className="material-symbols-outlined text-secondary">visibility</span>
@@ -283,9 +283,9 @@ export default function Preview() {
             </div>
           </div>
 
-          <div className="flex-grow bg-[#E5E5E5] rounded-xl p-4 lg:p-8 overflow-y-auto custom-scrollbar flex justify-center print:bg-white print:p-0 print:overflow-visible relative print:block">
+          <div className="flex-grow bg-[#E5E5E5] rounded-xl p-4 lg:p-8 overflow-y-auto custom-scrollbar flex justify-center print:bg-white print:p-0 print:m-0 print:overflow-visible relative print:block">
             <div
-              className="flex flex-col gap-8 items-center transition-all duration-300 origin-top print:transform-none print:gap-0 print:filter-none print:block"
+              className="flex flex-col gap-8 items-center transition-all duration-300 origin-top print:transform-none print:gap-0 print:filter-none print:block print:m-0 print:p-0"
               style={{ transform: `scale(${zoom})` }}
             >
               {/* ====== LAYOUT 1: EDITORIAL ====== */}
