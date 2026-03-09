@@ -17,7 +17,7 @@ The PropQuick project aims to dramatically simplify and accelerate the process o
 ## Screenshots / Platform Interaction:
 <a href="https://github.com/user-attachments/assets/4a9db479-8fcb-44dd-a72f-ac7e7f1de1a7">View Landing Page</a>
 
-<a href="Image" src="https://github.com/user-attachments/assets/6f0d56bd-af39-4962-8e6c-e6b598024f56">View landing page part 2</a>
+<a href="https://github.com/user-attachments/assets/6f0d56bd-af39-4962-8e6c-e6b598024f56">View landing page part 2</a>
 
 <a href="https://github.com/user-attachments/assets/f00d3f9b-b42d-4660-9b44-0a7a7504af07">View Fees</a>
 
