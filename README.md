@@ -15,13 +15,13 @@ The PropQuick project aims to dramatically simplify and accelerate the process o
 - **Deep Customization:** Options to adapt proposals to the freelancer’s tone of voice and specific client requirements.
 
 ## Screenshots / Platform Interaction:
-<a href="C:\Users\Afonso\Desktop\PRD\Homepage.png">View Landing Page</a>
+<a href="https://github.com/user-attachments/assets/4a9db479-8fcb-44dd-a72f-ac7e7f1de1a7">View Landing Page</a>
 
-<a href="C:\Users\Afonso\Desktop\PRD\homepage 2.png">View landing page part 2</a>
+<a href="Image" src="https://github.com/user-attachments/assets/6f0d56bd-af39-4962-8e6c-e6b598024f56">View landing page part 2</a>
 
-<a href="C:\Users\Afonso\Desktop\PRD\step 3 of 4.png">View Fees</a>
+<a href="https://github.com/user-attachments/assets/f00d3f9b-b42d-4660-9b44-0a7a7504af07">View Fees</a>
 
-<a href="C:\Users\Afonso\Desktop\PRD\step 4 of 4.png">Preview</a>
+<a href="https://github.com/user-attachments/assets/1ce059be-56cf-415f-85d3-1e7be9e723ff">Preview</a>
 
 ## Process
 
