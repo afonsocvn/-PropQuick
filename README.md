@@ -38,7 +38,7 @@ The PropQuick project aims to dramatically simplify and accelerate the process o
 - Implementation of **Formspree** to capture direct feedback and bug reports from Beta users.
 
 ## Main Project Image
-![PropQuick Logo or Screenshot](COLOQUE_AQUI_O_LINK_DA_IMAGEM_PRINCIPAL_NO_GITHUB.PNG)
+![PropQuick Logo or Screenshot](https://github.com/user-attachments/assets/fceddcf9-4362-4d84-bd0d-a6f12b70bf10)
 
 ## Key Findings (Beta Phase)
 - Users highly value the dramatic reduction in time spent creating proposals.
