@@ -12,12 +12,12 @@ export default function TermsOfUse() {
                     <section className="space-y-6 text-gray-600 leading-relaxed">
                         <div>
                             <h2 className="text-lg font-bold text-gray-800 mb-2">1. Acceptance of Terms</h2>
-                            <p>By accessing and using Propose.ly ("the Service"), you acknowledge that you have read, understood, and agree to be bound by these Terms of Use. If you do not agree, please do not use the Service.</p>
+                            <p>By accessing and using PropQuick ("the Service"), you acknowledge that you have read, understood, and agree to be bound by these Terms of Use. If you do not agree, please do not use the Service.</p>
                         </div>
 
                         <div>
                             <h2 className="text-lg font-bold text-gray-800 mb-2">2. Description of Service</h2>
-                            <p>Propose.ly is a free online tool currently in <strong>Beta</strong> that helps users create professional business proposals. The Service is provided "as is" and "as available" without any warranties or guarantees of any kind, whether express or implied.</p>
+                            <p>PropQuick is a free online tool currently in <strong>Beta</strong> that helps users create professional business proposals. The Service is provided "as is" and "as available" without any warranties or guarantees of any kind, whether express or implied.</p>
                         </div>
 
                         <div>
@@ -27,17 +27,17 @@ export default function TermsOfUse() {
 
                         <div>
                             <h2 className="text-lg font-bold text-gray-800 mb-2">4. User Responsibilities</h2>
-                            <p>You are solely responsible for the content you create using the Service. Propose.ly does not review, validate, or take responsibility for the accuracy, legality, or appropriateness of any proposals or documents generated through the platform.</p>
+                            <p>You are solely responsible for the content you create using the Service. PropQuick does not review, validate, or take responsibility for the accuracy, legality, or appropriateness of any proposals or documents generated through the platform.</p>
                         </div>
 
                         <div>
                             <h2 className="text-lg font-bold text-gray-800 mb-2">5. Intellectual Property</h2>
-                            <p>All content you create using Propose.ly remains your own. You retain full ownership of any proposals, text, images, or other materials you produce. The Service's interface, branding, and underlying code are the property of Propose.ly.</p>
+                            <p>All content you create using PropQuick remains your own. You retain full ownership of any proposals, text, images, or other materials you produce. The Service's interface, branding, and underlying code are the property of PropQuick.</p>
                         </div>
 
                         <div>
                             <h2 className="text-lg font-bold text-gray-800 mb-2">6. Limitation of Liability</h2>
-                            <p>To the maximum extent permitted by law, Propose.ly and its creators shall not be liable for any direct, indirect, incidental, special, consequential, or punitive damages arising from the use of, or inability to use, the Service. This includes, but is not limited to, loss of revenue, data, business opportunities, or any other losses.</p>
+                            <p>To the maximum extent permitted by law, PropQuick and its creators shall not be liable for any direct, indirect, incidental, special, consequential, or punitive damages arising from the use of, or inability to use, the Service. This includes, but is not limited to, loss of revenue, data, business opportunities, or any other losses.</p>
                         </div>
 
                         <div>
@@ -62,13 +62,13 @@ export default function TermsOfUse() {
                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
                     <div className="flex items-center gap-2">
                         <span className="material-symbols-outlined text-gray-400">description</span>
-                        <span className="font-serif font-bold text-gray-700">Propose.ly</span>
+                        <span className="font-serif font-bold text-gray-700">PropQuick</span>
                     </div>
                     <div className="flex gap-6 text-sm text-gray-500">
                         <Link className="hover:text-primary transition-colors font-medium" to="/terms">Terms of Use</Link>
                         <Link className="hover:text-primary transition-colors" to="/privacy">Privacy Policy</Link>
                     </div>
-                    <div className="text-xs text-gray-400">© 2026 Propose.ly. All rights reserved.</div>
+                    <div className="text-xs text-gray-400">© 2026 PropQuick. All rights reserved.</div>
                 </div>
             </footer>
         </div>

@@ -12,7 +12,7 @@ export default function PrivacyPolicy() {
                     <section className="space-y-6 text-gray-600 leading-relaxed">
                         <div>
                             <h2 className="text-lg font-bold text-gray-800 mb-2">1. Introduction</h2>
-                            <p>This Privacy Policy explains how Propose.ly ("we", "us", "the Service") handles information when you use our platform. We are committed to transparency and simplicity.</p>
+                            <p>This Privacy Policy explains how PropQuick ("we", "us", "the Service") handles information when you use our platform. We are committed to transparency and simplicity.</p>
                         </div>
 
                         <div>
@@ -37,7 +37,7 @@ export default function PrivacyPolicy() {
 
                         <div>
                             <h2 className="text-lg font-bold text-gray-800 mb-2">6. Cookies</h2>
-                            <p>Propose.ly does not use cookies for tracking or advertising purposes. Only essential browser storage mechanisms are used to save your work locally.</p>
+                            <p>PropQuick does not use cookies for tracking or advertising purposes. Only essential browser storage mechanisms are used to save your work locally.</p>
                         </div>
 
                         <div>
@@ -62,13 +62,13 @@ export default function PrivacyPolicy() {
                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
                     <div className="flex items-center gap-2">
                         <span className="material-symbols-outlined text-gray-400">description</span>
-                        <span className="font-serif font-bold text-gray-700">Propose.ly</span>
+                        <span className="font-serif font-bold text-gray-700">PropQuick</span>
                     </div>
                     <div className="flex gap-6 text-sm text-gray-500">
                         <Link className="hover:text-primary transition-colors" to="/terms">Terms of Use</Link>
                         <Link className="hover:text-primary transition-colors font-medium" to="/privacy">Privacy Policy</Link>
                     </div>
-                    <div className="text-xs text-gray-400">© 2026 Propose.ly. All rights reserved.</div>
+                    <div className="text-xs text-gray-400">© 2026 PropQuick. All rights reserved.</div>
                 </div>
             </footer>
         </div>

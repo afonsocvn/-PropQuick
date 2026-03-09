@@ -366,7 +366,7 @@ export default function Preview() {
                       )}
                     </div>
                     <div className="px-14 pt-4 pb-6 border-t border-gray-100 flex justify-between items-center text-[10px] text-gray-400">
-                      <span>{data.companyName || 'Propose.ly'} © {new Date().getFullYear()}</span>
+                      <span>{data.companyName || 'PropQuick'} © {new Date().getFullYear()}</span>
                       <span>Page 2</span>
                     </div>
                   </div>
@@ -388,7 +388,7 @@ export default function Preview() {
                         </div>
                       </div>
                       <div className="px-14 pt-4 pb-6 border-t border-gray-100 flex justify-between items-center text-[10px] text-gray-400">
-                        <span>{data.companyName || 'Propose.ly'} © {new Date().getFullYear()}</span>
+                        <span>{data.companyName || 'PropQuick'} © {new Date().getFullYear()}</span>
                         <span>Page 3</span>
                       </div>
                     </div>
@@ -411,7 +411,7 @@ export default function Preview() {
                         </div>
                       </div>
                       <div className="px-14 pt-4 pb-6 border-t border-gray-100 flex justify-between items-center text-[10px] text-gray-400">
-                        <span>{data.companyName || 'Propose.ly'} © {new Date().getFullYear()}</span>
+                        <span>{data.companyName || 'PropQuick'} © {new Date().getFullYear()}</span>
                         <span>Page 4</span>
                       </div>
                     </div>
@@ -475,7 +475,7 @@ export default function Preview() {
                       </div>
                     </div>
                     <div className="px-14 pt-4 pb-6 border-t border-gray-100 flex justify-between items-center text-[10px] text-gray-400">
-                      <span>{data.companyName || 'Propose.ly'} © {new Date().getFullYear()}</span>
+                      <span>{data.companyName || 'PropQuick'} © {new Date().getFullYear()}</span>
                       <span>Page 5</span>
                     </div>
                   </div>
@@ -511,7 +511,7 @@ export default function Preview() {
                       </div>
                     </div>
                     <div className="px-14 pt-4 pb-6 border-t border-gray-100 flex justify-between items-center text-[10px] text-gray-400">
-                      <span>{data.companyName || 'Propose.ly'} © {new Date().getFullYear()}</span>
+                      <span>{data.companyName || 'PropQuick'} © {new Date().getFullYear()}</span>
                       <span>Page 6</span>
                     </div>
                   </div>

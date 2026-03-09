@@ -68,7 +68,7 @@ export default function LandingPage() {
               </div>
               <div className="bg-primary/5 border border-primary/20 rounded-2xl p-8 shadow-sm relative overflow-hidden">
                 <div className="absolute top-0 right-0 bg-accent text-amber-900 text-xs font-bold px-3 py-1 rounded-bl-lg">FREE BETA</div>
-                <h3 className="text-primary font-serif text-xl font-bold mb-2">Propose.ly Way</h3>
+                <h3 className="text-primary font-serif text-xl font-bold mb-2">PropQuick Way</h3>
                 <p className="text-sm text-primary/70 mb-6">Smart automation and premium design</p>
                 <ul className="space-y-4 mb-8">
                   <li className="flex items-start gap-3">
@@ -90,7 +90,7 @@ export default function LandingPage() {
             </div>
             <div className="mt-12 text-center max-w-2xl mx-auto">
               <blockquote className="text-xl font-serif italic text-text-soft">
-                "The time you spend formatting proposals is time you aren't billing. Propose.ly pays for itself in the first minute."
+                "The time you spend formatting proposals is time you aren't billing. PropQuick pays for itself in the first minute."
               </blockquote>
             </div>
           </div>
@@ -194,7 +194,7 @@ export default function LandingPage() {
             <a className="hover:text-primary transition-colors" href="#">Blog</a>
           </div>
           <div className="text-xs text-gray-400">
-            © 2026 Propose.ly. All rights reserved.
+            © 2026 PropQuick. All rights reserved.
           </div>
         </div>
       </footer>
