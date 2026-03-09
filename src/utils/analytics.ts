@@ -5,7 +5,7 @@ declare global {
     }
 }
 
-export const GA_TRACKING_ID = 'G-XXXXXXXXXX'; // Replace with your GA4 Measurement ID
+export const GA_TRACKING_ID = 'G-M8W0TR34XK'; // Replace with your GA4 Measurement ID
 
 // https://developers.google.com/analytics/devguides/collection/gtagjs/pages
 export const pageview = (url: string) => {

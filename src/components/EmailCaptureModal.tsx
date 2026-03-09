@@ -20,22 +20,17 @@ export default function EmailCaptureModal({ isOpen, onClose, onContinue }: Email
         setIsSubmitting(true);
 
         try {
-            // NOTE: Replace this URL with your actual Google Form POST URL or webhook (e.g., Make.com, Formspree, Zapier)
-            // Example for Google Forms URL: https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse
-            // And use the "entry.XXXXX" name attribute for your email field as the key in FormData.
-            const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/PLACEHOLDER/formResponse';
+            // NOTE: Replace this URL with your Formspree, Make.com, or Zapier Webhook URL
+            // Example Formspree URL: https://formspree.io/f/YOUR_FORM_ID
+            const WEBHOOK_URL = 'https://formspree.io/f/SUBSTITUIR_POR_ID';
 
-            const formData = new URLSearchParams();
-            formData.append('entry.PLACEHOLDER', email); // Change 'entry.PLACEHOLDER' to your exact field ID
-
-            // We use no-cors because Google Forms doesn't return CORS headers for direct submissions
-            await fetch(GOOGLE_FORM_URL, {
+            await fetch(WEBHOOK_URL, {
                 method: 'POST',
-                mode: 'no-cors',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 },
-                body: formData.toString()
+                body: JSON.stringify({ email: email })
             });
         } catch (error) {
             console.error('Error submitting email', error);
