@@ -293,7 +293,7 @@ export default function Preview() {
                 <>
                   {/* PAGE 1 - Editorial Cover */}
                   <div
-                    className="w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative overflow-hidden print:shadow-none print-dynamic-flow break-after-page"
+                    className="w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative overflow-hidden print:shadow-none print-dynamic-flow print:break-inside-avoid"
                     style={{ backgroundColor: '#d8d8d8' }}
                   >
                     {/* Decorative outline circles - top right */}
@@ -349,7 +349,7 @@ export default function Preview() {
                   </div>
 
                   {/* PAGE 2 - Company Info + Context */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative overflow-hidden print:shadow-none print-dynamic-flow break-after-page">
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative overflow-hidden print:shadow-none print-dynamic-flow print:break-inside-avoid">
                     <div className="flex-grow px-14 py-14 flex flex-col relative">
                       <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-bl-[100px] print:hidden"></div>
                       {/* Company image + description */}
@@ -386,7 +386,7 @@ export default function Preview() {
 
                   {/* PAGE 3 - Challenges */}
                   {challenges.filter((c: string) => c.trim()).length > 0 && (
-                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative overflow-hidden print:shadow-none print-dynamic-flow break-after-page">
+                    <div className="bg-white w-full max-w-[595px] border-t border-gray-100 aspect-a4 shadow-2xl flex flex-col relative overflow-hidden print:shadow-none print-dynamic-flow print:break-inside-avoid">
                       <div className="flex-grow px-14 py-14 flex flex-col">
                         <div className="mb-4 relative z-10 flex-grow">
                           <h6 className="text-xs font-bold text-text-dark uppercase tracking-wider mb-2 border-b border-gray-100 pb-1">02. {data.challengesTitle || 'The Challenge'}</h6>
@@ -535,7 +535,7 @@ export default function Preview() {
               {layout === 2 && (
                 <>
                   {/* PAGE 1 - Minimal Cover */}
-                  <div className="bg-[#f0f0ed] w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative print:shadow-none print-dynamic-flow break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <div className="bg-[#f0f0ed] w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
                     {/* Top bar */}
                     <div className="flex items-start justify-between px-10 pt-10">
                       <div className="flex items-center gap-3">
@@ -579,7 +579,7 @@ export default function Preview() {
                   </div>
 
                   {/* PAGE 2 - Minimal Context */}
-                  <div className="bg-[#f0f0ed] w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <div className="bg-[#f0f0ed] w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
                     <div className="h-1 w-full bg-[#1a2332]"></div>
                     <div className="flex-grow px-14 pt-10 pb-0 flex flex-col">
                       <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-2">Overview</p>
@@ -613,7 +613,7 @@ export default function Preview() {
 
                   {/* PAGE 3 - Minimal Challenges */}
                   {challenges.filter((c: string) => c.trim()).length > 0 && (
-                    <div className="bg-[#f0f0ed] w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <div className="bg-[#f0f0ed] w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
                       <div className="h-1 w-full bg-[#1a2332]"></div>
                       <div className="flex-grow px-14 pt-10 pb-0 flex flex-col">
                         <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-2">{data.challengesTitle || 'The Challenge'}</p>
@@ -635,7 +635,7 @@ export default function Preview() {
 
                   {/* PAGE 4 - Minimal Objectives */}
                   {objectives.filter((o: string) => o.trim()).length > 0 && (
-                    <div className="bg-[#f0f0ed] w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <div className="bg-[#f0f0ed] w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
                       <div className="h-1 w-full bg-[#1a2332]"></div>
                       <div className="flex-grow px-14 pt-10 pb-0 flex flex-col">
                         <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-2">{data.objectivesTitle || 'Objectives'}</p>
@@ -657,7 +657,7 @@ export default function Preview() {
 
 
                   {/* PAGE 3 - Minimal Investment + Terms */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
                     <div className="h-1 w-full bg-[#1a2332]"></div>
                     <div className="flex-grow px-12 py-10 flex flex-col">
                       <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-4">Investment</p>
@@ -714,7 +714,7 @@ export default function Preview() {
                   </div>
 
                   {/* PAGE 4 - Signature - Minimal */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
                     <div className="h-1 w-full bg-[#1a2332]"></div>
                     <div className="flex-grow px-14 py-12 flex flex-col">
                       <div className="mb-8">
@@ -757,7 +757,7 @@ export default function Preview() {
               {layout === 3 && (
                 <>
                   {/* PAGE 1 - Warm Cover */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative print:shadow-none print-dynamic-flow break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
                     {/* Top bar */}
                     <div className="flex items-start justify-between px-10 pt-10">
                       <div className="flex items-center gap-3">
@@ -801,7 +801,7 @@ export default function Preview() {
                   </div>
 
                   {/* PAGE 2 - Warm Context */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
                     <div className="h-1 w-full" style={{ backgroundColor: '#f4a261' }}></div>
                     <div className="flex-grow px-14 pt-10 pb-0 flex flex-col">
                       <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-2">Overview</p>
@@ -835,7 +835,7 @@ export default function Preview() {
 
                   {/* PAGE 3 - Warm Challenges */}
                   {challenges.filter((c: string) => c.trim()).length > 0 && (
-                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
                       <div className="h-1 w-full" style={{ backgroundColor: '#f4a261' }}></div>
                       <div className="flex-grow px-14 pt-10 pb-0 flex flex-col">
                         <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-2">{data.challengesTitle || 'The Challenge'}</p>
@@ -857,7 +857,7 @@ export default function Preview() {
 
                   {/* PAGE 4 - Warm Objectives */}
                   {objectives.filter((o: string) => o.trim()).length > 0 && (
-                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
                       <div className="h-1 w-full" style={{ backgroundColor: '#f4a261' }}></div>
                       <div className="flex-grow px-14 pt-10 pb-0 flex flex-col">
                         <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-2">{data.objectivesTitle || 'Objectives'}</p>
@@ -879,7 +879,7 @@ export default function Preview() {
 
 
                   {/* PAGE 3 - Warm Investment + Terms */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
                     <div className="h-1 w-full" style={{ backgroundColor: '#f4a261' }}></div>
                     <div className="flex-grow px-12 py-10 flex flex-col">
                       <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-4">Investment</p>
@@ -927,7 +927,7 @@ export default function Preview() {
                   </div>
 
                   {/* PAGE 4 - Signature - Warm */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow break-after-page" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
                     <div className="h-1 w-full" style={{ backgroundColor: '#f4a261' }}></div>
                     <div className="flex-grow px-14 py-12 flex flex-col">
                       <div className="mb-8">
