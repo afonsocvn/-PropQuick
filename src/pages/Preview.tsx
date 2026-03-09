@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { useProposalData } from '../hooks/useProposalData';
+import EmailCaptureModal from '../components/EmailCaptureModal';
+import { trackEvent } from '../utils/analytics';
 
 function PagedContent({ children, footer, wrapperClassName = '', contentClassName = '', sliceHeight = 842 }: { children: ReactNode, footer?: ReactNode, wrapperClassName?: string, contentClassName?: string, sliceHeight?: number }) {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -69,9 +71,20 @@ export default function Preview() {
   const [zoom, setZoom] = useState(1);
   const [layout, setLayout] = useState<1 | 2 | 3>(1);
   const [showLayoutPicker, setShowLayoutPicker] = useState(false);
+  const [showEmailModal, setShowEmailModal] = useState(false);
+
+  const executeDownload = () => {
+    trackEvent('pdf_downloaded');
+    window.print();
+  };
 
   const handleGenerateFinal = () => {
-    window.print();
+    const hasProvidedEmail = localStorage.getItem('has_provided_email');
+    if (!hasProvidedEmail) {
+      setShowEmailModal(true);
+    } else {
+      executeDownload();
+    }
   };
 
   const challenges = data.challenges || ['Low and high fidelity wireframing.', 'Creation of a scalable Design System.'];
@@ -968,6 +981,12 @@ export default function Preview() {
           </div>
         </div>
       </main >
+
+      <EmailCaptureModal
+        isOpen={showEmailModal}
+        onClose={() => setShowEmailModal(false)}
+        onContinue={executeDownload}
+      />
     </div >
   );
 }
