@@ -80,27 +80,13 @@ export default function Preview() {
 
   const milestones = data.milestones || [
     { name: data.milestone1Name || 'Initial Deposit', amount: data.milestone1Amount || '1500', date: data.milestone1Date || 'Upon signing' },
-    ...(data.pricingStructure === 'milestone' ? [{ name: data.milestone2Name || 'Final Delivery', amount: data.milestone2Amount || '1500', date: data.milestone2Date || 'Project Completion' }] : [])
+    { name: data.milestone2Name || 'Final Delivery', amount: data.milestone2Amount || '1500', date: data.milestone2Date || 'Project Completion' }
   ];
   const extras = data.extras || [];
   const totalInvestment = milestones.reduce((sum: number, m: any) => sum + Number(m.amount || 0), 0);
 
   return (
-    <div className="bg-surface-off font-display text-text-dark antialiased min-h-screen flex flex-col print:bg-white">
-      <header className="bg-surface-light border-b border-[#e7f3f1] sticky top-0 z-50 print:hidden">
-        <div className="max-w-[1440px] mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3 text-primary">
-            <Link to="/" className="flex items-center gap-3">
-              <span className="material-symbols-outlined text-3xl hover:text-primary/80 transition-colors">description</span>
-              <h1 className="text-xl font-bold tracking-tight text-text-dark hover:text-primary transition-colors">Propose.ly</h1>
-            </Link>
-          </div>
-          <nav className="hidden md:flex items-center gap-8">
-            <Link to="/proposals" className="text-sm font-medium text-text-muted hover:text-primary transition-colors">Proposals</Link>
-          </nav>
-        </div>
-      </header>
-
+    <div className="bg-surface-off font-display text-text-dark antialiased min-h-screen flex flex-col print:bg-white pt-10">
       <main className="flex-grow flex flex-col lg:flex-row max-w-[1440px] mx-auto w-full p-6 lg:p-10 gap-8 print:p-0 print:m-0 print:block">
         {/* LEFT SIDEBAR */}
         <div className="w-full lg:w-1/3 flex flex-col gap-8 print:hidden">
@@ -128,6 +114,7 @@ export default function Preview() {
               <div>
                 <p className="text-xs font-bold text-text-muted uppercase">Language</p>
                 <p className="text-sm font-bold text-text-dark">English (EN)</p>
+                <p className="text-[10px] text-text-muted mt-0.5">More languages coming soon</p>
               </div>
             </div>
           </div>
@@ -202,20 +189,18 @@ export default function Preview() {
                       </span>
                     )}
                     {/* Layout 2 preview thumbnail */}
-                    <div className="w-full aspect-[3/4] bg-[#f0f0ed] border border-gray-100 rounded-lg overflow-hidden mb-2 shadow-sm">
-                      <div className="h-1/6 flex items-center justify-between px-2 pt-1">
-                        <div className="w-4 h-4 border border-gray-400 rounded-full"></div>
-                        <div className="h-1 w-6 bg-gray-400 rounded"></div>
+                    <div className="w-full aspect-[3/4] bg-[#f0f0ed] border border-gray-100 rounded-lg overflow-hidden mb-2 shadow-sm flex flex-col">
+                      <div className="flex items-center justify-between px-2 pt-2">
+                        <div className="w-3 h-3 border border-gray-400 rounded-full"></div>
+                        <div className="h-0.5 w-5 bg-gray-400 rounded"></div>
                       </div>
-                      <div className="px-2 pt-2">
-                        <div className="h-3 bg-[#1a2332] rounded w-4/5 mb-1"></div>
-                        <div className="h-3 bg-[#1a2332] rounded w-3/5"></div>
-                      </div>
-                      <div className="px-2 pt-3">
+                      <div className="px-2 pt-2 flex-grow">
+                        <div className="h-2.5 bg-[#1a2332] rounded w-4/5 mb-1"></div>
+                        <div className="h-2.5 bg-[#1a2332] rounded w-3/5 mb-2"></div>
                         <div className="h-0.5 bg-gray-300 rounded w-2/5 mb-1"></div>
                         <div className="h-1 bg-gray-400 rounded w-3/5"></div>
                       </div>
-                      <div className="absolute bottom-0 left-0 right-0 h-1/5 bg-[#1a2332] rounded-b-lg mx-3 mb-3"></div>
+                      <div className="h-1/5 bg-[#1a2332] w-full mt-auto"></div>
                     </div>
                     <p className="text-xs font-bold text-text-dark">Minimal</p>
                     <p className="text-[10px] text-text-muted">Clean & bold</p>
@@ -231,20 +216,18 @@ export default function Preview() {
                       </span>
                     )}
                     {/* Layout 3 preview thumbnail */}
-                    <div className="w-full aspect-[3/4] bg-white border border-gray-100 rounded-lg overflow-hidden mb-2 shadow-sm">
-                      <div className="h-1/6 flex items-center justify-between px-2 pt-1">
-                        <div className="w-4 h-4 border border-gray-300 rounded-full"></div>
-                        <div className="h-1 w-6 bg-gray-300 rounded"></div>
+                    <div className="w-full aspect-[3/4] bg-white border border-gray-100 rounded-lg overflow-hidden mb-2 shadow-sm flex flex-col">
+                      <div className="flex items-center justify-between px-2 pt-2">
+                        <div className="w-3 h-3 border border-gray-300 rounded-full"></div>
+                        <div className="h-0.5 w-5 bg-gray-300 rounded"></div>
                       </div>
-                      <div className="px-2 pt-2">
-                        <div className="h-3 bg-gray-700 rounded w-4/5 mb-1"></div>
-                        <div className="h-3 bg-gray-700 rounded w-3/5"></div>
-                      </div>
-                      <div className="px-2 pt-3">
+                      <div className="px-2 pt-2 flex-grow">
+                        <div className="h-2.5 bg-gray-700 rounded w-4/5 mb-1"></div>
+                        <div className="h-2.5 bg-gray-700 rounded w-3/5 mb-2"></div>
                         <div className="h-0.5 bg-gray-200 rounded w-2/5 mb-1"></div>
                         <div className="h-1 bg-gray-300 rounded w-3/5"></div>
                       </div>
-                      <div className="absolute bottom-0 left-0 right-0 h-1/5 bg-[#f4a261] rounded-b-lg mx-3 mb-3"></div>
+                      <div className="h-1/5 bg-[#f4a261] w-full mt-auto"></div>
                     </div>
                     <p className="text-xs font-bold text-text-dark">Warm</p>
                     <p className="text-[10px] text-text-muted">White + Orange</p>
@@ -308,7 +291,7 @@ export default function Preview() {
                     <div className="absolute bottom-[110px] right-[-25px] w-40 h-40 rounded-full border border-gray-500/20 pointer-events-none"></div>
 
                     {/* Top bar */}
-                    <div className="flex items-start justify-between px-10 pt-10 z-10">
+                    <div className="flex items-start justify-between px-10 print:px-14 pt-10 z-10">
                       <div>
                         {data.logoUrl ? (
                           <img src={data.logoUrl} alt="Logo" className="h-8 object-contain mb-1" />
@@ -323,12 +306,11 @@ export default function Preview() {
                     </div>
 
                     {/* Main title */}
-                    <div className="flex-grow flex flex-col justify-center px-10 z-10">
+                    <div className="flex-grow flex flex-col justify-center px-10 print:px-14 z-10">
                       <h1
                         className="leading-[1.1] text-gray-900 mb-6"
                         style={{ fontSize: '68px', fontWeight: 400, fontFamily: "'Georgia', 'Times New Roman', serif", letterSpacing: '-0.01em' }}
                       >
-                        Business<br />
                         <span style={{ fontStyle: 'italic' }}>{data.projectTitle || 'Idea Proposals'}</span>
                       </h1>
                       <p className="text-[13px] text-gray-600" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -339,7 +321,7 @@ export default function Preview() {
                     </div>
 
                     {/* Proposed By / To */}
-                    <div className="px-10 pb-12 z-10 space-y-4">
+                    <div className="px-10 print:px-14 pb-12 z-10 space-y-4">
                       <div>
                         <p className="text-[11px] text-gray-500 mb-0.5" style={{ fontFamily: "'Inter', sans-serif" }}>Proposed By:</p>
                         <p className="text-[14px] font-bold text-gray-900" style={{ fontFamily: "'Inter', sans-serif" }}>{data.companyName || 'Your Company'}</p>
@@ -354,34 +336,36 @@ export default function Preview() {
                   </div>
 
                   {/* PAGE 2 - Company Info + Context */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl py-16 px-16 flex flex-col relative overflow-hidden print:shadow-none print-dynamic-flow break-after-page">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-bl-[100px] print:hidden"></div>
-                    {/* Company image + description */}
-                    {(data.companyImageUrl || data.companyDescription) && (() => {
-                      const imgSize = data.companyImageSize || 'medium';
-                      const imgFull = imgSize === 'wide';
-                      const imgClass = imgSize === 'small' ? 'h-16 w-16' : imgSize === 'large' ? 'h-32 w-32' : 'h-24 w-24';
-                      return (
-                        <div className={`mb-5 z-10 relative ${imgFull ? 'flex flex-col gap-3' : 'flex gap-4 items-start'}`}>
-                          {data.companyImageUrl && (
-                            imgFull
-                              ? <img src={data.companyImageUrl} alt="Company" className="w-full rounded-lg object-cover object-center border border-gray-100 bg-white" style={{ height: '140px' }} />
-                              : <img src={data.companyImageUrl} alt="Company" className={`${imgClass} object-cover object-center rounded-lg border border-gray-100 flex-shrink-0 bg-white`} />
-                          )}
-                          {data.companyDescription && (
-                            <p className="text-xs text-gray-500 leading-relaxed italic relative z-10">{data.companyDescription}</p>
-                          )}
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative overflow-hidden print:shadow-none print-dynamic-flow break-after-page">
+                    <div className="flex-grow px-14 py-14 flex flex-col relative">
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-bl-[100px] print:hidden"></div>
+                      {/* Company image + description */}
+                      {(data.companyImageUrl || data.companyDescription) && (() => {
+                        const imgSize = data.companyImageSize || 'medium';
+                        const imgFull = imgSize === 'wide';
+                        const imgClass = imgSize === 'small' ? 'h-16 w-16' : imgSize === 'large' ? 'h-32 w-32' : 'h-24 w-24';
+                        return (
+                          <div className={`mb-5 z-10 relative ${imgFull ? 'flex flex-col gap-3' : 'flex gap-4 items-start'}`}>
+                            {data.companyImageUrl && (
+                              imgFull
+                                ? <img src={data.companyImageUrl} alt="Company" className="w-full rounded-lg object-cover object-center border border-gray-100 bg-white" style={{ height: '140px' }} />
+                                : <img src={data.companyImageUrl} alt="Company" className={`${imgClass} object-cover object-center rounded-lg border border-gray-100 flex-shrink-0 bg-white`} />
+                            )}
+                            {data.companyDescription && (
+                              <p className="text-xs text-gray-500 leading-relaxed italic relative z-10 text-justify">{data.companyDescription}</p>
+                            )}
+                          </div>
+                        );
+                      })()}
+                      {/* Context */}
+                      {data.projectContext && (
+                        <div className="mb-4 relative z-10 flex-grow">
+                          <h6 className="text-xs font-bold text-text-dark uppercase tracking-wider mb-2 border-b border-gray-100 pb-1">01. Context</h6>
+                          <p className="text-sm text-gray-600 leading-relaxed text-justify">{data.projectContext}</p>
                         </div>
-                      );
-                    })()}
-                    {/* Context */}
-                    {data.projectContext && (
-                      <div className="mb-4 relative z-10 flex-grow">
-                        <h6 className="text-xs font-bold text-text-dark uppercase tracking-wider mb-2 border-b border-gray-100 pb-1">01. Context</h6>
-                        <p className="text-sm text-gray-600 leading-relaxed">{data.projectContext}</p>
-                      </div>
-                    )}
-                    <div className="mt-auto pt-4 border-t border-gray-100 flex justify-between items-center text-[10px] text-gray-400">
+                      )}
+                    </div>
+                    <div className="px-14 pt-4 pb-6 border-t border-gray-100 flex justify-between items-center text-[10px] text-gray-400">
                       <span>{data.companyName || 'Propose.ly'} © {new Date().getFullYear()}</span>
                       <span>Page 2</span>
                     </div>
@@ -389,19 +373,21 @@ export default function Preview() {
 
                   {/* PAGE 3 - Challenges */}
                   {challenges.filter((c: string) => c.trim()).length > 0 && (
-                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl py-16 px-16 flex flex-col relative overflow-hidden print:shadow-none print-dynamic-flow break-after-page">
-                      <div className="mb-4 relative z-10 flex-grow">
-                        <h6 className="text-xs font-bold text-text-dark uppercase tracking-wider mb-2 border-b border-gray-100 pb-1">02. {data.challengesTitle || 'The Challenge'}</h6>
-                        <ul className="text-sm text-gray-600 space-y-2 mt-4">
-                          {challenges.filter((c: string) => c.trim()).map((c: string, i: number) => (
-                            <li key={i} className="flex items-start gap-2">
-                              <span className="w-1.5 h-1.5 rounded-full bg-secondary mt-1.5 flex-shrink-0"></span>
-                              <span>{c}</span>
-                            </li>
-                          ))}
-                        </ul>
+                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative overflow-hidden print:shadow-none print-dynamic-flow break-after-page">
+                      <div className="flex-grow px-14 py-14 flex flex-col">
+                        <div className="mb-4 relative z-10 flex-grow">
+                          <h6 className="text-xs font-bold text-text-dark uppercase tracking-wider mb-2 border-b border-gray-100 pb-1">02. {data.challengesTitle || 'The Challenge'}</h6>
+                          <ul className="text-sm text-gray-600 space-y-2 mt-4 text-justify">
+                            {challenges.filter((c: string) => c.trim()).map((c: string, i: number) => (
+                              <li key={i} className="flex items-start gap-2">
+                                <span className="w-1.5 h-1.5 rounded-full bg-secondary mt-1.5 flex-shrink-0"></span>
+                                <span>{c}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       </div>
-                      <div className="mt-auto pt-4 border-t border-gray-100 flex justify-between items-center text-[10px] text-gray-400">
+                      <div className="px-14 pt-4 pb-6 border-t border-gray-100 flex justify-between items-center text-[10px] text-gray-400">
                         <span>{data.companyName || 'Propose.ly'} © {new Date().getFullYear()}</span>
                         <span>Page 3</span>
                       </div>
@@ -410,19 +396,21 @@ export default function Preview() {
 
                   {/* PAGE 4 - Objectives */}
                   {objectives.filter((o: string) => o.trim()).length > 0 && (
-                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl py-16 px-16 flex flex-col relative overflow-hidden print:shadow-none print-dynamic-flow break-after-page">
-                      <div className="mb-4 relative z-10 flex-grow">
-                        <h6 className="text-xs font-bold text-text-dark uppercase tracking-wider mb-2 border-b border-gray-100 pb-1">03. {data.objectivesTitle || 'Objectives'}</h6>
-                        <ul className="text-sm text-gray-600 space-y-2 mt-4">
-                          {objectives.filter((o: string) => o.trim()).map((o: string, i: number) => (
-                            <li key={i} className="flex items-start gap-2">
-                              <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0"></span>
-                              <span>{o}</span>
-                            </li>
-                          ))}
-                        </ul>
+                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative overflow-hidden print:shadow-none print-dynamic-flow break-after-page">
+                      <div className="flex-grow px-14 py-14 flex flex-col">
+                        <div className="mb-4 relative z-10 flex-grow">
+                          <h6 className="text-xs font-bold text-text-dark uppercase tracking-wider mb-2 border-b border-gray-100 pb-1">03. {data.objectivesTitle || 'Objectives'}</h6>
+                          <ul className="text-sm text-gray-600 space-y-2 mt-4 text-justify">
+                            {objectives.filter((o: string) => o.trim()).map((o: string, i: number) => (
+                              <li key={i} className="flex items-start gap-2">
+                                <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0"></span>
+                                <span>{o}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       </div>
-                      <div className="mt-auto pt-4 border-t border-gray-100 flex justify-between items-center text-[10px] text-gray-400">
+                      <div className="px-14 pt-4 pb-6 border-t border-gray-100 flex justify-between items-center text-[10px] text-gray-400">
                         <span>{data.companyName || 'Propose.ly'} © {new Date().getFullYear()}</span>
                         <span>Page 4</span>
                       </div>
@@ -430,97 +418,101 @@ export default function Preview() {
                   )}
 
 
-                  {/* PAGE 3 - Investment + Terms */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl p-12 flex flex-col print:shadow-none print-dynamic-flow break-after-page">
-                    <div className="mb-6 border-l-4 border-primary pl-4 py-1">
-                      <h2 className="text-xl font-extrabold text-text-dark">Investment &amp; Terms</h2>
-                    </div>
-                    <div className="flex-grow">
-                      <h6 className="text-xs font-bold text-text-dark uppercase tracking-wider mb-3 border-b border-gray-100 pb-1">04. Schedule &amp; Payments</h6>
-                      <table className="w-full text-sm text-left border-collapse">
-                        <thead>
-                          <tr className="border-b-2 border-gray-200">
-                            <th className="py-2 font-bold text-gray-700">Milestone</th>
-                            <th className="py-2 font-bold text-gray-700">Deadline</th>
-                            <th className="py-2 font-bold text-gray-700 text-right">Amount</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {milestones.map((m: any, idx: number) => (
-                            <tr key={idx} className="border-b border-gray-100">
-                              <td className="py-3 text-gray-600">{m.name}</td>
-                              <td className="py-3 text-gray-600">{m.date}</td>
-                              <td className="py-3 text-gray-600 text-right">{currencySymbol}{m.amount}</td>
+                  {/* PAGE 5 - Investment + Terms */}
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow break-after-page">
+                    <div className="flex-grow px-14 py-12 flex flex-col">
+                      <div className="mb-6 border-l-4 border-primary pl-4 py-1">
+                        <h2 className="text-xl font-extrabold text-text-dark">Investment &amp; Terms</h2>
+                      </div>
+                      <div className="flex-grow">
+                        <h6 className="text-xs font-bold text-text-dark uppercase tracking-wider mb-3 border-b border-gray-100 pb-1">04. Schedule &amp; Payments</h6>
+                        <table className="w-full text-sm text-left border-collapse">
+                          <thead>
+                            <tr className="border-b-2 border-gray-200">
+                              <th className="py-2 font-bold text-gray-700">Milestone</th>
+                              <th className="py-2 font-bold text-gray-700">Deadline</th>
+                              <th className="py-2 font-bold text-gray-700 text-right">Amount</th>
                             </tr>
-                          ))}
-                          <tr>
-                            <td colSpan={2} className="pt-4 font-bold text-gray-800 text-right uppercase tracking-wider text-xs">Total:</td>
-                            <td className="pt-4 font-bold text-primary text-right text-xl">{currencySymbol}{totalInvestment.toLocaleString()}</td>
-                          </tr>
-                          {extras.length > 0 && (
-                            <>
-                              <tr>
-                                <td colSpan={3} className="pt-8 pb-2 text-xs font-bold text-text-dark uppercase tracking-wider border-b border-gray-100">Optional Add-ons</td>
+                          </thead>
+                          <tbody>
+                            {milestones.map((m: any, idx: number) => (
+                              <tr key={idx} className="border-b border-gray-100">
+                                <td className="py-3 text-gray-600">{m.name}</td>
+                                <td className="py-3 text-gray-600">{m.date}</td>
+                                <td className="py-3 text-gray-600 text-right">{currencySymbol}{m.amount}</td>
                               </tr>
-                              {extras.map((e: any, idx: number) => (
-                                <tr key={`extra-${idx}`} className="border-b border-gray-50 bg-gray-50/50">
-                                  <td className="py-3 text-gray-600 pl-2">{e.name}</td>
-                                  <td className="py-3 text-gray-500 text-xs">{e.date}</td>
-                                  <td className="py-3 text-gray-600 text-right pr-2">{currencySymbol}{e.amount}</td>
+                            ))}
+                            <tr>
+                              <td colSpan={2} className="pt-4 font-bold text-gray-800 text-right uppercase tracking-wider text-xs">Total:</td>
+                              <td className="pt-4 font-bold text-primary text-right text-xl">{currencySymbol}{totalInvestment.toLocaleString()}</td>
+                            </tr>
+                            {extras.length > 0 && (
+                              <>
+                                <tr>
+                                  <td colSpan={3} className="pt-8 pb-2 text-xs font-bold text-text-dark uppercase tracking-wider border-b border-gray-100">Optional Add-ons</td>
                                 </tr>
-                              ))}
-                            </>
-                          )}
-                        </tbody>
-                      </table>
-                      <div className="mt-6 p-5 bg-gray-50 rounded-lg border border-dashed border-gray-200">
-                        <h6 className="text-xs font-bold text-text-dark mb-2">Terms &amp; Conditions</h6>
-                        <p className="text-xs text-gray-500 leading-relaxed">
-                          {data.validUntil
-                            ? `This proposal is valid until ${new Date(data.validUntil).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}.`
-                            : 'This proposal is valid for 15 days from the date of issuance.'}
-                          {' '}Project start is subject to payment of the initial deposit and signing of the contract.
-                          {data.includeTaxes ? ' All values include estimated taxes.' : ' Values do not include applicable taxes.'}
-                        </p>
+                                {extras.map((e: any, idx: number) => (
+                                  <tr key={`extra-${idx}`} className="border-b border-gray-50 bg-gray-50/50">
+                                    <td className="py-3 text-gray-600 pl-2">{e.name}</td>
+                                    <td className="py-3 text-gray-500 text-xs">{e.date}</td>
+                                    <td className="py-3 text-gray-600 text-right pr-2">{e.amount}</td>
+                                  </tr>
+                                ))}
+                              </>
+                            )}
+                          </tbody>
+                        </table>
+                        <div className="mt-6 p-5 bg-gray-50 rounded-lg border border-dashed border-gray-200">
+                          <h6 className="text-xs font-bold text-text-dark mb-2">Terms &amp; Conditions</h6>
+                          <p className="text-xs text-gray-500 leading-relaxed text-justify">
+                            {data.validUntil
+                              ? `This proposal is valid until ${new Date(data.validUntil).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}.`
+                              : 'This proposal is valid for 15 days from the date of issuance.'}
+                            {' '}Project start is subject to payment of the initial deposit and signing of the contract.
+                            {data.includeTaxes ? ' All values include estimated taxes.' : ' Values do not include applicable taxes.'}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                    <div className="mt-auto pt-4 border-t border-gray-100 flex justify-between items-center text-[10px] text-gray-400">
+                    <div className="px-14 pt-4 pb-6 border-t border-gray-100 flex justify-between items-center text-[10px] text-gray-400">
                       <span>{data.companyName || 'Propose.ly'} © {new Date().getFullYear()}</span>
-                      <span>Page 3 of 4</span>
+                      <span>Page 5</span>
                     </div>
                   </div>
 
-                  {/* PAGE 4 - Signature */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl p-16 flex flex-col print:shadow-none print-dynamic-flow break-after-page">
-                    <div className="mb-8 border-l-4 border-primary pl-6 py-2">
-                      <h2 className="text-2xl font-extrabold text-text-dark">Agreement &amp; Signatures</h2>
-                      <p className="text-sm text-gray-500 mt-1">By signing below, both parties agree to the terms outlined in this proposal.</p>
-                    </div>
-                    <div className="flex-grow flex flex-col justify-end gap-12 pb-10">
-                      <div className="grid grid-cols-2 gap-12 avoid-break">
-                        <div>
-                          <p className="text-xs font-bold text-gray-700 uppercase tracking-wider mb-6">Client</p>
-                          <div className="border-b-2 border-gray-300 mb-2 h-12"></div>
-                          <p className="text-xs text-gray-500">Signature</p>
-                          <div className="border-b border-gray-200 mt-5 mb-2 h-8"></div>
-                          <p className="text-xs text-gray-500">Full Name</p>
-                          <div className="border-b border-gray-200 mt-5 mb-2 h-8"></div>
-                          <p className="text-xs text-gray-500">Date</p>
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-gray-700 uppercase tracking-wider mb-6">Service Provider</p>
-                          <div className="border-b-2 border-gray-300 mb-2 h-12"></div>
-                          <p className="text-xs text-gray-500">Signature</p>
-                          <div className="border-b border-gray-200 mt-5 mb-2 h-8"></div>
-                          <p className="text-xs text-gray-500">Full Name</p>
-                          <div className="border-b border-gray-200 mt-5 mb-2 h-8"></div>
-                          <p className="text-xs text-gray-500">Date</p>
+                  {/* PAGE 6 - Signature */}
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow break-after-page">
+                    <div className="flex-grow px-14 py-14 flex flex-col">
+                      <div className="mb-8 border-l-4 border-primary pl-6 py-2">
+                        <h2 className="text-2xl font-extrabold text-text-dark">Agreement &amp; Signatures</h2>
+                        <p className="text-sm text-gray-500 mt-1 text-justify">By signing below, both parties agree to the terms outlined in this proposal.</p>
+                      </div>
+                      <div className="flex-grow flex flex-col justify-end gap-12 pb-10">
+                        <div className="grid grid-cols-2 gap-12 avoid-break">
+                          <div>
+                            <p className="text-xs font-bold text-gray-700 uppercase tracking-wider mb-6">Client</p>
+                            <div className="border-b-2 border-gray-300 mb-2 h-12"></div>
+                            <p className="text-xs text-gray-500">Signature</p>
+                            <div className="border-b border-gray-200 mt-5 mb-2 h-8"></div>
+                            <p className="text-xs text-gray-500">Full Name</p>
+                            <div className="border-b border-gray-200 mt-5 mb-2 h-8"></div>
+                            <p className="text-xs text-gray-500">Date</p>
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-gray-700 uppercase tracking-wider mb-6">Service Provider</p>
+                            <div className="border-b-2 border-gray-300 mb-2 h-12"></div>
+                            <p className="text-xs text-gray-500">Signature</p>
+                            <div className="border-b border-gray-200 mt-5 mb-2 h-8"></div>
+                            <p className="text-xs text-gray-500">Full Name</p>
+                            <div className="border-b border-gray-200 mt-5 mb-2 h-8"></div>
+                            <p className="text-xs text-gray-500">Date</p>
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <div className="pt-4 border-t border-gray-100 flex justify-between items-center text-[10px] text-gray-400">
+                    <div className="px-14 pt-4 pb-6 border-t border-gray-100 flex justify-between items-center text-[10px] text-gray-400">
                       <span>{data.companyName || 'Propose.ly'} © {new Date().getFullYear()}</span>
-                      <span>Page 4 of 4</span>
+                      <span>Page 6</span>
                     </div>
                   </div>
                 </>
@@ -567,15 +559,9 @@ export default function Preview() {
                     </div>
 
                     {/* Dark footer */}
-                    <div className="bg-[#1a2332] px-10 py-7 flex items-start justify-between">
-                      <div>
-                        <p className="text-[10px] text-[#8899aa] uppercase tracking-widest mb-1">Presented to</p>
-                        <p className="text-[13px] font-bold text-white">{data.companyName || 'Studio Shodwe'}</p>
-                      </div>
-                      <div>
-                        <p className="text-[10px] text-[#8899aa] uppercase tracking-widest mb-1">Presented by</p>
-                        <p className="text-[13px] font-bold text-white">{data.email?.split('@')[0] || 'Isabel Mercado'}</p>
-                      </div>
+                    <div className="bg-[#1a2332] px-10 py-7">
+                      <p className="text-[10px] text-[#8899aa] uppercase tracking-widest mb-1">Presented by</p>
+                      <p className="text-[13px] font-bold text-white">{data.companyName || 'Studio'}</p>
                     </div>
                   </div>
 
@@ -597,12 +583,12 @@ export default function Preview() {
                                 : <img src={data.companyImageUrl} alt="Company" className={`${imgClass} object-cover object-center rounded border border-gray-100 flex-shrink-0 bg-white`} />
                             )}
                             {data.companyDescription && (
-                              <p className="text-xs text-gray-500 italic pb-2 border-b border-gray-100 flex-1">{data.companyDescription}</p>
+                              <p className="text-xs text-gray-500 italic pb-2 border-b border-gray-100 flex-1 text-justify">{data.companyDescription}</p>
                             )}
                           </div>
                         );
                       })()}
-                      <p className="text-sm text-gray-600 leading-relaxed flex-grow">
+                      <p className="text-sm text-gray-600 leading-relaxed flex-grow text-justify">
                         {data.projectContext || 'The goal of this proposal is to outline the strategy for the complete overhaul of the project.'}
                       </p>
                     </div>
@@ -618,7 +604,7 @@ export default function Preview() {
                       <div className="h-1 w-full bg-[#1a2332]"></div>
                       <div className="flex-grow px-14 pt-10 pb-0 flex flex-col">
                         <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-2">{data.challengesTitle || 'The Challenge'}</p>
-                        <ul className="space-y-2 mt-2 flex-grow">
+                        <ul className="space-y-2 mt-2 flex-grow text-justify">
                           {challenges.filter((c: string) => c.trim()).map((challenge: string, index: number) => (
                             <li key={`chal-${index}`} className="flex items-start gap-3 text-sm text-gray-600">
                               <span className="text-[#1a2332] font-bold mt-0.5">—</span>
@@ -640,7 +626,7 @@ export default function Preview() {
                       <div className="h-1 w-full bg-[#1a2332]"></div>
                       <div className="flex-grow px-14 pt-10 pb-0 flex flex-col">
                         <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-2">{data.objectivesTitle || 'Objectives'}</p>
-                        <ul className="space-y-2 mt-2 flex-grow">
+                        <ul className="space-y-2 mt-2 flex-grow text-justify">
                           {objectives.filter((o: string) => o.trim()).map((objective: string, index: number) => (
                             <li key={`obj-${index}`} className="flex items-start gap-3 text-sm text-gray-600">
                               <span className="text-[#1a2332] font-bold mt-0.5">—</span>
@@ -693,14 +679,14 @@ export default function Preview() {
                                 <tr key={`extra-${idx}`} className="border-b border-gray-50 bg-[#fafafa]">
                                   <td className="py-3 text-gray-600 pl-2">{e.name}</td>
                                   <td className="py-3 text-gray-400 text-xs">{e.date}</td>
-                                  <td className="py-3 text-gray-600 text-right pr-2">{currencySymbol}{e.amount}</td>
+                                  <td className="py-3 text-gray-600 text-right pr-2">{e.amount}</td>
                                 </tr>
                               ))}
                             </>
                           )}
                         </tbody>
                       </table>
-                      <p className="text-[10px] text-gray-400 mt-4 leading-relaxed">
+                      <p className="text-[10px] text-gray-400 mt-4 leading-relaxed text-justify">
                         {data.validUntil
                           ? `Valid until ${new Date(data.validUntil).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}.`
                           : 'Valid for 15 days.'}{' '}
@@ -721,7 +707,7 @@ export default function Preview() {
                       <div className="mb-8">
                         <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-1">Agreement</p>
                         <h2 className="text-2xl font-light text-[#1a2332]" style={{ letterSpacing: '-0.01em' }}>Signatures</h2>
-                        <p className="text-xs text-gray-400 mt-2">By signing below, both parties agree to the terms outlined in this proposal.</p>
+                        <p className="text-xs text-gray-400 mt-2 text-justify">By signing below, both parties agree to the terms outlined in this proposal.</p>
                       </div>
                       <div className="flex-grow flex flex-col justify-end pb-10">
                         <div className="grid grid-cols-2 gap-12 avoid-break">
@@ -795,15 +781,9 @@ export default function Preview() {
                     </div>
 
                     {/* Pastel orange footer */}
-                    <div className="px-10 py-7 flex items-start justify-between" style={{ backgroundColor: '#f4a261' }}>
-                      <div>
-                        <p className="text-[10px] text-orange-900/60 uppercase tracking-widest mb-1">Presented to</p>
-                        <p className="text-[13px] font-bold text-orange-950">{data.companyName || 'Studio Shodwe'}</p>
-                      </div>
-                      <div>
-                        <p className="text-[10px] text-orange-900/60 uppercase tracking-widest mb-1">Presented by</p>
-                        <p className="text-[13px] font-bold text-orange-950">{data.email?.split('@')[0] || 'Isabel Mercado'}</p>
-                      </div>
+                    <div className="px-10 py-7" style={{ backgroundColor: '#f4a261' }}>
+                      <p className="text-[10px] text-orange-900/60 uppercase tracking-widest mb-1">Presented by</p>
+                      <p className="text-[13px] font-bold text-orange-950">{data.companyName || 'Studio'}</p>
                     </div>
                   </div>
 
@@ -825,12 +805,12 @@ export default function Preview() {
                                 : <img src={data.companyImageUrl} alt="Company" className={`${imgClass} object-cover object-center rounded border border-gray-100 flex-shrink-0 bg-white`} />
                             )}
                             {data.companyDescription && (
-                              <p className="text-xs text-gray-400 italic pb-2 border-b border-gray-100 flex-1">{data.companyDescription}</p>
+                              <p className="text-xs text-gray-400 italic pb-2 border-b border-gray-100 flex-1 text-justify">{data.companyDescription}</p>
                             )}
                           </div>
                         );
                       })()}
-                      <p className="text-sm text-gray-600 leading-relaxed flex-grow">
+                      <p className="text-sm text-gray-600 leading-relaxed flex-grow text-justify">
                         {data.projectContext || 'The goal of this proposal is to outline the strategy for the complete overhaul of the project.'}
                       </p>
                     </div>
@@ -846,7 +826,7 @@ export default function Preview() {
                       <div className="h-1 w-full" style={{ backgroundColor: '#f4a261' }}></div>
                       <div className="flex-grow px-14 pt-10 pb-0 flex flex-col">
                         <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-2">{data.challengesTitle || 'The Challenge'}</p>
-                        <ul className="space-y-2 mt-2 flex-grow">
+                        <ul className="space-y-2 mt-2 flex-grow text-justify">
                           {challenges.filter((c: string) => c.trim()).map((challenge: string, index: number) => (
                             <li key={`chal-${index}`} className="flex items-start gap-3 text-sm text-gray-600">
                               <span className="font-bold mt-0.5" style={{ color: '#f4a261' }}>—</span>

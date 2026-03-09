@@ -17,20 +17,8 @@ export default function Step1() {
   };
 
   return (
-    <div className="bg-background-light text-text-dark font-display antialiased min-h-screen flex flex-col">
-      <header className="w-full bg-white border-b border-[#e5e7eb] px-6 py-4 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto flex items-center justify-center md:justify-start">
-          <div className="flex items-center gap-3">
-            <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-              <div className="size-8 text-primary flex items-center justify-center">
-                <span className="material-symbols-outlined text-3xl">description</span>
-              </div>
-              <h2 className="text-primary font-serif text-2xl font-bold tracking-tight">Propose.ly</h2>
-            </Link>
-          </div>
-        </div>
-      </header>
-      <main className="flex-grow flex flex-col items-center justify-start pt-10 pb-20 px-4 md:px-0">
+    <div className="bg-background-light text-text-main font-display antialiased min-h-screen flex flex-col pt-10">
+      <main className="flex-grow flex flex-col items-center justify-start pb-20 px-4 md:px-0">
         <div className="w-full max-w-2xl mb-12">
           <div className="flex justify-between items-end mb-2 px-1">
             <span className="text-gray-500 font-medium text-sm">Step 1 of 4</span>

@@ -6,7 +6,7 @@ export default function Step5() {
 
   const milestones = data.milestones || [
     { name: data.milestone1Name || 'Initial Deposit', amount: data.milestone1Amount || '1500', date: data.milestone1Date || 'Upon signing' },
-    ...(data.pricingStructure === 'milestone' ? [{ name: data.milestone2Name || 'Final Delivery', amount: data.milestone2Amount || '1500', date: data.milestone2Date || 'Project Completion' }] : [])
+    { name: data.milestone2Name || 'Final Delivery', amount: data.milestone2Amount || '1500', date: data.milestone2Date || 'Project Completion' }
   ];
 
   const extras = data.extras || [];
@@ -35,37 +35,32 @@ export default function Step5() {
 
   const totalInvestment = milestones.reduce((sum: number, m: any) => sum + Number(m.amount || 0), 0);
 
+  const handlePricingStructureChange = (value: 'fixed' | 'milestone') => {
+    if (value === 'fixed') {
+      // Reset to a single fee row and clear extras
+      updateData('pricingStructure', 'fixed');
+      updateData('milestones', [{ name: 'Project Fee', amount: milestones[0]?.amount || '1500', date: milestones[0]?.date || 'Upon signing' }]);
+      updateData('extras', []);
+    } else {
+      updateData('pricingStructure', 'milestone');
+    }
+  };
+
   return (
-    <div className="bg-background-light dark:bg-background-dark min-h-screen font-display text-text-main flex flex-col overflow-x-hidden">
-      <header className="sticky top-0 z-50 w-full bg-surface-light dark:bg-surface-dark border-b border-secondary/20 px-6 py-4 shadow-sm">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Link to="/" className="flex items-center gap-3">
-              <div className="size-8 text-primary dark:text-secondary hover:text-primary/80 transition-colors">
-                <span className="material-symbols-outlined text-4xl">topic</span>
-              </div>
-              <h2 className="text-primary dark:text-white text-xl font-bold tracking-tight hover:text-primary/80 transition-colors">Propose.ly</h2>
-            </Link>
-          </div>
-          <nav className="hidden md:flex items-center gap-8">
-            <Link to="/" className="text-slate-600 dark:text-slate-200 hover:text-primary dark:hover:text-secondary font-medium transition-colors">Home</Link>
-            <Link to="/proposals" className="text-primary dark:text-secondary font-bold transition-colors">Proposals</Link>
-          </nav>
-        </div>
-      </header>
+    <div className="bg-background-light dark:bg-background-dark min-h-screen font-display text-text-main flex flex-col overflow-x-hidden pt-10">
       <main className="flex-grow flex flex-col items-center py-10 px-4 md:px-8">
         <div className="w-full max-w-[960px] flex flex-col gap-8">
           <div className="bg-surface-light dark:bg-surface-dark p-6 rounded-xl shadow-sm border border-secondary/10">
             <div className="flex justify-between items-center mb-4">
               <span className="text-slate-900 dark:text-white font-semibold text-lg">Step 3 of 4</span>
-              <span className="text-primary dark:text-secondary font-medium">Pricing &amp; Milestones</span>
+              <span className="text-primary dark:text-secondary font-medium">Fees &amp; Milestones</span>
             </div>
             <div className="h-3 w-full bg-secondary/20 rounded-full overflow-hidden">
               <div className="h-full bg-primary w-[83%] rounded-full transition-all duration-500 ease-out"></div>
             </div>
           </div>
           <div className="text-center md:text-left space-y-2">
-            <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">Project Pricing &amp; Milestones</h1>
+            <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">Fees &amp; Milestones</h1>
             <p className="text-slate-500 dark:text-slate-300 text-lg">Define how you want to structure the project costs and payment schedule.</p>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -77,7 +72,7 @@ export default function Step5() {
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <label className="relative cursor-pointer group">
-                    <input name="pricingStructure" value="fixed" checked={data.pricingStructure === 'fixed' || !data.pricingStructure} onChange={handleChange} className="peer sr-only custom-radio" type="radio" />
+                    <input name="pricingStructure" value="fixed" checked={data.pricingStructure === 'fixed' || !data.pricingStructure} onChange={() => handlePricingStructureChange('fixed')} className="peer sr-only custom-radio" type="radio" />
                     <div className="h-full p-6 rounded-xl border-2 border-slate-200 dark:border-slate-700 hover:border-secondary/50 transition-all bg-white dark:bg-slate-800 flex flex-col gap-4 peer-checked:border-primary peer-checked:bg-[#f0fdf9]">
                       <div className="flex justify-between items-start">
                         <div className="p-3 bg-accent/20 rounded-lg text-amber-700 dark:text-amber-300">
@@ -92,7 +87,7 @@ export default function Step5() {
                     </div>
                   </label>
                   <label className="relative cursor-pointer group">
-                    <input name="pricingStructure" value="milestone" checked={data.pricingStructure === 'milestone'} onChange={handleChange} className="peer sr-only custom-radio" type="radio" />
+                    <input name="pricingStructure" value="milestone" checked={data.pricingStructure === 'milestone'} onChange={() => handlePricingStructureChange('milestone')} className="peer sr-only custom-radio" type="radio" />
                     <div className="h-full p-6 rounded-xl border-2 border-slate-200 dark:border-slate-700 hover:border-secondary/50 transition-all bg-white dark:bg-slate-800 flex flex-col gap-4 peer-checked:border-primary peer-checked:bg-[#f0fdf9]">
                       <div className="flex justify-between items-start">
                         <div className="p-3 bg-primary/10 rounded-lg text-primary dark:text-secondary">
@@ -114,12 +109,10 @@ export default function Step5() {
                     <span className="material-symbols-outlined text-primary">calendar_month</span>
                     Payment Milestones
                   </h3>
-                  {data.pricingStructure === 'milestone' && (
-                    <button onClick={() => addArrayItem('milestones')} className="text-sm font-semibold text-primary hover:text-primary/80 flex items-center gap-1 transition-colors">
-                      <span className="material-symbols-outlined text-lg">add_circle</span>
-                      Add Milestone
-                    </button>
-                  )}
+                  <button onClick={() => addArrayItem('milestones')} className="text-sm font-semibold text-primary hover:text-primary/80 flex items-center gap-1 transition-colors">
+                    <span className="material-symbols-outlined text-lg">add_circle</span>
+                    Add Milestone
+                  </button>
                 </div>
                 <div className="overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700">
                   <table className="w-full text-left border-collapse">
@@ -199,10 +192,7 @@ export default function Step5() {
                               <input value={extra.name} onChange={(e) => handleArrayChange('extras', index, 'name', e.target.value)} className="w-full bg-transparent border-0 border-b border-dashed border-slate-300 focus:border-primary focus:ring-0 p-0 text-slate-900 dark:text-white font-medium placeholder-slate-400" placeholder="e.g. Additional Page" type="text" />
                             </td>
                             <td className="p-4">
-                              <div className="relative">
-                                <span className="absolute left-0 top-1/2 -translate-y-1/2 text-accent font-bold">{data.currency ? data.currency.match(/\((.*?)\)/)?.[1] || '$' : '$'}</span>
-                                <input value={extra.amount} onChange={(e) => handleArrayChange('extras', index, 'amount', e.target.value)} className="w-full px-4 bg-transparent border-0 border-b border-dashed border-slate-300 focus:border-primary focus:ring-0 p-0 text-slate-900 dark:text-white font-medium text-right" placeholder="0" type="text" />
-                              </div>
+                              <input value={extra.amount} onChange={(e) => handleArrayChange('extras', index, 'amount', e.target.value)} className="w-full bg-transparent border-0 border-b border-dashed border-slate-300 focus:border-primary focus:ring-0 p-0 text-slate-900 dark:text-white font-medium" placeholder="e.g. $500, 20%, per hour" type="text" />
                             </td>
                             <td className="p-4">
                               <input value={extra.date} onChange={(e) => handleArrayChange('extras', index, 'date', e.target.value)} className="w-full bg-transparent border-0 border-b border-dashed border-slate-300 focus:border-primary focus:ring-0 p-0 text-slate-600 dark:text-slate-300 text-sm placeholder-slate-400" placeholder="e.g. per hour, %" type="text" />

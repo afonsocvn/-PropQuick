@@ -2,19 +2,7 @@ import { Link } from 'react-router-dom';
 
 export default function PrivacyPolicy() {
     return (
-        <div className="bg-background-light text-text-dark font-display antialiased min-h-screen flex flex-col">
-            <header className="w-full bg-white/80 backdrop-blur-md border-b border-gray-100 px-6 py-4 sticky top-0 z-50">
-                <div className="max-w-6xl mx-auto flex items-center justify-between">
-                    <Link to="/" className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-primary text-3xl">description</span>
-                        <h2 className="text-primary font-serif text-xl font-bold tracking-tight">Propose.ly</h2>
-                    </Link>
-                    <Link to="/" className="text-sm text-gray-500 hover:text-primary transition-colors font-medium flex items-center gap-1">
-                        <span className="material-symbols-outlined text-lg">arrow_back</span>
-                        Back to Home
-                    </Link>
-                </div>
-            </header>
+        <div className="bg-background-light text-text-dark font-display antialiased min-h-screen flex flex-col pt-10">
 
             <main className="flex-grow py-16 px-6">
                 <article className="max-w-3xl mx-auto prose prose-gray">

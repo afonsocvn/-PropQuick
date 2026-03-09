@@ -3,11 +3,10 @@ import { Link } from 'react-router-dom';
 export default function LandingPage() {
   return (
     <div className="bg-background-light text-text-dark font-display antialiased min-h-screen flex flex-col">
-      <header className="w-full bg-white/80 backdrop-blur-md border-b border-gray-100 px-6 py-4 sticky top-0 z-50">
+      <header className="w-full bg-white border-b border-gray-100 px-6 py-2 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-primary text-3xl">description</span>
-            <h2 className="text-primary font-serif text-xl font-bold tracking-tight">Propose.ly</h2>
+            <img src="/logo.png" alt="Propquick Logo" className="h-24 md:h-28 w-auto object-contain mix-blend-multiply py-2" />
           </div>
           <nav className="hidden md:flex items-center gap-8">
             <a className="text-text-soft hover:text-primary font-medium text-sm transition-colors" href="#beneficios">Benefits</a>
@@ -187,10 +186,7 @@ export default function LandingPage() {
       </main>
       <footer className="bg-gray-50 border-t border-gray-200 py-12 px-6">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-gray-400">description</span>
-            <span className="font-serif font-bold text-gray-700">Propose.ly</span>
-          </div>
+          <div></div>
           <div className="flex flex-wrap justify-center gap-8 text-sm text-gray-500">
             <Link className="hover:text-primary transition-colors" to="/terms">Terms of Use</Link>
             <Link className="hover:text-primary transition-colors" to="/privacy">Privacy Policy</Link>

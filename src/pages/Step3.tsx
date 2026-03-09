@@ -25,24 +25,7 @@ export default function Step3() {
   };
 
   return (
-    <div className="bg-background-light dark:bg-background-dark text-text-main font-display antialiased min-h-screen flex flex-col">
-      <header className="bg-surface border-b border-[#e5e9e9] sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3 text-primary">
-            <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-              <div className="size-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                <span className="material-symbols-outlined text-primary text-xl">description</span>
-              </div>
-              <h2 className="text-[#233333] text-xl font-extrabold tracking-tight">Propose.ly</h2>
-            </Link>
-          </div>
-          <nav className="hidden md:flex items-center gap-8">
-            <a className="text-text-muted hover:text-primary text-sm font-semibold transition-colors" href="#">How it works</a>
-            <a className="text-text-muted hover:text-primary text-sm font-semibold transition-colors" href="#">Pricing</a>
-            <a className="text-text-muted hover:text-primary text-sm font-semibold transition-colors" href="#">Help</a>
-          </nav>
-        </div>
-      </header>
+    <div className="bg-background-light dark:bg-background-dark text-text-main font-display antialiased min-h-screen flex flex-col pt-10">
       <main className="flex-grow flex flex-col items-center py-8 md:py-12 px-4 sm:px-6">
         <div className="w-full max-w-[800px] mb-8">
           <div className="flex justify-between items-center mb-3">
