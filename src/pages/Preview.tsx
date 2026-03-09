@@ -409,7 +409,7 @@ export default function Preview() {
 
                   {/* PAGE 4 - Objectives */}
                   {objectives.filter((o: string) => o.trim()).length > 0 && (
-                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative overflow-hidden print:shadow-none print-dynamic-flow break-after-page">
+                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative overflow-hidden print:shadow-none print-dynamic-flow print:break-inside-avoid">
                       <div className="flex-grow px-14 py-14 flex flex-col">
                         <div className="mb-4 relative z-10 flex-grow">
                           <h6 className="text-xs font-bold text-text-dark uppercase tracking-wider mb-2 border-b border-gray-100 pb-1">03. {data.objectivesTitle || 'Objectives'}</h6>
@@ -432,7 +432,7 @@ export default function Preview() {
 
 
                   {/* PAGE 5 - Investment + Terms */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow break-after-page">
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid">
                     <div className="flex-grow px-14 py-12 flex flex-col">
                       <div className="mb-6 border-l-4 border-primary pl-4 py-1">
                         <h2 className="text-xl font-extrabold text-text-dark">Investment &amp; Terms</h2>
@@ -494,7 +494,7 @@ export default function Preview() {
                   </div>
 
                   {/* PAGE 6 - Signature */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow break-after-page">
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid">
                     <div className="flex-grow px-14 py-14 flex flex-col">
                       <div className="mb-8 border-l-4 border-primary pl-6 py-2">
                         <h2 className="text-2xl font-extrabold text-text-dark">Agreement &amp; Signatures</h2>

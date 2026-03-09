@@ -98,8 +98,10 @@
   /* === PAGE BLOCKS: exact A4 dimensions to match screen layout === */
   .print-dynamic-flow {
     width: 210mm !important;
+    height: 296.5mm !important;
     max-width: 210mm !important;
     aspect-ratio: auto !important;
+    overflow: hidden !important;
     position: relative !important;
     display: flex !important;
     flex-direction: column !important;
