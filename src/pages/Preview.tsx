@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useProposalData } from '../hooks/useProposalData';
 import EmailCaptureModal from '../components/EmailCaptureModal';
 import { trackEvent } from '../utils/analytics';
+import TemplateRenderer from '../components/TemplateRenderer';
+import { greenEleganceTemplate } from '../templates/greenElegance';
 
 function PagedContent({ children, footer, wrapperClassName = '', contentClassName = '', sliceHeight = 842 }: { children: ReactNode, footer?: ReactNode, wrapperClassName?: string, contentClassName?: string, sliceHeight?: number }) {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -69,7 +71,7 @@ function PagedContent({ children, footer, wrapperClassName = '', contentClassNam
 export default function Preview() {
   const { data } = useProposalData();
   const [zoom, setZoom] = useState(1);
-  const [layout, setLayout] = useState<1 | 2 | 3>(1);
+  const [layout, setLayout] = useState<1 | 2 | 3 | 4>(1);
   const [showLayoutPicker, setShowLayoutPicker] = useState(false);
   const [showEmailModal, setShowEmailModal] = useState(false);
 
@@ -245,6 +247,34 @@ export default function Preview() {
                     <p className="text-xs font-bold text-text-dark">Warm</p>
                     <p className="text-[10px] text-text-muted">White + Orange</p>
                   </button>
+
+                  {/* Layout Option 4 */}
+                  <button
+                    onClick={() => { setLayout(4); setShowLayoutPicker(false); }}
+                    className={`relative flex flex-col items-center p-3 rounded-xl border-2 transition-all ${layout === 4 ? 'border-primary bg-primary/5' : 'border-gray-200 hover:border-primary/40 bg-white'}`}
+                  >
+                    {layout === 4 && (
+                      <span className="absolute top-2 right-2 w-4 h-4 bg-primary rounded-full flex items-center justify-center">
+                        <span className="material-symbols-outlined text-white" style={{ fontSize: '12px' }}>check</span>
+                      </span>
+                    )}
+                    {/* Layout 4 preview thumbnail */}
+                    <div className="w-full aspect-[3/4] bg-[#3d564b] border border-gray-100 rounded-lg overflow-hidden mb-2 shadow-sm flex flex-col">
+                      <div className="flex items-center justify-between px-2 pt-6">
+                        <div className="w-3 h-3 border border-[#a6baae] rounded-full"></div>
+                      </div>
+                      <div className="px-2 pt-4 flex-grow">
+                        <div className="h-4 bg-[#f3ece1] rounded w-4/5 mb-1"></div>
+                        <div className="h-4 bg-[#f3ece1] rounded w-3/5 mb-2"></div>
+                      </div>
+                      <div className="flex justify-between w-full mt-auto px-2 pb-2">
+                       <div className="h-1 bg-[#a6baae] rounded w-1/4"></div>
+                       <div className="h-1 bg-[#a6baae] rounded w-1/4"></div>
+                      </div>
+                    </div>
+                    <p className="text-xs font-bold text-text-dark">Elegance</p>
+                    <p className="text-[10px] text-text-muted">Dark Green/Beige</p>
+                  </button>
                 </div>
               )}
             </div>
@@ -265,7 +295,7 @@ export default function Preview() {
               <span className="material-symbols-outlined text-secondary">visibility</span>
               Document Preview
               <span className="text-xs font-normal px-2 py-0.5 bg-secondary/20 text-primary rounded-full ml-1">
-                {layout === 1 ? 'Editorial' : layout === 2 ? 'Minimal' : 'Warm'}
+                {layout === 1 ? 'Editorial' : layout === 2 ? 'Minimal' : layout === 3 ? 'Warm' : 'Elegance'}
               </span>
             </h3>
             <div className="flex items-center gap-2 bg-surface-off p-1 rounded-lg border border-gray-200">
@@ -348,41 +378,54 @@ export default function Preview() {
                     </div>
                   </div>
 
-                  {/* PAGE 2 - Company Info + Context */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative overflow-hidden print:shadow-none print-dynamic-flow print:break-inside-avoid">
-                    <div className="flex-grow px-14 py-14 flex flex-col relative">
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-bl-[100px] print:hidden"></div>
-                      {/* Company image + description */}
-                      {(data.companyImageUrl || data.companyDescription) && (() => {
-                        const imgSize = data.companyImageSize || 'medium';
-                        const imgFull = imgSize === 'wide';
-                        const imgClass = imgSize === 'small' ? 'h-16 w-16' : imgSize === 'large' ? 'h-32 w-32' : 'h-24 w-24';
-                        return (
-                          <div className={`mb-5 z-10 relative ${imgFull ? 'flex flex-col gap-3' : 'flex gap-4 items-start'}`}>
-                            {data.companyImageUrl && (
-                              imgFull
-                                ? <img src={data.companyImageUrl} alt="Company" className="w-full rounded-lg object-cover object-center border border-gray-100 bg-white" style={{ height: '140px' }} />
-                                : <img src={data.companyImageUrl} alt="Company" className={`${imgClass} object-cover object-center rounded-lg border border-gray-100 flex-shrink-0 bg-white`} />
-                            )}
-                            {data.companyDescription && (
-                              <p className="text-xs text-gray-500 leading-relaxed italic relative z-10 text-justify">{data.companyDescription}</p>
-                            )}
-                          </div>
-                        );
-                      })()}
-                      {/* Context */}
-                      {data.projectContext && (
+                  {/* PAGE 2 - About Your Company */}
+                  {(data.companyImageUrl || data.companyDescription) && (
+                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative overflow-hidden print:shadow-none print-dynamic-flow print:break-inside-avoid">
+                      <div className="flex-grow px-14 py-14 flex flex-col relative">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-bl-[100px] print:hidden"></div>
+                        <h6 className="text-xs font-bold text-text-dark uppercase tracking-wider mb-6 border-b border-gray-100 pb-1">About The Company</h6>
+                        {/* Company image + description */}
+                        {(() => {
+                          const imgSize = data.companyImageSize || 'medium';
+                          const imgFull = imgSize === 'wide';
+                          const imgClass = imgSize === 'small' ? 'h-16 w-16' : imgSize === 'large' ? 'h-32 w-32' : 'h-24 w-24';
+                          return (
+                            <div className={`mb-5 z-10 relative flex-grow ${imgFull ? 'flex flex-col gap-3' : 'flex gap-4 items-start'}`}>
+                              {data.companyImageUrl && (
+                                imgFull
+                                  ? <img src={data.companyImageUrl} alt="Company" className="w-full rounded-lg object-cover object-center border border-gray-100 bg-white" style={{ height: '240px' }} />
+                                  : <img src={data.companyImageUrl} alt="Company" className={`${imgClass} object-cover object-center rounded-lg border border-gray-100 flex-shrink-0 bg-white`} />
+                              )}
+                              {data.companyDescription && (
+                                <p className="text-sm text-gray-600 leading-relaxed italic relative z-10 text-justify">{data.companyDescription}</p>
+                              )}
+                            </div>
+                          );
+                        })()}
+                      </div>
+                      <div className="px-14 pt-4 pb-6 border-t border-gray-100 flex justify-between items-center text-[10px] text-gray-400">
+                        <span>{data.companyName || 'PropQuick'} © {new Date().getFullYear()}</span>
+                        <span>Company Profile</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* PAGE 3 - Context */}
+                  {data.projectContext && (
+                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative overflow-hidden print:shadow-none print-dynamic-flow print:break-inside-avoid">
+                      <div className="flex-grow px-14 py-14 flex flex-col relative">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-bl-[100px] print:hidden"></div>
                         <div className="mb-4 relative z-10 flex-grow">
                           <h6 className="text-xs font-bold text-text-dark uppercase tracking-wider mb-2 border-b border-gray-100 pb-1">01. Context</h6>
                           <p className="text-sm text-gray-600 leading-relaxed text-justify">{data.projectContext}</p>
                         </div>
-                      )}
+                      </div>
+                      <div className="px-14 pt-4 pb-6 border-t border-gray-100 flex justify-between items-center text-[10px] text-gray-400">
+                        <span>{data.companyName || 'PropQuick'} © {new Date().getFullYear()}</span>
+                        <span>Project Context</span>
+                      </div>
                     </div>
-                    <div className="px-14 pt-4 pb-6 border-t border-gray-100 flex justify-between items-center text-[10px] text-gray-400">
-                      <span>{data.companyName || 'PropQuick'} © {new Date().getFullYear()}</span>
-                      <span>Page 2</span>
-                    </div>
-                  </div>
+                  )}
 
                   {/* PAGE 3 - Challenges */}
                   {challenges.filter((c: string) => c.trim()).length > 0 && (
@@ -578,38 +621,55 @@ export default function Preview() {
                     </div>
                   </div>
 
-                  {/* PAGE 2 - Minimal Context */}
-                  <div className="bg-[#f0f0ed] w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
-                    <div className="h-1 w-full bg-[#1a2332]"></div>
-                    <div className="flex-grow px-14 pt-10 pb-0 flex flex-col">
-                      <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-2">Overview</p>
-                      <h2 className="text-2xl font-light text-[#1a2332] mb-4" style={{ letterSpacing: '-0.01em' }}>Project Context</h2>
-                      {(data.companyImageUrl || data.companyDescription) && (() => {
-                        const imgSize = data.companyImageSize || 'medium';
-                        const imgFull = imgSize === 'wide';
-                        const imgClass = imgSize === 'small' ? 'h-12 w-12' : imgSize === 'large' ? 'h-24 w-24' : 'h-16 w-16';
-                        return (
-                          <div className={`mb-3 ${imgFull ? 'flex flex-col gap-2' : 'flex gap-3 items-start'}`}>
-                            {data.companyImageUrl && (
-                              imgFull
-                                ? <img src={data.companyImageUrl} alt="Company" className="w-full rounded object-cover object-center border border-gray-100 bg-white" style={{ height: '120px' }} />
-                                : <img src={data.companyImageUrl} alt="Company" className={`${imgClass} object-cover object-center rounded border border-gray-100 flex-shrink-0 bg-white`} />
-                            )}
-                            {data.companyDescription && (
-                              <p className="text-xs text-gray-500 italic pb-2 border-b border-gray-100 flex-1 text-justify">{data.companyDescription}</p>
-                            )}
-                          </div>
-                        );
-                      })()}
-                      <p className="text-sm text-gray-600 leading-relaxed flex-grow text-justify">
-                        {data.projectContext || 'The goal of this proposal is to outline the strategy for the complete overhaul of the project.'}
-                      </p>
+                  {/* PAGE 2 - Minimal Company Info */}
+                  {(data.companyImageUrl || data.companyDescription) && (
+                    <div className="bg-[#f0f0ed] w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      <div className="h-1 w-full bg-[#1a2332]"></div>
+                      <div className="flex-grow px-14 pt-10 pb-10 flex flex-col">
+                        <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-2">Overview</p>
+                        <h2 className="text-2xl font-light text-[#1a2332] mb-6" style={{ letterSpacing: '-0.01em' }}>About The Company</h2>
+                        {(() => {
+                          const imgSize = data.companyImageSize || 'medium';
+                          const imgFull = imgSize === 'wide';
+                          const imgClass = imgSize === 'small' ? 'h-12 w-12' : imgSize === 'large' ? 'h-32 w-32' : 'h-24 w-24';
+                          return (
+                            <div className={`mb-3 flex-grow ${imgFull ? 'flex flex-col gap-4' : 'flex gap-4 items-start'}`}>
+                              {data.companyImageUrl && (
+                                imgFull
+                                  ? <img src={data.companyImageUrl} alt="Company" className="w-full rounded object-cover object-center border border-gray-100 bg-white" style={{ height: '200px' }} />
+                                  : <img src={data.companyImageUrl} alt="Company" className={`${imgClass} object-cover object-center rounded border border-gray-100 flex-shrink-0 bg-white`} />
+                              )}
+                              {data.companyDescription && (
+                                <p className="text-sm text-gray-600 flex-1 text-justify">{data.companyDescription}</p>
+                              )}
+                            </div>
+                          );
+                        })()}
+                      </div>
+                      <div className="bg-[#1a2332] px-12 py-4 flex justify-between items-center mt-auto">
+                        <span className="text-[10px] text-[#8899aa]">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
+                        <span className="text-[10px] text-[#8899aa]">Company Profile</span>
+                      </div>
                     </div>
-                    <div className="bg-[#1a2332] px-12 py-4 flex justify-between items-center mt-auto">
-                      <span className="text-[10px] text-[#8899aa]">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
-                      <span className="text-[10px] text-[#8899aa]">Page 2</span>
+                  )}
+
+                  {/* PAGE 3 - Minimal Context */}
+                  {data.projectContext && (
+                    <div className="bg-[#f0f0ed] w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      <div className="h-1 w-full bg-[#1a2332]"></div>
+                      <div className="flex-grow px-14 pt-10 pb-10 flex flex-col">
+                        <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-2">Overview</p>
+                        <h2 className="text-2xl font-light text-[#1a2332] mb-4" style={{ letterSpacing: '-0.01em' }}>Project Context</h2>
+                        <p className="text-sm text-gray-600 leading-relaxed flex-grow text-justify">
+                          {data.projectContext || 'The goal of this proposal is to outline the strategy for the complete overhaul of the project.'}
+                        </p>
+                      </div>
+                      <div className="bg-[#1a2332] px-12 py-4 flex justify-between items-center mt-auto">
+                        <span className="text-[10px] text-[#8899aa]">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
+                        <span className="text-[10px] text-[#8899aa]">Project Context</span>
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* PAGE 3 - Minimal Challenges */}
                   {challenges.filter((c: string) => c.trim()).length > 0 && (
@@ -800,38 +860,55 @@ export default function Preview() {
                     </div>
                   </div>
 
-                  {/* PAGE 2 - Warm Context */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
-                    <div className="h-1 w-full" style={{ backgroundColor: '#f4a261' }}></div>
-                    <div className="flex-grow px-14 pt-10 pb-0 flex flex-col">
-                      <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-2">Overview</p>
-                      <h2 className="text-2xl font-light text-gray-900 mb-4" style={{ letterSpacing: '-0.01em' }}>Project Context</h2>
-                      {(data.companyImageUrl || data.companyDescription) && (() => {
-                        const imgSize = data.companyImageSize || 'medium';
-                        const imgFull = imgSize === 'wide';
-                        const imgClass = imgSize === 'small' ? 'h-12 w-12' : imgSize === 'large' ? 'h-24 w-24' : 'h-16 w-16';
-                        return (
-                          <div className={`mb-3 ${imgFull ? 'flex flex-col gap-2' : 'flex gap-3 items-start'}`}>
-                            {data.companyImageUrl && (
-                              imgFull
-                                ? <img src={data.companyImageUrl} alt="Company" className="w-full rounded object-cover object-center border border-gray-100 bg-white" style={{ height: '120px' }} />
-                                : <img src={data.companyImageUrl} alt="Company" className={`${imgClass} object-cover object-center rounded border border-gray-100 flex-shrink-0 bg-white`} />
-                            )}
-                            {data.companyDescription && (
-                              <p className="text-xs text-gray-400 italic pb-2 border-b border-gray-100 flex-1 text-justify">{data.companyDescription}</p>
-                            )}
-                          </div>
-                        );
-                      })()}
-                      <p className="text-sm text-gray-600 leading-relaxed flex-grow text-justify">
-                        {data.projectContext || 'The goal of this proposal is to outline the strategy for the complete overhaul of the project.'}
-                      </p>
+                  {/* PAGE 2 - Warm Company Info */}
+                  {(data.companyImageUrl || data.companyDescription) && (
+                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      <div className="h-1 w-full" style={{ backgroundColor: '#f4a261' }}></div>
+                      <div className="flex-grow px-14 pt-10 pb-10 flex flex-col">
+                        <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-2">Overview</p>
+                        <h2 className="text-2xl font-light text-gray-900 mb-6" style={{ letterSpacing: '-0.01em' }}>About The Company</h2>
+                        {(() => {
+                          const imgSize = data.companyImageSize || 'medium';
+                          const imgFull = imgSize === 'wide';
+                          const imgClass = imgSize === 'small' ? 'h-12 w-12' : imgSize === 'large' ? 'h-32 w-32' : 'h-24 w-24';
+                          return (
+                            <div className={`mb-3 flex-grow ${imgFull ? 'flex flex-col gap-4' : 'flex gap-4 items-start'}`}>
+                              {data.companyImageUrl && (
+                                imgFull
+                                  ? <img src={data.companyImageUrl} alt="Company" className="w-full rounded object-cover object-center border border-gray-100 bg-white" style={{ height: '200px' }} />
+                                  : <img src={data.companyImageUrl} alt="Company" className={`${imgClass} object-cover object-center rounded border border-gray-100 flex-shrink-0 bg-white`} />
+                              )}
+                              {data.companyDescription && (
+                                <p className="text-sm text-gray-600 flex-1 text-justify">{data.companyDescription}</p>
+                              )}
+                            </div>
+                          );
+                        })()}
+                      </div>
+                      <div className="px-12 py-4 flex justify-between items-center mt-auto" style={{ backgroundColor: '#f4a261' }}>
+                        <span className="text-[10px] text-orange-900/60">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
+                        <span className="text-[10px] text-orange-900/60">Company Profile</span>
+                      </div>
                     </div>
-                    <div className="px-12 py-4 flex justify-between items-center mt-auto" style={{ backgroundColor: '#f4a261' }}>
-                      <span className="text-[10px] text-orange-900/60">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
-                      <span className="text-[10px] text-orange-900/60">Page 2</span>
+                  )}
+
+                  {/* PAGE 3 - Warm Context */}
+                  {data.projectContext && (
+                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      <div className="h-1 w-full" style={{ backgroundColor: '#f4a261' }}></div>
+                      <div className="flex-grow px-14 pt-10 pb-10 flex flex-col">
+                        <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-2">Overview</p>
+                        <h2 className="text-2xl font-light text-gray-900 mb-4" style={{ letterSpacing: '-0.01em' }}>Project Context</h2>
+                        <p className="text-sm text-gray-600 leading-relaxed flex-grow text-justify">
+                          {data.projectContext || 'The goal of this proposal is to outline the strategy for the complete overhaul of the project.'}
+                        </p>
+                      </div>
+                      <div className="px-12 py-4 flex justify-between items-center mt-auto" style={{ backgroundColor: '#f4a261' }}>
+                        <span className="text-[10px] text-orange-900/60">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
+                        <span className="text-[10px] text-orange-900/60">Project Context</span>
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* PAGE 3 - Warm Challenges */}
                   {challenges.filter((c: string) => c.trim()).length > 0 && (
@@ -965,6 +1042,9 @@ export default function Preview() {
                   </div>
                 </>
               )}
+
+              {/* ====== LAYOUT 4: GREEN ELEGANCE ====== */}
+              {layout === 4 && <TemplateRenderer data={data} template={greenEleganceTemplate as any} />}
             </div>
           </div>
 

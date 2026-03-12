@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template Schema Previewer</title>
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- PDF Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body { background-color: #f3f4f6; font-family: 'Inter', sans-serif; }
+        .page {
+            width: 595.28px;
+            height: 841.89px;
+            background: white;
+            position: relative;
+            margin: 20px auto;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="fixed top-0 left-0 right-0 bg-white p-4 shadow-md z-50 flex justify-between items-center px-10">
+        <div>
+            <h1 class="text-xl font-bold">Template Schema Test</h1>
+            <p class="text-sm text-gray-500">Reverse-Engineered Proposal Template Renderer</p>
+        </div>
+        <button id="downloadPdf" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 font-medium">
+            Download PDF Test
+        </button>
+    </div>
+
+    <div class="mt-28 pb-20 flex flex-col items-center gap-10" id="pdf-container">
+        <!-- Pages will be injected here -->
+    </div>
+
+    <script>
+        // Fake input data from your form
+        const dummyData = {
+            project_name: "Environment Video Production",
+            client_name: "Anna Smith",
+            freelancer_name: "Vicky Lee",
+            introduction_text: "You are invited to present this proposal for the production of a video... Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
+            about_us_text: "[Your Company Name] is a renowned video production company with a track record...",
+            mission_image_url: "https://images.unsplash.com/photo-1573164713988-8665fc963095?w=400&h=300&fit=crop",
+            mission_text: "Our mission is to engage audiences with authentic storytelling... bringing your vision to life.",
+            vision_image_url: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&h=300&fit=crop",
+            vision_text: "To become the leading provider of high-impact environmental videos globally.",
+            proposal_intro_text: "During the pre-production phase, our team will work closely with you...",
+            phase_1_title: "Pre-Production: Conceptualization and Script",
+            phase_1_description: "Our team will work closely with you to conceptualize the video...",
+            phase_2_title: "Production: Filming",
+            phase_2_description: "Once the script is finalized, we will begin the production phase... Our experienced videographers will capture high quality footage.",
+            budget_intro_text: "During the pre-production phase our team will work closely with you...",
+            financial_summary_text: "Pre-production: $ 2,000\nProduction: $ 4,000\nPost-production: $ 3,000\n\nTotal Budget: $ 9,000",
+            freelancer_phone: "+01 123 456 789",
+            freelancer_address: "123 Green Street, Earth City",
+            freelancer_email: "hello@studio.com",
+            line_items: [
+                { desc: "Equipment", qty: "1", price: "900.00", total: "10%" },
+                { desc: "Profit", qty: "1", price: "50.00", total: "240%" },
+                { desc: "Dividend per share", qty: "1", price: "170.00", total: "100%" },
+            ]
+        };
+
+        // The JSON schema we just generated
+        const templateSchema = {
+          "sections": [
+            {
+              "id": "cover_page",
+              "elements": [
+                { "type": "shape", "style": { "background_color": "#3d564b" }, "dimensions": { "width": 595.28, "height": 841.89 } },
+                { "type": "text", "content": "◆ Brandname", "style": { "font_family": "Inter", "font_size": 14, "font_weight": "bold", "color": "#ffffff", "text_align": "left" }, "position": { "x": 40, "y": 50, "is_absolute": true } },
+                { "type": "text", "content": "Project\nProposal", "style": { "font_family": "'Playfair Display'", "font_size": 64, "font_weight": "bold", "color": "#f3ece1", "text_align": "left", "line_height": 1.1 }, "position": { "x": 40, "y": 250, "is_absolute": true } },
+                { "type": "text", "content": "{{project_name}}", "style": { "font_family": "Inter", "font_size": 16, "font_weight": "normal", "color": "#a6baae", "text_align": "left" }, "position": { "x": 40, "y": 420, "is_absolute": true } },
+                { "type": "text", "content": "PRESENTED TO:\n{{client_name}}", "style": { "font_family": "Inter", "font_size": 10, "font_weight": "bold", "color": "#a6baae", "line_height": 1.4 }, "position": { "x": 40, "y": 760, "is_absolute": true } },
+                { "type": "text", "content": "PRESENTED BY\n{{freelancer_name}}", "style": { "font_family": "Inter", "font_size": 10, "font_weight": "bold", "color": "#a6baae", "line_height": 1.4 }, "position": { "x": 250, "y": 760, "is_absolute": true } }
+              ]
+            },
+            {
+              "id": "intro_about_page",
+              "elements": [
+                { "type": "shape", "style": { "background_color": "#f3ece1" }, "dimensions": { "width": 595.28, "height": 841.89 } },
+                { "type": "text", "content": "Introduction", "style": { "font_family": "'Playfair Display'", "font_size": 22, "font_weight": "bold", "color": "#3d564b" }, "position": { "x": 40, "y": 60, "is_absolute": true } },
+                { "type": "text", "content": "{{introduction_text}}", "style": { "font_family": "Inter", "font_size": 10, "color": "#3c3c3c", "line_height": 1.5 }, "dimensions": { "width": 515 }, "position": { "x": 40, "y": 95, "is_absolute": true } },
+                { "type": "text", "content": "About Us", "style": { "font_family": "'Playfair Display'", "font_size": 22, "font_weight": "bold", "color": "#3d564b" }, "position": { "x": 40, "y": 180, "is_absolute": true } },
+                { "type": "text", "content": "{{about_us_text}}", "style": { "font_family": "Inter", "font_size": 10, "color": "#3c3c3c", "line_height": 1.5 }, "dimensions": { "width": 515 }, "position": { "x": 40, "y": 215, "is_absolute": true } },
+                { "type": "image", "content": "{{mission_image_url}}", "dimensions": { "width": 180, "height": 120 }, "position": { "x": 40, "y": 320, "is_absolute": true } },
+                { "type": "text", "content": "Mission", "style": { "font_family": "Inter", "font_size": 12, "font_weight": "bold", "color": "#3c3c3c" }, "position": { "x": 240, "y": 320, "is_absolute": true } },
+                { "type": "text", "content": "{{mission_text}}", "style": { "font_family": "Inter", "font_size": 10, "color": "#3c3c3c", "line_height": 1.5 }, "dimensions": { "width": 300 }, "position": { "x": 240, "y": 345, "is_absolute": true } },
+                { "type": "image", "content": "{{vision_image_url}}", "dimensions": { "width": 180, "height": 120 }, "position": { "x": 40, "y": 480, "is_absolute": true } },
+                { "type": "text", "content": "Vision", "style": { "font_family": "Inter", "font_size": 12, "font_weight": "bold", "color": "#3c3c3c" }, "position": { "x": 240, "y": 480, "is_absolute": true } },
+                { "type": "text", "content": "{{vision_text}}", "style": { "font_family": "Inter", "font_size": 10, "color": "#3c3c3c", "line_height": 1.5 }, "dimensions": { "width": 300 }, "position": { "x": 240, "y": 505, "is_absolute": true } }
+              ]
+            },
+            {
+              "id": "pricing_and_footer",
+              "elements": [
+                { "type": "shape", "style": { "background_color": "#f3ece1" }, "dimensions": { "width": 595.28, "height": 841.89 } },
+                { "type": "text", "content": "Detailed Budget", "style": { "font_family": "'Playfair Display'", "font_size": 22, "font_weight": "bold", "color": "#3d564b" }, "position": { "x": 40, "y": 60, "is_absolute": true } },
+                { "type": "text", "content": "{{budget_intro_text}}", "style": { "font_family": "Inter", "font_size": 10, "color": "#3c3c3c", "line_height": 1.5 }, "dimensions": { "width": 515 }, "position": { "x": 40, "y": 95, "is_absolute": true } },
+                { 
+                  "type": "table", "content": "", 
+                  "table_config": {
+                    "columns": ["Description", "Qty", "Price", "Change"],
+                    "dynamic_rows_placeholder": "line_items",
+                    "header_style": { "font_family": "Inter", "font_size": 10, "font_weight": "bold", "color": "#3c3c3c", "background_color": "#e0d9d0", "padding": [8,8,8,8], "text_align": "center" },
+                    "row_style": { "font_family": "Inter", "font_size": 10, "color": "#3c3c3c", "padding": [8,8,8,8], "text_align": "center", "border_bottom": "1px solid #c9c3ba" }
+                  },
+                  "dimensions": { "width": 515 }, 
+                  "position": { "x": 40, "y": 180, "is_absolute": true } 
+                },
+                { "type": "text", "content": "Financial Targets", "style": { "font_family": "'Playfair Display'", "font_size": 22, "font_weight": "bold", "color": "#3d564b" }, "position": { "x": 40, "y": 450, "is_absolute": true } },
+                { "type": "text", "content": "{{financial_summary_text}}", "style": { "font_family": "Inter", "font_size": 10, "color": "#3c3c3c", "line_height": 1.5 }, "dimensions": { "width": 515 }, "position": { "x": 40, "y": 485, "is_absolute": true } },
+                { "type": "shape", "style": { "background_color": "#3d564b" }, "dimensions": { "width": 595.28, "height": 100 }, "position": { "x": 0, "y": 741.89, "is_absolute": true } },
+                { "type": "text", "content": "PHONE\n{{freelancer_phone}}", "style": { "font_family": "Inter", "font_size": 9, "font_weight": "bold", "color": "#a6baae", "line_height": 1.4 }, "position": { "x": 40, "y": 770, "is_absolute": true } },
+                { "type": "text", "content": "ADDRESS\n{{freelancer_address}}", "style": { "font_family": "Inter", "font_size": 9, "font_weight": "bold", "color": "#a6baae", "line_height": 1.4 }, "position": { "x": 180, "y": 770, "is_absolute": true } },
+                { "type": "text", "content": "EMAIL\n{{freelancer_email}}", "style": { "font_family": "Inter", "font_size": 9, "font_weight": "bold", "color": "#f3ece1", "line_height": 1.4 }, "position": { "x": 400, "y": 770, "is_absolute": true } }
+              ]
+            }
+          ]
+        };
+
+        // Utility to replace placeholders
+        function hydrate(text) {
+            return text.replace(/\{\{([^}]+)\}\}/g, (match, key) => dummyData[key] || match);
+        }
+
+        // Render loop
+        const container = document.getElementById('pdf-container');
+
+        templateSchema.sections.forEach(section => {
+            const pageEl = document.createElement('div');
+            pageEl.className = 'page';
+            pageEl.id = `page-${section.id}`;
+            
+            section.elements.forEach(el => {
+                let domEl;
+
+                if (el.type === 'shape') {
+                    domEl = document.createElement('div');
+                } else if (el.type === 'text') {
+                    domEl = document.createElement('div');
+                    domEl.innerHTML = hydrate(el.content).replace(/\n/g, '<br/>');
+                } else if (el.type === 'image') {
+                    domEl = document.createElement('img');
+                    domEl.src = hydrate(el.content);
+                    domEl.style.objectFit = 'cover';
+                } else if (el.type === 'table') {
+                    domEl = document.createElement('table');
+                    domEl.style.width = '100%';
+                    domEl.style.borderCollapse = 'collapse';
+                    let html = '<thead><tr>';
+                    el.table_config.columns.forEach(col => {
+                        html += `<th style="padding:${el.table_config.header_style.padding.join('px ')}px; background:${el.table_config.header_style.background_color}; border: 1px solid #c9c3ba;">${col}</th>`;
+                    });
+                    html += '</tr></thead><tbody>';
+                    
+                    const rows = dummyData[el.table_config.dynamic_rows_placeholder];
+                    rows.forEach(row => {
+                        html += `<tr>`;
+                        Object.values(row).forEach(val => {
+                             html += `<td style="padding:${el.table_config.row_style.padding.join('px ')}px; text-align:${el.table_config.row_style.text_align}; border-bottom:${el.table_config.row_style.border_bottom};">${val}</td>`;
+                        });
+                        html += `</tr>`;
+                    });
+                    html += '</tbody>';
+                    domEl.innerHTML = html;
+                }
+
+                // Apply Absolute Pos
+                domEl.style.position = 'absolute';
+                if(el.position) {
+                    domEl.style.left = `${el.position.x}px`;
+                    domEl.style.top = `${el.position.y}px`;
+                } else {
+                    domEl.style.left = '0';
+                    domEl.style.top = '0';
+                }
+
+                // Apply Size
+                if(el.dimensions) {
+                    if(el.dimensions.width) domEl.style.width = `${el.dimensions.width}px`;
+                    if(el.dimensions.height) domEl.style.height = `${el.dimensions.height}px`;
+                }
+
+                // Apply Styles
+                if(el.style) {
+                    if(el.style.font_family) domEl.style.fontFamily = el.style.font_family;
+                    if(el.style.font_size) domEl.style.fontSize = `${el.style.font_size}px`;
+                    if(el.style.font_weight) domEl.style.fontWeight = el.style.font_weight;
+                    if(el.style.color) domEl.style.color = el.style.color;
+                    if(el.style.background_color) domEl.style.backgroundColor = el.style.background_color;
+                    if(el.style.text_align) domEl.style.textAlign = el.style.text_align;
+                    if(el.style.line_height) domEl.style.lineHeight = el.style.line_height;
+                }
+
+                pageEl.appendChild(domEl);
+            });
+
+            container.appendChild(pageEl);
+        });
+
+        // PDF Generation 
+        document.getElementById('downloadPdf').addEventListener('click', async () => {
+             const { jsPDF } = window.jspdf;
+             const pdf = new jsPDF('p', 'pt', 'a4');
+             const pages = document.querySelectorAll('.page');
+             
+             for (let i = 0; i < pages.length; i++) {
+                 if (i > 0) pdf.addPage();
+                 const canvas = await html2canvas(pages[i], { scale: 2 });
+                 const imgData = canvas.toDataURL('image/png');
+                 pdf.addImage(imgData, 'PNG', 0, 0, 595.28, 841.89);
+             }
+             
+             pdf.save('proposal_test.pdf');
+        });
+    </script>
+</body>
+</html>
