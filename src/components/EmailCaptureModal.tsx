@@ -22,7 +22,7 @@ export default function EmailCaptureModal({ isOpen, onClose, onContinue }: Email
         try {
             // NOTE: Replace this URL with your Formspree, Make.com, or Zapier Webhook URL
             // Example Formspree URL: https://formspree.io/f/YOUR_FORM_ID
-            const WEBHOOK_URL = 'https://formspree.io/f/mvzwzwqj';
+            const WEBHOOK_URL = import.meta.env.VITE_FORMSPREE_WEBHOOK_URL || 'https://formspree.io/f/mvzwzwqj';
 
             await fetch(WEBHOOK_URL, {
                 method: 'POST',

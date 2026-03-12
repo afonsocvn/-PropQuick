@@ -19,17 +19,24 @@ export const greenEleganceTemplate = {
       ]
     },
     {
-      id: "intro_about_page",
+      id: "about_us_page",
+      type: "standard",
+      elements: [
+        { type: "shape", style: { background_color: "#f3ece1" }, dimensions: { width: 595.28, height: 841.89 } },
+        { type: "text", content: "About Us", style: { font_family: "'Playfair Display', serif", font_size: 22, font_weight: "bold", color: "#3d564b" }, position: { x: 40, y: 60, is_absolute: true } },
+        { type: "text", content: "{{company_description}}", style: { font_family: "Inter, sans-serif", font_size: 10, color: "#3c3c3c", line_height: 1.5 }, dimensions: { width: 515 }, position: { x: 40, y: 95, is_absolute: true } },
+        { type: "image", content: "{{company_image_url}}", dimensions: { width: 300, height: 210 }, position: { x: 40, y: 300, is_absolute: true } }
+      ]
+    },
+    {
+      id: "intro_challenges_page",
       type: "standard",
       elements: [
         { type: "shape", style: { background_color: "#f3ece1" }, dimensions: { width: 595.28, height: 841.89 } },
         { type: "text", content: "Introduction", style: { font_family: "'Playfair Display', serif", font_size: 22, font_weight: "bold", color: "#3d564b" }, position: { x: 40, y: 60, is_absolute: true } },
         { type: "text", content: "{{project_context}}", style: { font_family: "Inter, sans-serif", font_size: 10, color: "#3c3c3c", line_height: 1.5 }, dimensions: { width: 515 }, position: { x: 40, y: 95, is_absolute: true } },
-        { type: "text", content: "About Us", style: { font_family: "'Playfair Display', serif", font_size: 22, font_weight: "bold", color: "#3d564b" }, position: { x: 40, y: 280, is_absolute: true } },
-        { type: "text", content: "{{company_description}}", style: { font_family: "Inter, sans-serif", font_size: 10, color: "#3c3c3c", line_height: 1.5 }, dimensions: { width: 515 }, position: { x: 40, y: 315, is_absolute: true } },
-        { type: "image", content: "{{company_image_url}}", dimensions: { width: 200, height: 140 }, position: { x: 40, y: 500, is_absolute: true } },
-        { type: "text", content: "Our Challenge", style: { font_family: "Inter, sans-serif", font_size: 12, font_weight: "bold", color: "#3c3c3c" }, position: { x: 260, y: 500, is_absolute: true } },
-        { type: "text", content: "{{challenges_list}}", style: { font_family: "Inter, sans-serif", font_size: 10, color: "#3c3c3c", line_height: 1.5 }, dimensions: { width: 290 }, position: { x: 260, y: 525, is_absolute: true } }
+        { type: "text", content: "Our Challenge", style: { font_family: "'Playfair Display', serif", font_size: 22, font_weight: "bold", color: "#3d564b" }, position: { x: 40, y: 350, is_absolute: true } },
+        { type: "text", content: "{{challenges_list}}", style: { font_family: "Inter, sans-serif", font_size: 10, color: "#3c3c3c", line_height: 1.5 }, dimensions: { width: 515 }, position: { x: 40, y: 385, is_absolute: true } }
       ]
     },
     {
