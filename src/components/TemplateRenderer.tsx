@@ -100,8 +100,9 @@ export default function TemplateRenderer({ data, template }: TemplateRendererPro
               fontWeight: el.style?.font_weight,
               color: el.style?.color,
               backgroundColor: el.style?.background_color,
-              textAlign: el.style?.text_align as any,
+               textAlign: el.style?.text_align as any,
               lineHeight: el.style?.line_height,
+              borderBottom: el.style?.border_bottom,
               whiteSpace: 'pre-wrap'
             };
 

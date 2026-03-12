@@ -64,8 +64,27 @@ export default function Step3() {
                       <input type="file" accept="image/*" className="sr-only" onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (file) {
+                          // Check if file is larger than 2MB
+                          if (file.size > 2 * 1024 * 1024) {
+                            alert('A imagem é demasiado grande (máximo 2MB). Por favor, escolhe uma imagem mais pequena.');
+                            return;
+                          }
+                          
+                          // Warn if approaching localStorage limits (e.g., > 1MB)
+                          if (file.size > 1 * 1024 * 1024) {
+                            console.warn('Image is quite large and might affect storage performance.');
+                          }
+
                           const reader = new FileReader();
-                          reader.onloadend = () => updateData('companyImageUrl', reader.result);
+                          reader.onload = () => {
+                            if (typeof reader.result === 'string') {
+                              updateData('companyImageUrl', reader.result);
+                            }
+                          };
+                          reader.onerror = (error) => {
+                            console.error('Error reading file:', error);
+                            alert('Erro ao carregar a imagem. Por favor, tenta novamente.');
+                          };
                           reader.readAsDataURL(file);
                         }
                       }} />

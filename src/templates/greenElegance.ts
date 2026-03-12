@@ -64,6 +64,40 @@ export const greenEleganceTemplate = {
         { type: "text", content: "ADDRESS\n{{freelancer_address}}", style: { font_family: "Inter, sans-serif", font_size: 9, font_weight: "bold", color: "#a6baae", line_height: 1.4 }, position: { x: 180, y: 770, is_absolute: true } },
         { type: "text", content: "EMAIL\n{{freelancer_email}}", style: { font_family: "Inter, sans-serif", font_size: 9, font_weight: "bold", color: "#f3ece1", line_height: 1.4 }, position: { x: 400, y: 770, is_absolute: true } }
       ]
+    },
+    {
+      id: "signatures_page",
+      type: "standard",
+      elements: [
+        { type: "shape", style: { background_color: "#f3ece1" }, dimensions: { width: 595.28, height: 841.89 } },
+        { type: "text", content: "Agreement", style: { font_family: "'Playfair Display', serif", font_size: 22, font_weight: "bold", color: "#3d564b" }, position: { x: 40, y: 60, is_absolute: true } },
+        { type: "text", content: "By signing below, both parties agree to the terms and conditions outlined in this proposal. This document becomes a legally binding agreement upon signature.", style: { font_family: "Inter, sans-serif", font_size: 10, color: "#3c3c3c", line_height: 1.5 }, dimensions: { width: 515 }, position: { x: 40, y: 95, is_absolute: true } },
+        
+        // Client side
+        { type: "text", content: "CLIENT", style: { font_family: "Inter, sans-serif", font_size: 10, font_weight: "bold", color: "#3d564b" }, position: { x: 40, y: 200, is_absolute: true } },
+        { type: "shape", style: { border_bottom: "1px solid #3d564b" }, dimensions: { width: 220, height: 40 }, position: { x: 40, y: 240, is_absolute: true } },
+        { type: "text", content: "Signature", style: { font_family: "Inter, sans-serif", font_size: 9, color: "#a6baae" }, position: { x: 40, y: 285, is_absolute: true } },
+        
+        { type: "shape", style: { border_bottom: "1px solid #e0d9d0" }, dimensions: { width: 220, height: 30 }, position: { x: 40, y: 320, is_absolute: true } },
+        { type: "text", content: "Full Name", style: { font_family: "Inter, sans-serif", font_size: 9, color: "#a6baae" }, position: { x: 40, y: 355, is_absolute: true } },
+        
+        { type: "shape", style: { border_bottom: "1px solid #e0d9d0" }, dimensions: { width: 220, height: 30 }, position: { x: 40, y: 390, is_absolute: true } },
+        { type: "text", content: "Date", style: { font_family: "Inter, sans-serif", font_size: 9, color: "#a6baae" }, position: { x: 40, y: 425, is_absolute: true } },
+        
+        // Provider side
+        { type: "text", content: "SERVICE PROVIDER", style: { font_family: "Inter, sans-serif", font_size: 10, font_weight: "bold", color: "#3d564b" }, position: { x: 335, y: 200, is_absolute: true } },
+        { type: "shape", style: { border_bottom: "1px solid #3d564b" }, dimensions: { width: 220, height: 40 }, position: { x: 335, y: 240, is_absolute: true } },
+        { type: "text", content: "Signature", style: { font_family: "Inter, sans-serif", font_size: 9, color: "#a6baae" }, position: { x: 335, y: 285, is_absolute: true } },
+        
+        { type: "shape", style: { border_bottom: "1px solid #e0d9d0" }, dimensions: { width: 220, height: 30 }, position: { x: 335, y: 320, is_absolute: true } },
+        { type: "text", content: "Full Name", style: { font_family: "Inter, sans-serif", font_size: 9, color: "#a6baae" }, position: { x: 335, y: 355, is_absolute: true } },
+        
+        { type: "shape", style: { border_bottom: "1px solid #e0d9d0" }, dimensions: { width: 220, height: 30 }, position: { x: 335, y: 390, is_absolute: true } },
+        { type: "text", content: "Date", style: { font_family: "Inter, sans-serif", font_size: 9, color: "#a6baae" }, position: { x: 335, y: 425, is_absolute: true } },
+
+        // Bottom accent
+        { type: "shape", style: { background_color: "#3d564b" }, dimensions: { width: 595.28, height: 10 }, position: { x: 0, y: 831.89, is_absolute: true } }
+      ]
     }
   ]
 };

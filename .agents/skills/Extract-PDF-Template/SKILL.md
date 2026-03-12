@@ -14,8 +14,21 @@ Analyze the provided PDF or image of a proposal template, detect all layout elem
 
 ## Requirements
 1. **Detect all layout elements:** headers, footers, sections, text blocks, tables, images, logos, and decorative elements.
-2. **Identify dynamic fields:** fields corresponding to typical form inputs (e.g., `{{client_name}}`, `{{project_name}}`, `{{freelancer_name}}`, `{{line_items}}`) and mark them as placeholders.
-3. **Capture styling details:** font family, font size, weight, color, alignment, background colors, and absolute positioning (`x`, `y`) relative to the page.
+2. **Identify dynamic fields:** fields corresponding to the following implemented form inputs and mark them as placeholders:
+   - `{{company_name}}`: Your company/freelancer brand name.
+   - `{{project_title}}`: The title of the proposal.
+   - `{{client_name}}`: The name of the client.
+   - `{{freelancer_name}}`: Your full name.
+   - `{{project_context}}`: The introduction/context description.
+   - `{{company_description}}`: The "About Us" or company bio.
+   - `{{company_image_url}}`: URL for a hero or company image.
+   - `{{challenges_list}}`: A bulleted list of project challenges.
+   - `{{total_investment}}`: The calculated total cost of the proposal.
+   - `{{freelancer_phone}}`: Contact phone number.
+   - `{{freelancer_address}}`: Contact address.
+   - `{{freelancer_email}}`: Contact email.
+   - `{{milestones}}`: The dynamic rows for the pricing table.
+3. **Capture styling details:** font family, font size, weight, color, alignment, background colors, line height, borders, and absolute positioning (`x`, `y`) relative to the page.
 4. **Generate the structured JSON schema** following the exact structure provided below.
 5. **DO NOT invent new elements** or redesign the template. Replicate the visual hierarchy exactly.
 
@@ -29,7 +42,7 @@ Output ONLY valid JSON following this exact schema:
   "page_layouts": {
     "format": "A4 | Letter",
     "orientation": "portrait | landscape",
-    "margins": { "top": 0, "right": 0, "bottom": 0, "left": 0 }
+    "margins": { "top": 40, "right": 40, "bottom": 40, "left": 40 }
   },
   "sections": [
     {
@@ -46,15 +59,18 @@ Output ONLY valid JSON following this exact schema:
             "font_weight": "normal | bold",
             "color": "#hex",
             "background_color": "#hex",
-            "text_align": "left | center | right"
+            "text_align": "left | center | right",
+            "line_height": 1.5,
+            "border_bottom": "1px solid #hex",
+            "padding": [top, right, bottom, left]
           },
           "position": { "x": 0, "y": 0, "is_absolute": true },
           "dimensions": { "width": 0, "height": 0 },
           "table_config": {
             "columns": ["Col 1", "Col 2"],
-            "dynamic_rows_placeholder": "line_items",
-            "header_style": { /* style object */ },
-            "row_style": { /* style object */ }
+            "dynamic_rows_placeholder": "milestones",
+            "header_style": { /* same style object structure */ },
+            "row_style": { /* same style object structure */ }
           }
         }
       ]
@@ -64,7 +80,8 @@ Output ONLY valid JSON following this exact schema:
 ```
 
 ## Reasoning Process
-1. **Macro Layout Detection:** Identify A4/Letter size, orientation, and overall background bleeds.
-2. **Section Isolation:** Break the document into logical pages/sections.
-3. **Element Extraction:** For every text block, shape, or table, calculate approximate absolute `x` and `y` coordinates (based on points, where A4 is 595x842 pts), dimensions, and typography.
-4. **Placeholder Mapping:** Replace specific names/data in the template with universal form placeholders.
+1. **Macro Layout Detection:** Identify A4/Letter size, orientation, and overall background bleeds. A4 is 595.28 x 841.89 pts.
+2. **Section Isolation:** Break the document into logical pages (sections).
+3. **Element Extraction:** For every text block, shape, or table, calculate absolute `x` and `y` coordinates, dimensions, and typography.
+4. **Placeholder Mapping:** Replace specific names/data in the template with the universal form placeholders listed in Requirements.
+5. **Validation:** Ensure coordinates or sizes don't exceed the page boundaries (595x842).
