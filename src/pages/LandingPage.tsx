@@ -190,7 +190,7 @@ export default function LandingPage() {
           <div className="flex flex-wrap justify-center gap-8 text-sm text-gray-500">
             <Link className="hover:text-primary transition-colors" to="/terms">Terms of Use</Link>
             <Link className="hover:text-primary transition-colors" to="/privacy">Privacy Policy</Link>
-            <a className="hover:text-primary transition-colors" href="#">Contact</a>
+            <a className="hover:text-primary transition-colors" href="mailto:sokkazt@gmail.com">Contact</a>
             <a className="hover:text-primary transition-colors" href="#">Blog</a>
           </div>
           <div className="text-xs text-gray-400">

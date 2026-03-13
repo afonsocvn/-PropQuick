@@ -52,7 +52,7 @@ export default function TermsOfUse() {
 
                         <div>
                             <h2 className="text-lg font-bold text-gray-800 mb-2">9. Contact</h2>
-                            <p>If you have questions about these Terms, please reach out through the contact options available on our website.</p>
+                            <p>If you have questions about these Terms, please reach out through <a href="mailto:sokkazt@gmail.com" className="text-primary hover:underline">sokkazt@gmail.com</a>.</p>
                         </div>
                     </section>
                 </article>
