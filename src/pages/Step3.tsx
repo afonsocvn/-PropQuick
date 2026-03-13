@@ -99,16 +99,14 @@ export default function Step3() {
                           <span className="block text-xs font-semibold text-[#233333] mb-1.5">Image size in document</span>
                           <div className="grid grid-cols-2 gap-2">
                             {([
-                              { key: 'small', label: 'Small', desc: '\u223864\u00d764 px — side by side' },
-                              { key: 'medium', label: 'Medium', desc: '\u223896\u00d796 px — side by side' },
-                              { key: 'large', label: 'Large', desc: '\u2238128\u00d7128 px — side by side' },
+                              { key: 'half', label: 'Half Width', desc: 'Sits next to text (50% width)' },
                               { key: 'wide', label: 'Full Width', desc: 'Banner across full page' },
                             ] as const).map(({ key, label, desc }) => (
                               <button
                                 key={key}
                                 type="button"
                                 onClick={() => updateData('companyImageSize', key)}
-                                className={`px-3 py-2 rounded-lg text-left border transition-colors ${(data.companyImageSize || 'medium') === key
+                                className={`px-3 py-2 rounded-lg text-left border transition-colors ${(data.companyImageSize || 'half') === key
                                   ? 'bg-primary/10 text-primary border-primary'
                                   : 'bg-white text-[#233333] border-[#d1dbdb] hover:border-primary'
                                   }`}

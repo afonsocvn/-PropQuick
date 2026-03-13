@@ -386,15 +386,18 @@ export default function Preview() {
                         <h6 className="text-xs font-bold text-text-dark uppercase tracking-wider mb-6 border-b border-gray-100 pb-1">About The Company</h6>
                         {/* Company image + description */}
                         {(() => {
-                          const imgSize = data.companyImageSize || 'medium';
+                          const imgSize = data.companyImageSize || 'half';
                           const imgFull = imgSize === 'wide';
-                          const imgClass = imgSize === 'small' ? 'h-16 w-16' : imgSize === 'large' ? 'h-32 w-32' : 'h-24 w-24';
+                          const imgClass = imgSize === 'half' ? 'w-1/2 h-auto max-h-48' : 'w-24 h-24';
                           return (
-                            <div className={`mb-5 z-10 relative flex-grow ${imgFull ? 'flex flex-col gap-3' : 'flex gap-4 items-start'}`}>
+                            <div className={`mb-5 z-10 relative flex-grow ${imgFull ? 'flex flex-col gap-3' : 'block'}`}>
                               {data.companyImageUrl && (
-                                imgFull
-                                  ? <img src={data.companyImageUrl} alt="Company" className="w-full rounded-lg object-cover object-center border border-gray-100 bg-white" style={{ height: '240px' }} />
-                                  : <img src={data.companyImageUrl} alt="Company" className={`${imgClass} object-cover object-center rounded-lg border border-gray-100 flex-shrink-0 bg-white`} />
+                                <img 
+                                  src={data.companyImageUrl} 
+                                  alt="Company" 
+                                  className={`rounded-lg object-cover object-center border border-gray-100 bg-white ${imgFull ? 'w-full' : 'float-left mr-4 mb-2 w-1/2'}`}
+                                  style={imgFull ? { height: '240px' } : { maxHeight: '200px' }} 
+                                />
                               )}
                               {data.companyDescription && (
                                 <p className="text-sm text-gray-600 leading-relaxed italic relative z-10 text-justify">{data.companyDescription}</p>
@@ -868,18 +871,21 @@ export default function Preview() {
                         <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-2">Overview</p>
                         <h2 className="text-2xl font-light text-gray-900 mb-6" style={{ letterSpacing: '-0.01em' }}>About The Company</h2>
                         {(() => {
-                          const imgSize = data.companyImageSize || 'medium';
+                          const imgSize = data.companyImageSize || 'half';
                           const imgFull = imgSize === 'wide';
-                          const imgClass = imgSize === 'small' ? 'h-12 w-12' : imgSize === 'large' ? 'h-32 w-32' : 'h-24 w-24';
+                          const imgClass = imgSize === 'half' ? 'w-1/2 h-auto max-h-48' : 'w-24 h-24';
                           return (
-                            <div className={`mb-3 flex-grow ${imgFull ? 'flex flex-col gap-4' : 'flex gap-4 items-start'}`}>
+                            <div className={`mb-3 flex-grow ${imgFull ? 'flex flex-col gap-4' : 'block'}`}>
                               {data.companyImageUrl && (
-                                imgFull
-                                  ? <img src={data.companyImageUrl} alt="Company" className="w-full rounded object-cover object-center border border-gray-100 bg-white" style={{ height: '200px' }} />
-                                  : <img src={data.companyImageUrl} alt="Company" className={`${imgClass} object-cover object-center rounded border border-gray-100 flex-shrink-0 bg-white`} />
+                                <img 
+                                  src={data.companyImageUrl} 
+                                  alt="Company" 
+                                  className={`rounded object-cover object-center border border-gray-100 bg-white ${imgFull ? 'w-full' : 'float-left mr-4 mb-2 w-1/2'}`}
+                                  style={imgFull ? { height: '200px' } : { maxHeight: '200px' }} 
+                                />
                               )}
                               {data.companyDescription && (
-                                <p className="text-sm text-gray-600 flex-1 text-justify">{data.companyDescription}</p>
+                                <p className="text-sm text-gray-600 text-justify">{data.companyDescription}</p>
                               )}
                             </div>
                           );
