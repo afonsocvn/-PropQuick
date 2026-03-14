@@ -30,7 +30,7 @@ export default function Step1() {
         </div>
         <div className="w-full max-w-3xl bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
           <div className="text-center mb-10">
-            <h1 className="font-serif text-3xl md:text-4xl text-text-dark font-bold mb-4">Let's start with the basics</h1>
+            <h1 className="font-display text-3xl md:text-4xl text-text-dark font-extrabold mb-4 tracking-tight">Let's start with the basics</h1>
             <p className="text-gray-600 text-lg max-w-xl mx-auto">Tell us a little about yourself so we can personalize your proposal. This information will appear in the document header.</p>
           </div>
           <form className="space-y-8">
@@ -69,7 +69,7 @@ export default function Step1() {
 
             {/* Client + Version */}
             <div className="pt-6 border-t border-gray-100 mt-2">
-              <p className="font-serif text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+              <p className="font-display text-lg font-bold text-gray-800 mb-4 flex items-center gap-2 tracking-tight">
                 <span className="material-symbols-outlined text-primary">person_pin</span>
                 Proposal Details
               </p>
@@ -93,7 +93,7 @@ export default function Step1() {
             <div className="pt-6 border-t border-gray-100 mt-8">
               <div className="flex items-start justify-between">
                 <div className="flex flex-col">
-                  <span className="font-serif text-lg font-bold text-gray-800 flex items-center gap-2">
+                  <span className="font-display text-lg font-bold text-gray-800 flex items-center gap-2 tracking-tight">
                     <span className="material-symbols-outlined text-primary">add_photo_alternate</span>
                     Include Logo?
                   </span>
@@ -125,7 +125,7 @@ export default function Step1() {
                 <span className="material-symbols-outlined text-sm font-bold">arrow_back</span>
                 Back
               </Link>
-              <Link to="/step3" className="bg-primary hover:bg-[#256663] text-white px-8 py-3 rounded-full font-bold shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all flex items-center gap-2">
+              <Link to="/step3" className="bg-primary hover:bg-primary-dark text-white px-8 py-3 rounded-lg font-bold shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all flex items-center gap-2">
                 Next Step
                 <span className="material-symbols-outlined text-sm font-bold">arrow_forward</span>
               </Link>

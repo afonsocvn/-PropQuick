@@ -18,14 +18,14 @@ export default function LandingPage() {
       <main className="flex-grow">
         <section className="pt-16 pb-20 px-4 md:px-0 bg-background-light">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-text-dark font-bold mb-6 leading-tight">
+            <h1 className="font-display text-4xl md:text-5xl lg:text-7xl text-text-dark font-extrabold mb-6 leading-[1.1] tracking-tight">
               Stop losing deals because of amateur proposals.
             </h1>
             <p className="text-xl text-text-soft max-w-2xl mx-auto mb-10 leading-relaxed font-light">
               Elite freelancers don't waste hours in Word or Canva. Create irresistible business proposals with agency design and persuasive copy in under 2 minutes.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/step1" className="w-full sm:w-auto bg-primary hover:bg-primary-dark text-white text-lg px-8 py-4 rounded-full font-bold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
+              <Link to="/step1" className="w-full sm:w-auto bg-primary hover:bg-primary-dark text-white text-lg px-8 py-4 rounded-lg font-bold shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
                 Create my Proposal Now
                 <span className="material-symbols-outlined">arrow_forward</span>
               </Link>
@@ -40,14 +40,14 @@ export default function LandingPage() {
           <div className="max-w-5xl mx-auto px-6">
             <div className="text-center mb-12">
               <span className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest">Freelancer reality</span>
-              <h2 className="font-serif text-3xl font-bold text-text-dark mt-4">How much is your time worth?</h2>
+              <h2 className="font-display text-3xl md:text-4xl font-extrabold text-text-dark mt-4 tracking-tight">How much is your time worth?</h2>
             </div>
             <div className="grid md:grid-cols-2 gap-8 items-stretch relative">
               <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 bg-white p-4 rounded-full shadow-md border border-gray-100">
                 <span className="material-symbols-outlined text-gray-400">compare_arrows</span>
               </div>
               <div className="bg-gray-50 border border-gray-100 rounded-2xl p-8 hover:border-gray-300 transition-colors">
-                <h3 className="text-gray-500 font-serif text-xl font-bold mb-2">Traditional Way</h3>
+                <h3 className="text-gray-500 font-display text-xl font-bold mb-2">Traditional Way</h3>
                 <p className="text-sm text-gray-400 mb-6">Word, PDF, Canva, Indesign...</p>
                 <ul className="space-y-4 mb-8">
                   <li className="flex items-start gap-3">
@@ -68,7 +68,7 @@ export default function LandingPage() {
               </div>
               <div className="bg-primary/5 border border-primary/20 rounded-2xl p-8 shadow-sm relative overflow-hidden">
                 <div className="absolute top-0 right-0 bg-accent text-amber-900 text-xs font-bold px-3 py-1 rounded-bl-lg">FREE BETA</div>
-                <h3 className="text-primary font-serif text-xl font-bold mb-2">PropQuick Way</h3>
+                <h3 className="text-primary font-display text-xl font-bold mb-2">PropQuick Way</h3>
                 <p className="text-sm text-primary/70 mb-6">Smart automation and premium design</p>
                 <ul className="space-y-4 mb-8">
                   <li className="flex items-start gap-3">
@@ -89,7 +89,7 @@ export default function LandingPage() {
               </div>
             </div>
             <div className="mt-12 text-center max-w-2xl mx-auto">
-              <blockquote className="text-xl font-serif italic text-text-soft">
+              <blockquote className="text-xl font-display font-medium text-text-soft">
                 "The time you spend formatting proposals is time you aren't billing. PropQuick pays for itself in the first minute."
               </blockquote>
             </div>
@@ -97,13 +97,13 @@ export default function LandingPage() {
         </section>
         <section className="py-20 bg-background-light" id="beneficios">
           <div className="max-w-6xl mx-auto px-6">
-            <h2 className="font-serif text-3xl font-bold text-center text-text-dark mb-16">Everything you need to close more deals</h2>
+            <h2 className="font-display text-3xl md:text-4xl font-extrabold text-center text-text-dark mb-16 tracking-tight">Everything you need to close more deals</h2>
             <div className="grid md:grid-cols-3 gap-8">
               <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
                 <div className="w-14 h-14 bg-accent/20 rounded-full flex items-center justify-center mb-6">
                   <span className="material-symbols-outlined text-amber-600 text-2xl">psychology</span>
                 </div>
-                <h3 className="font-serif text-xl md:text-2xl font-bold text-gray-900 mb-3">Persuasive Copy</h3>
+                <h3 className="font-display text-xl md:text-2xl font-bold text-gray-900 mb-3 tracking-tight">Persuasive Copy</h3>
                 <p className="text-gray-600 md:text-lg leading-relaxed">
                   Don't know how to structure your proposal? We provide a proven outline and guide you step-by-step to write persuasive content that converts.
                 </p>
@@ -112,7 +112,7 @@ export default function LandingPage() {
                 <div className="w-14 h-14 bg-primary-light/20 rounded-full flex items-center justify-center mb-6">
                   <span className="material-symbols-outlined text-primary text-2xl">palette</span>
                 </div>
-                <h3 className="font-serif text-xl md:text-2xl font-bold text-gray-900 mb-3">Agency Design</h3>
+                <h3 className="font-display text-xl md:text-2xl font-bold text-gray-900 mb-3 tracking-tight">Agency Design</h3>
                 <p className="text-gray-600 md:text-lg leading-relaxed">
                   Forget broken layouts. Deliver a visually flawless document that conveys immediate authority to your client.
                 </p>
@@ -121,7 +121,7 @@ export default function LandingPage() {
                 <div className="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center mb-6">
                   <span className="material-symbols-outlined text-blue-600 text-2xl">trending_up</span>
                 </div>
-                <h3 className="font-serif text-xl md:text-2xl font-bold text-gray-900 mb-3">Focus on ROI</h3>
+                <h3 className="font-display text-xl md:text-2xl font-bold text-gray-900 mb-3 tracking-tight">Focus on ROI</h3>
                 <p className="text-gray-600 md:text-lg leading-relaxed">
                   We structure the proposal to show value, not just price. We help your clients see the return on investment.
                 </p>
@@ -132,7 +132,7 @@ export default function LandingPage() {
         <section className="py-20 bg-white" id="como-funciona">
           <div className="max-w-4xl mx-auto px-6">
             <div className="text-center mb-16">
-              <h2 className="font-serif text-3xl font-bold text-text-dark">How it works</h2>
+              <h2 className="font-display text-3xl md:text-4xl font-extrabold text-text-dark tracking-tight">How it works</h2>
               <p className="text-gray-500 mt-4">From zero to a ready proposal in 4 simple steps.</p>
             </div>
             <div className="relative">
@@ -177,7 +177,7 @@ export default function LandingPage() {
               </div>
             </div>
             <div className="mt-16 text-center">
-              <Link to="/step1" className="bg-primary hover:bg-primary-dark text-white px-10 py-4 rounded-full font-bold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all text-lg">
+              <Link to="/step1" className="bg-primary hover:bg-primary-dark text-white px-10 py-4 rounded-lg font-bold shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all text-lg">
                 Start Now
               </Link>
             </div>

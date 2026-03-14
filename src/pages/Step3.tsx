@@ -223,7 +223,7 @@ export default function Step3() {
               <span className="material-symbols-outlined text-lg">arrow_back</span>
               Back
             </Link>
-            <Link to="/step5" className="w-full md:w-auto px-10 py-3.5 rounded-lg bg-primary text-white font-bold text-sm shadow-[0_4px_14px_0_rgba(47,125,121,0.39)] hover:shadow-[0_6px_20px_rgba(47,125,121,0.23)] hover:bg-[#266663] transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+            <Link to="/step5" className="w-full md:w-auto px-10 py-3.5 rounded-lg bg-primary text-white font-bold text-sm shadow-[0_4px_14px_0_theme(colors.primary.DEFAULT/40%)] hover:shadow-[0_6px_20px_theme(colors.primary.DEFAULT/25%)] hover:bg-primary-dark transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
               Continue
               <span className="material-symbols-outlined text-lg">arrow_forward</span>
             </Link>
