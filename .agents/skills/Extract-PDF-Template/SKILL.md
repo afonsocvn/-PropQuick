@@ -16,13 +16,17 @@ Analyze the provided PDF or image of a proposal template, detect all layout elem
 1. **Detect all layout elements:** headers, footers, sections, text blocks, tables, images, logos, and decorative elements.
 2. **Identify dynamic fields:** fields corresponding to the following implemented form inputs and mark them as placeholders:
    - `{{company_name}}`: Your company/freelancer brand name.
+   - `{{logo_url}}`: URL for the company logo.
    - `{{project_title}}`: The title of the proposal.
    - `{{client_name}}`: The name of the client.
    - `{{freelancer_name}}`: Your full name.
    - `{{project_context}}`: The introduction/context description.
    - `{{company_description}}`: The "About Us" or company bio.
    - `{{company_image_url}}`: URL for a hero or company image.
+   - `{{challenges_title}}`: Dynamic title for the challenges section.
    - `{{challenges_list}}`: A bulleted list of project challenges.
+   - `{{objectives_title}}`: Dynamic title for the objectives section.
+   - `{{objectives_list}}`: A bulleted list of project objectives.
    - `{{total_investment}}`: The calculated total cost of the proposal.
    - `{{freelancer_phone}}`: Contact phone number.
    - `{{freelancer_address}}`: Contact address.
