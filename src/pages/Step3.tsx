@@ -136,11 +136,21 @@ export default function Step3() {
                     </div>
                   </div>
                 </div>
-                <label className="block space-y-2 group">
-                  <span className="block text-sm font-bold text-[#233333] group-focus-within:text-primary transition-colors">Context</span>
+                <div className="block space-y-2 group">
+                  <div className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-primary">description</span>
+                    <input
+                      name="projectContextTitle"
+                      value={data.projectContextTitle || ''}
+                      onChange={handleChange}
+                      placeholder="Context"
+                      className="text-sm font-bold text-[#233333] bg-transparent border-none outline-none focus:ring-0 w-24 px-0 group-focus-within:text-primary transition-colors"
+                    />
+                    <span className="text-[10px] text-text-muted italic">(editable title)</span>
+                  </div>
                   <textarea name="projectContext" value={data.projectContext || ''} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-[#d1dbdb] bg-[#fcfdfd] text-[#233333] placeholder:text-text-muted/60 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none min-h-[120px] resize-y" placeholder="Briefly describe the client's current scenario. Ex: The client has an old site that is not responsive and is losing mobile sales..."></textarea>
                   <p className="text-xs text-text-muted">Be specific about the client's current pain points.</p>
-                </label>
+                </div>
               </div>
             </div>
             <div className="space-y-6">

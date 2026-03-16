@@ -34,7 +34,7 @@ export const greenEleganceTemplate = {
       type: "standard",
       elements: [
         { type: "shape", style: { background_color: "#f3ece1" }, dimensions: { width: 595.28, height: 841.89 } },
-        { type: "text", content: "Introduction", style: { font_family: "'Playfair Display', serif", font_size: 22, font_weight: "bold", color: "#3d564b" }, position: { x: 40, y: 60, is_absolute: true } },
+        { type: "text", content: "{{project_context_title}}", style: { font_family: "'Playfair Display', serif", font_size: 22, font_weight: "bold", color: "#3d564b" }, position: { x: 40, y: 60, is_absolute: true } },
         { type: "text", content: "{{project_context}}", style: { font_family: "Inter, sans-serif", font_size: 12, color: "#3c3c3c", line_height: 1.5 }, dimensions: { width: 515 }, position: { x: 40, y: 95, is_absolute: true } }
       ]
     },
@@ -76,6 +76,8 @@ export const greenEleganceTemplate = {
         },
         { type: "text", content: "Financial Summary", style: { font_family: "'Playfair Display', serif", font_size: 22, font_weight: "bold", color: "#3d564b" }, position: { x: 40, y: 400, is_absolute: true } },
         { type: "text", content: "Total Investment:\n{{total_investment}}", style: { font_family: "Inter, sans-serif", font_size: 14, font_weight: "bold", color: "#3d564b", line_height: 1.5 }, dimensions: { width: 515 }, position: { x: 40, y: 440, is_absolute: true } },
+        { type: "text", content: "Terms & Conditions", style: { font_family: "'Playfair Display', serif", font_size: 14, font_weight: "bold", color: "#3d564b" }, position: { x: 40, y: 520, is_absolute: true } },
+        { type: "text", content: "{{terms_and_conditions}}", style: { font_family: "Inter, sans-serif", font_size: 10, color: "#3c3c3c", line_height: 1.5, text_align: "justify" }, dimensions: { width: 515 }, position: { x: 40, y: 545, is_absolute: true } },
         { type: "shape", style: { background_color: "#3d564b" }, dimensions: { width: 595.28, height: 100 }, position: { x: 0, y: 741.89, is_absolute: true } },
         { type: "text", content: "EMAIL\n{{freelancer_email}}", style: { font_family: "Inter, sans-serif", font_size: 9, font_weight: "bold", color: "#f3ece1", line_height: 1.4 }, position: { x: 250, y: 770, is_absolute: true } }
       ]

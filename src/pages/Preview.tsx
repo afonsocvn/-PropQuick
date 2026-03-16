@@ -662,14 +662,14 @@ export default function Preview() {
                       <div className="h-1 w-full bg-[#1a2332]"></div>
                       <div className="flex-grow px-14 pt-10 pb-10 flex flex-col">
                         <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-2">Overview</p>
-                        <h2 className="text-2xl font-light text-[#1a2332] mb-4" style={{ letterSpacing: '-0.01em' }}>Project Context</h2>
+                        <h2 className="text-2xl font-light text-[#1a2332] mb-4" style={{ letterSpacing: '-0.01em' }}>{data.projectContextTitle || 'Project Context'}</h2>
                         <p className="text-sm text-gray-600 leading-relaxed flex-grow text-justify">
                           {data.projectContext || 'The goal of this proposal is to outline the strategy for the complete overhaul of the project.'}
                         </p>
                       </div>
                       <div className="bg-[#1a2332] px-12 py-4 flex justify-between items-center mt-auto">
                         <span className="text-[10px] text-[#8899aa]">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
-                        <span className="text-[10px] text-[#8899aa]">Project Context</span>
+                        <span className="text-[10px] text-[#8899aa]">{data.projectContextTitle || 'Project Context'}</span>
                       </div>
                     </div>
                   )}
@@ -904,14 +904,14 @@ export default function Preview() {
                       <div className="h-1 w-full" style={{ backgroundColor: '#f4a261' }}></div>
                       <div className="flex-grow px-14 pt-10 pb-10 flex flex-col">
                         <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-2">Overview</p>
-                        <h2 className="text-2xl font-light text-gray-900 mb-4" style={{ letterSpacing: '-0.01em' }}>Project Context</h2>
+                        <h2 className="text-2xl font-light text-gray-900 mb-4" style={{ letterSpacing: '-0.01em' }}>{data.projectContextTitle || 'Project Context'}</h2>
                         <p className="text-sm text-gray-600 leading-relaxed flex-grow text-justify">
                           {data.projectContext || 'The goal of this proposal is to outline the strategy for the complete overhaul of the project.'}
                         </p>
                       </div>
                       <div className="px-12 py-4 flex justify-between items-center mt-auto" style={{ backgroundColor: '#f4a261' }}>
                         <span className="text-[10px] text-orange-900/60">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
-                        <span className="text-[10px] text-orange-900/60">Project Context</span>
+                        <span className="text-[10px] text-orange-900/60">{data.projectContextTitle || 'Project Context'}</span>
                       </div>
                     </div>
                   )}

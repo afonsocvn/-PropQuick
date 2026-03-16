@@ -68,6 +68,7 @@ export default function TemplateRenderer({ data, template }: TemplateRendererPro
       if (key === 'company_name') return data.companyName || 'Your Company';
       if (key === 'client_name') return data.clientName || 'Client Name';
       if (key === 'freelancer_name') return data.freelancerName || 'Your Name';
+      if (key === 'project_context_title') return data.projectContextTitle || 'Project Context';
       if (key === 'project_context') return data.projectContext || 'Overview of the project.';
       if (key === 'company_description') return data.companyDescription || 'Company background.';
       if (key === 'company_image_url') return data.companyImageUrl || '';
@@ -79,6 +80,14 @@ export default function TemplateRenderer({ data, template }: TemplateRendererPro
       if (key === 'challenges_title') return data.challengesTitle || 'The Challenge';
       if (key === 'objectives_title') return data.objectivesTitle || 'Objectives';
       if (key === 'objectives_list') return (data.objectives || []).join('\n• ');
+      if (key === 'terms_and_conditions') {
+        let terms = data.validUntil
+            ? `This proposal is valid until ${new Date(data.validUntil).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}.`
+            : 'This proposal is valid for 15 days from the date of issuance.';
+        terms += ' Project start is subject to payment of the initial deposit and signing of the contract.';
+        terms += data.includeTaxes ? ' All values include estimated taxes.' : ' Values do not include applicable taxes.';
+        return terms;
+      }
       
       return data[key] || match;
     });
