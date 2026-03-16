@@ -75,6 +75,10 @@ export default function TemplateRenderer({ data, template }: TemplateRendererPro
       if (key === 'freelancer_phone') return data.phone || '+00 000 000 000';
       if (key === 'freelancer_address') return data.address || 'Your Address';
       if (key === 'freelancer_email') return data.email || 'hello@company.com';
+      if (key === 'logo_url') return data.logoUrl || '';
+      if (key === 'challenges_title') return data.challengesTitle || 'The Challenge';
+      if (key === 'objectives_title') return data.objectivesTitle || 'Objectives';
+      if (key === 'objectives_list') return (data.objectives || []).join('\n• ');
       
       return data[key] || match;
     });
@@ -121,12 +125,31 @@ export default function TemplateRenderer({ data, template }: TemplateRendererPro
             if (el.type === 'image') {
               const src = hydrate(el.content || '');
               if (!src) return null;
+
+              let width = styleProps.width;
+              let height = styleProps.height;
+              let left = styleProps.left;
+
+              if (el.content === '{{company_image_url}}') {
+                if (data.companyImageSize === 'wide') {
+                  width = '515.28px';
+                  height = '240px';
+                  left = '40px';
+                } else if (data.companyImageSize === 'small') {
+                  width = '120px';
+                  height = '120px';
+                } else {
+                  width = '300px';
+                  height = '210px';
+                }
+              }
+
               return (
                 <img
                   key={i}
                   src={src}
                   alt="Template Image"
-                  style={{ ...styleProps, objectFit: 'cover' }}
+                  style={{ ...styleProps, width, height, left, objectFit: 'cover' }}
                 />
               );
             }
@@ -136,12 +159,14 @@ export default function TemplateRenderer({ data, template }: TemplateRendererPro
               
               // Resolve rows
               let rows: any[] = [];
+              let extras: any[] = [];
               if (dynamic_rows_placeholder === 'milestones') {
                 rows = (data.milestones || []).map((m: any) => [
                   m.name || 'Milestone',
                   m.date || 'TBD',
                   `${data.currency ? data.currency.match(/\((.*?)\)/)?.[1] || '$' : '$'}${m.amount || '0'}`
                 ]);
+                extras = data.extras || [];
               }
 
               return (
@@ -177,7 +202,7 @@ export default function TemplateRenderer({ data, template }: TemplateRendererPro
                               fontSize: row_style.font_size ? `${row_style.font_size}px` : undefined,
                               color: row_style.color,
                               padding: row_style.padding ? `${row_style.padding.join('px ')}px` : '8px',
-                              textAlign: row_style.text_align as any,
+                              textAlign: cIdx === 2 ? 'right' : (row_style.text_align as any),
                               borderBottom: row_style.border_bottom
                             }}
                           >
@@ -186,6 +211,49 @@ export default function TemplateRenderer({ data, template }: TemplateRendererPro
                         ))}
                       </tr>
                     ))}
+                    {extras.length > 0 && dynamic_rows_placeholder === 'milestones' && (
+                      <>
+                        <tr>
+                          <td colSpan={columns.length} style={{ paddingTop: '32px', paddingBottom: '8px', fontFamily: header_style.font_family, fontSize: '10px', textTransform: 'uppercase', color: '#a6baae', borderBottom: '1px solid #c9c3ba' }}>
+                            Optional Add-ons
+                          </td>
+                        </tr>
+                        {extras.map((extra: any, eIdx: number) => (
+                          <tr key={`extra-${eIdx}`} style={{ backgroundColor: '#fafafa' }}>
+                            <td style={{
+                              fontFamily: row_style.font_family,
+                              fontSize: row_style.font_size ? `${row_style.font_size}px` : undefined,
+                              color: row_style.color,
+                              padding: row_style.padding ? `${row_style.padding.join('px ')}px` : '8px',
+                              textAlign: 'left',
+                              borderBottom: row_style.border_bottom
+                            }}>
+                              {extra.name}
+                            </td>
+                            <td style={{
+                              fontFamily: row_style.font_family,
+                              fontSize: row_style.font_size ? `${Number(row_style.font_size)-2}px` : undefined,
+                              color: '#6b7280',
+                              padding: row_style.padding ? `${row_style.padding.join('px ')}px` : '8px',
+                              textAlign: 'left',
+                              borderBottom: row_style.border_bottom
+                            }}>
+                              {extra.date}
+                            </td>
+                            <td style={{
+                              fontFamily: row_style.font_family,
+                              fontSize: row_style.font_size ? `${row_style.font_size}px` : undefined,
+                              color: row_style.color,
+                              padding: row_style.padding ? `${row_style.padding.join('px ')}px` : '8px',
+                              textAlign: 'right',
+                              borderBottom: row_style.border_bottom
+                            }}>
+                              {data.currency ? data.currency.match(/\((.*?)\)/)?.[1] || '$' : '$'}{extra.amount}
+                            </td>
+                          </tr>
+                        ))}
+                      </>
+                    )}
                   </tbody>
                 </table>
               );

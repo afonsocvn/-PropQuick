@@ -11,9 +11,10 @@ export const greenEleganceTemplate = {
       type: "cover",
       elements: [
         { type: "shape", style: { background_color: "#3d564b" }, dimensions: { width: 595.28, height: 841.89 } },
-        { type: "text", content: "◆ {{company_name}}", style: { font_family: "Inter, sans-serif", font_size: 14, font_weight: "bold", color: "#ffffff", text_align: "left" }, position: { x: 40, y: 50, is_absolute: true } },
-        { type: "text", content: "Project\nProposal", style: { font_family: "'Playfair Display', serif", font_size: 64, font_weight: "bold", color: "#f3ece1", text_align: "left", line_height: 1.1 }, position: { x: 40, y: 250, is_absolute: true } },
-        { type: "text", content: "{{project_title}}", style: { font_family: "Inter, sans-serif", font_size: 16, font_weight: "normal", color: "#a6baae", text_align: "left" }, position: { x: 40, y: 420, is_absolute: true } },
+        { type: "image", content: "{{logo_url}}", dimensions: { width: 140, height: 40 }, position: { x: 40, y: 40, is_absolute: true } },
+        { type: "text", content: "◆ {{company_name}}", style: { font_family: "Inter, sans-serif", font_size: 14, font_weight: "bold", color: "#ffffff", text_align: "left" }, position: { x: 40, y: 90, is_absolute: true } },
+        { type: "text", content: "Project\nProposal", style: { font_family: "'Playfair Display', serif", font_size: 64, font_weight: "bold", color: "#f3ece1", text_align: "left", line_height: 1.1 }, position: { x: 40, y: 280, is_absolute: true } },
+        { type: "text", content: "{{project_title}}", style: { font_family: "Inter, sans-serif", font_size: 16, font_weight: "normal", color: "#a6baae", text_align: "left" }, position: { x: 40, y: 440, is_absolute: true } },
         { type: "text", content: "PRESENTED TO:\n{{client_name}}", style: { font_family: "Inter, sans-serif", font_size: 10, font_weight: "bold", color: "#a6baae", line_height: 1.4 }, position: { x: 40, y: 760, is_absolute: true } },
         { type: "text", content: "PRESENTED BY\n{{freelancer_name}}", style: { font_family: "Inter, sans-serif", font_size: 10, font_weight: "bold", color: "#a6baae", line_height: 1.4 }, position: { x: 250, y: 760, is_absolute: true } }
       ]
@@ -29,14 +30,30 @@ export const greenEleganceTemplate = {
       ]
     },
     {
-      id: "intro_challenges_page",
+      id: "intro_page",
       type: "standard",
       elements: [
         { type: "shape", style: { background_color: "#f3ece1" }, dimensions: { width: 595.28, height: 841.89 } },
         { type: "text", content: "Introduction", style: { font_family: "'Playfair Display', serif", font_size: 22, font_weight: "bold", color: "#3d564b" }, position: { x: 40, y: 60, is_absolute: true } },
-        { type: "text", content: "{{project_context}}", style: { font_family: "Inter, sans-serif", font_size: 12, color: "#3c3c3c", line_height: 1.5 }, dimensions: { width: 515 }, position: { x: 40, y: 95, is_absolute: true } },
-        { type: "text", content: "Our Challenge", style: { font_family: "'Playfair Display', serif", font_size: 22, font_weight: "bold", color: "#3d564b" }, position: { x: 40, y: 350, is_absolute: true } },
-        { type: "text", content: "{{challenges_list}}", style: { font_family: "Inter, sans-serif", font_size: 12, color: "#3c3c3c", line_height: 1.5 }, dimensions: { width: 515 }, position: { x: 40, y: 385, is_absolute: true } }
+        { type: "text", content: "{{project_context}}", style: { font_family: "Inter, sans-serif", font_size: 12, color: "#3c3c3c", line_height: 1.5 }, dimensions: { width: 515 }, position: { x: 40, y: 95, is_absolute: true } }
+      ]
+    },
+    {
+      id: "challenges_page",
+      type: "standard",
+      elements: [
+        { type: "shape", style: { background_color: "#f3ece1" }, dimensions: { width: 595.28, height: 841.89 } },
+        { type: "text", content: "{{challenges_title}}", style: { font_family: "'Playfair Display', serif", font_size: 22, font_weight: "bold", color: "#3d564b" }, position: { x: 40, y: 60, is_absolute: true } },
+        { type: "text", content: "{{challenges_list}}", style: { font_family: "Inter, sans-serif", font_size: 12, color: "#3c3c3c", line_height: 1.5 }, dimensions: { width: 515 }, position: { x: 40, y: 95, is_absolute: true } }
+      ]
+    },
+    {
+      id: "objectives_page",
+      type: "standard",
+      elements: [
+        { type: "shape", style: { background_color: "#f3ece1" }, dimensions: { width: 595.28, height: 841.89 } },
+        { type: "text", content: "{{objectives_title}}", style: { font_family: "'Playfair Display', serif", font_size: 22, font_weight: "bold", color: "#3d564b" }, position: { x: 40, y: 60, is_absolute: true } },
+        { type: "text", content: "{{objectives_list}}", style: { font_family: "Inter, sans-serif", font_size: 12, color: "#3c3c3c", line_height: 1.5 }, dimensions: { width: 515 }, position: { x: 40, y: 95, is_absolute: true } }
       ]
     },
     {
@@ -49,7 +66,7 @@ export const greenEleganceTemplate = {
         { 
           type: "table", content: "", 
           table_config: {
-            columns: ["Description", "Due", "Amount"],
+            columns: ["Description", "", "Amount"],
             dynamic_rows_placeholder: "milestones",
             header_style: { font_family: "Inter, sans-serif", font_size: 12, font_weight: "bold", color: "#3c3c3c", background_color: "#e0d9d0", padding: [8,8,8,8], text_align: "left" },
             row_style: { font_family: "Inter, sans-serif", font_size: 11, color: "#3c3c3c", padding: [8,8,8,8], text_align: "left", border_bottom: "1px solid #c9c3ba" }
