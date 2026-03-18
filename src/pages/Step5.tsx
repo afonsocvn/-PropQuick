@@ -278,7 +278,7 @@ export default function Step5() {
             <Link to="/create/step/2" className="flex items-center gap-2 px-6 py-3 rounded-lg text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white font-medium transition-colors">
               <span className="material-symbols-outlined">arrow_back</span>
               Back to Project Details          </Link>
-            <Link to="/preview" className="flex items-center gap-2 px-8 py-3 rounded-lg bg-primary hover:bg-primary/90 text-white font-bold shadow-lg shadow-primary/20 transition-all transform hover:-translate-y-0.5">
+            <Link to="/create/step/4" className="flex items-center gap-2 px-8 py-3 rounded-lg bg-primary hover:bg-primary/90 text-white font-bold shadow-lg shadow-primary/20 transition-all transform hover:-translate-y-0.5">
               Next Step
               <span className="material-symbols-outlined">arrow_forward</span>
             </Link>
