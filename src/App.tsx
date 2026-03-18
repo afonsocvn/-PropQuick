@@ -25,10 +25,10 @@ export default function App() {
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/step1" element={<Step1 />} />
-        <Route path="/step3" element={<Step3 />} />
-        <Route path="/step5" element={<Step5 />} />
-        <Route path="/preview" element={<Preview />} />
+        <Route path="/create/step/1" element={<Step1 />} />
+        <Route path="/create/step/2" element={<Step3 />} />
+        <Route path="/create/step/3" element={<Step5 />} />
+        <Route path="/create/step/4" element={<Preview />} />
         <Route path="/terms" element={<TermsOfUse />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
       </Routes>

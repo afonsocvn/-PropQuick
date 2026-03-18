@@ -56,7 +56,7 @@ export default function Step5() {
               <span className="text-primary dark:text-secondary font-medium">Fees &amp; Milestones</span>
             </div>
             <div className="h-3 w-full bg-secondary/20 rounded-full overflow-hidden">
-              <div className="h-full bg-primary w-[83%] rounded-full transition-all duration-500 ease-out"></div>
+              <div className="h-full bg-primary w-[75%] rounded-full transition-all duration-500 ease-out"></div>
             </div>
           </div>
           <div className="text-center md:text-left space-y-2">
@@ -274,11 +274,10 @@ export default function Step5() {
               </div>
             </div>
           </div>
-          <div className="flex justify-between items-center pt-8 border-t border-slate-200 dark:border-slate-700">
-            <Link to="/step3" className="flex items-center gap-2 px-6 py-3 rounded-lg text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white font-medium transition-colors">
+          <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-4">
+            <Link to="/create/step/2" className="flex items-center gap-2 px-6 py-3 rounded-lg text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white font-medium transition-colors">
               <span className="material-symbols-outlined">arrow_back</span>
-              Back
-            </Link>
+              Back to Project Details          </Link>
             <Link to="/preview" className="flex items-center gap-2 px-8 py-3 rounded-lg bg-primary hover:bg-primary/90 text-white font-bold shadow-lg shadow-primary/20 transition-all transform hover:-translate-y-0.5">
               Next Step
               <span className="material-symbols-outlined">arrow_forward</span>

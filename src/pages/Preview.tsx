@@ -66,14 +66,27 @@ function PagedContent({ children, footer, wrapperClassName = '', contentClassNam
       ))}
     </div>
   );
-}
 
 export default function Preview() {
-  const { data } = useProposalData();
+  const { data, updateData } = useProposalData();
   const [zoom, setZoom] = useState(1);
   const [layout, setLayout] = useState<1 | 2 | 3 | 4>(1);
   const [showLayoutPicker, setShowLayoutPicker] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [showEmailModal, setShowEmailModal] = useState(false);
+
+  const categories = ['All', 'Freelancers', 'Consultant', 'Construction', 'General'];
+
+  const layouts = [
+    { id: 1, name: 'Classic', desc: 'Default layout', category: 'General' },
+    { id: 2, name: 'Minimal', desc: 'Clean & bold', category: 'Freelancers' },
+    { id: 3, name: 'Warm', desc: 'White + Orange', category: 'Consultant' },
+    { id: 4, name: 'Elegance', desc: 'Dark Green/Beige', category: 'General' },
+  ];
+
+  const filteredLayouts = selectedCategory === 'All' 
+    ? layouts 
+    : layouts.filter(l => l.category === selectedCategory);
 
   const executeDownload = () => {
     trackEvent('pdf_downloaded');
@@ -97,6 +110,9 @@ export default function Preview() {
     { name: data.milestone1Name || 'Initial Deposit', amount: data.milestone1Amount || '1500', date: data.milestone1Date || 'Upon signing' },
     { name: data.milestone2Name || 'Final Delivery', amount: data.milestone2Amount || '1500', date: data.milestone2Date || 'Project Completion' }
   ];
+  const fontMain = data.fontPairing === 'playfair' ? '"Playfair Display", serif' : data.fontPairing === 'roboto' ? 'Roboto, sans-serif' : '"Inter", sans-serif';
+  const fontSecondary = data.fontPairing === 'playfair' ? '"Inter", sans-serif' : data.fontPairing === 'roboto' ? '"Lora", serif' : '"Inter", sans-serif';
+  const brandColor = data.brandColor || '#0ba3a3';
   const extras = data.extras || [];
   const totalInvestment = milestones.reduce((sum: number, m: any) => sum + Number(m.amount || 0), 0);
 
@@ -111,29 +127,6 @@ export default function Preview() {
             <p className="text-text-muted text-base">Review document details and preview before generating the final file for the client.</p>
           </div>
 
-          {/* Info cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="bg-surface-light p-4 rounded-xl border border-secondary/20 shadow-sm flex items-start gap-3">
-              <div className="bg-surface-off p-2 rounded-lg text-primary">
-                <span className="material-symbols-outlined">calendar_today</span>
-              </div>
-              <div>
-                <p className="text-xs font-bold text-text-muted uppercase">Date</p>
-                <p className="text-sm font-bold text-text-dark">{new Date().toLocaleDateString()}</p>
-              </div>
-            </div>
-            <div className="bg-surface-light p-4 rounded-xl border border-secondary/20 shadow-sm flex items-start gap-3">
-              <div className="bg-surface-off p-2 rounded-lg text-primary">
-                <span className="material-symbols-outlined">translate</span>
-              </div>
-              <div>
-                <p className="text-xs font-bold text-text-muted uppercase">Language</p>
-                <p className="text-sm font-bold text-text-dark">English (EN)</p>
-                <p className="text-[10px] text-text-muted mt-0.5">More languages coming soon</p>
-              </div>
-            </div>
-          </div>
-
           <div className="h-px w-full bg-secondary/20 my-2"></div>
 
           {/* Action Buttons */}
@@ -143,14 +136,14 @@ export default function Preview() {
               Generate Final Proposal
             </button>
             <div className="flex gap-3">
-              <Link to="/step5" className="flex items-center justify-center gap-2 w-full h-14 bg-surface-off border border-secondary/20 text-text-muted text-sm font-bold rounded-xl hover:bg-secondary/10 hover:text-primary transition-colors">
+              <Link to="/create/step/3" className="flex items-center justify-center gap-2 w-full h-14 bg-surface-off border border-secondary/20 text-text-muted text-sm font-bold rounded-xl hover:bg-secondary/10 hover:text-primary transition-colors">
                 <span className="material-symbols-outlined">arrow_back</span>
                 Back
               </Link>
             </div>
 
             {/* Layout Picker */}
-            <div className="mt-2">
+            <div className="mt-2 text-justify">
               <button
                 onClick={() => setShowLayoutPicker(!showLayoutPicker)}
                 className="w-full flex items-center justify-between px-5 py-3 rounded-xl border-2 border-dashed border-secondary/40 text-text-muted hover:border-primary hover:text-primary transition-colors font-semibold text-sm"
@@ -165,126 +158,152 @@ export default function Preview() {
               </button>
 
               {showLayoutPicker && (
-                <div className="mt-3 grid grid-cols-2 gap-3">
-                  {/* Layout Option 1 */}
-                  <button
-                    onClick={() => { setLayout(1); setShowLayoutPicker(false); }}
-                    className={`relative flex flex-col items-center p-3 rounded-xl border-2 transition-all ${layout === 1 ? 'border-primary bg-primary/5' : 'border-gray-200 hover:border-primary/40 bg-white'}`}
-                  >
-                    {layout === 1 && (
-                      <span className="absolute top-2 right-2 w-4 h-4 bg-primary rounded-full flex items-center justify-center">
-                        <span className="material-symbols-outlined text-white" style={{ fontSize: '12px' }}>check</span>
-                      </span>
-                    )}
-                    {/* Layout 1 preview thumbnail */}
-                    <div className="w-full aspect-[3/4] bg-white border border-gray-100 rounded-lg overflow-hidden mb-2 shadow-sm">
-                      <div className="h-1/4 bg-primary/10 flex items-end px-2 pb-1">
-                        <div className="w-3 h-3 bg-primary/40 rounded-sm mr-1"></div>
-                        <div className="flex-1 h-1 bg-primary/20 rounded"></div>
-                      </div>
-                      <div className="p-2 space-y-1">
-                        <div className="h-1 bg-gray-200 rounded w-3/4"></div>
-                        <div className="h-1 bg-gray-200 rounded w-1/2"></div>
-                        <div className="h-1 bg-gray-100 rounded w-full mt-2"></div>
-                        <div className="h-1 bg-gray-100 rounded w-full"></div>
-                      </div>
-                    </div>
-                    <p className="text-xs font-bold text-text-dark">Classic</p>
-                    <p className="text-[10px] text-text-muted">Default layout</p>
-                  </button>
+                <div className="mt-4 space-y-4">
+                  {/* Category Filter */}
+                  <div className="flex flex-wrap gap-2">
+                    {categories.map(cat => (
+                      <button
+                        key={cat}
+                        onClick={() => setSelectedCategory(cat)}
+                        className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${selectedCategory === cat ? 'bg-primary text-white' : 'bg-gray-100 text-text-muted hover:bg-gray-200'}`}
+                      >
+                        {cat}
+                      </button>
+                    ))}
+                  </div>
 
-                  {/* Layout Option 2 */}
-                  <button
-                    onClick={() => { setLayout(2); setShowLayoutPicker(false); }}
-                    className={`relative flex flex-col items-center p-3 rounded-xl border-2 transition-all ${layout === 2 ? 'border-primary bg-primary/5' : 'border-gray-200 hover:border-primary/40 bg-white'}`}
-                  >
-                    {layout === 2 && (
-                      <span className="absolute top-2 right-2 w-4 h-4 bg-primary rounded-full flex items-center justify-center">
-                        <span className="material-symbols-outlined text-white" style={{ fontSize: '12px' }}>check</span>
-                      </span>
-                    )}
-                    {/* Layout 2 preview thumbnail */}
-                    <div className="w-full aspect-[3/4] bg-[#f0f0ed] border border-gray-100 rounded-lg overflow-hidden mb-2 shadow-sm flex flex-col">
-                      <div className="flex items-center justify-between px-2 pt-2">
-                        <div className="w-3 h-3 border border-gray-400 rounded-full"></div>
-                        <div className="h-0.5 w-5 bg-gray-400 rounded"></div>
-                      </div>
-                      <div className="px-2 pt-2 flex-grow">
-                        <div className="h-2.5 bg-[#1a2332] rounded w-4/5 mb-1"></div>
-                        <div className="h-2.5 bg-[#1a2332] rounded w-3/5 mb-2"></div>
-                        <div className="h-0.5 bg-gray-300 rounded w-2/5 mb-1"></div>
-                        <div className="h-1 bg-gray-400 rounded w-3/5"></div>
-                      </div>
-                      <div className="h-1/5 bg-[#1a2332] w-full mt-auto"></div>
-                    </div>
-                    <p className="text-xs font-bold text-text-dark">Minimal</p>
-                    <p className="text-[10px] text-text-muted">Clean & bold</p>
-                  </button>
-                  {/* Layout Option 3 */}
-                  <button
-                    onClick={() => { setLayout(3); setShowLayoutPicker(false); }}
-                    className={`relative flex flex-col items-center p-3 rounded-xl border-2 transition-all ${layout === 3 ? 'border-primary bg-primary/5' : 'border-gray-200 hover:border-primary/40 bg-white'}`}
-                  >
-                    {layout === 3 && (
-                      <span className="absolute top-2 right-2 w-4 h-4 bg-primary rounded-full flex items-center justify-center">
-                        <span className="material-symbols-outlined text-white" style={{ fontSize: '12px' }}>check</span>
-                      </span>
-                    )}
-                    {/* Layout 3 preview thumbnail */}
-                    <div className="w-full aspect-[3/4] bg-white border border-gray-100 rounded-lg overflow-hidden mb-2 shadow-sm flex flex-col">
-                      <div className="flex items-center justify-between px-2 pt-2">
-                        <div className="w-3 h-3 border border-gray-300 rounded-full"></div>
-                        <div className="h-0.5 w-5 bg-gray-300 rounded"></div>
-                      </div>
-                      <div className="px-2 pt-2 flex-grow">
-                        <div className="h-2.5 bg-gray-700 rounded w-4/5 mb-1"></div>
-                        <div className="h-2.5 bg-gray-700 rounded w-3/5 mb-2"></div>
-                        <div className="h-0.5 bg-gray-200 rounded w-2/5 mb-1"></div>
-                        <div className="h-1 bg-gray-300 rounded w-3/5"></div>
-                      </div>
-                      <div className="h-1/5 bg-[#f4a261] w-full mt-auto"></div>
-                    </div>
-                    <p className="text-xs font-bold text-text-dark">Warm</p>
-                    <p className="text-[10px] text-text-muted">White + Orange</p>
-                  </button>
-
-                  {/* Layout Option 4 */}
-                  <button
-                    onClick={() => { setLayout(4); setShowLayoutPicker(false); }}
-                    className={`relative flex flex-col items-center p-3 rounded-xl border-2 transition-all ${layout === 4 ? 'border-primary bg-primary/5' : 'border-gray-200 hover:border-primary/40 bg-white'}`}
-                  >
-                    {layout === 4 && (
-                      <span className="absolute top-2 right-2 w-4 h-4 bg-primary rounded-full flex items-center justify-center">
-                        <span className="material-symbols-outlined text-white" style={{ fontSize: '12px' }}>check</span>
-                      </span>
-                    )}
-                    {/* Layout 4 preview thumbnail */}
-                    <div className="w-full aspect-[3/4] bg-[#3d564b] border border-gray-100 rounded-lg overflow-hidden mb-2 shadow-sm flex flex-col">
-                      <div className="flex items-center justify-between px-2 pt-6">
-                        <div className="w-3 h-3 border border-[#a6baae] rounded-full"></div>
-                      </div>
-                      <div className="px-2 pt-4 flex-grow">
-                        <div className="h-4 bg-[#f3ece1] rounded w-4/5 mb-1"></div>
-                        <div className="h-4 bg-[#f3ece1] rounded w-3/5 mb-2"></div>
-                      </div>
-                      <div className="flex justify-between w-full mt-auto px-2 pb-2">
-                       <div className="h-1 bg-[#a6baae] rounded w-1/4"></div>
-                       <div className="h-1 bg-[#a6baae] rounded w-1/4"></div>
-                      </div>
-                    </div>
-                    <p className="text-xs font-bold text-text-dark">Elegance</p>
-                    <p className="text-[10px] text-text-muted">Dark Green/Beige</p>
-                  </button>
+                  <div className="grid grid-cols-2 gap-3">
+                    {filteredLayouts.map((l) => (
+                      <button
+                        key={l.id}
+                        onClick={() => { setLayout(l.id as 1 | 2 | 3 | 4); setShowLayoutPicker(false); }}
+                        className={`relative flex flex-col items-center p-3 rounded-xl border-2 transition-all ${layout === l.id ? 'border-primary bg-primary/5' : 'border-gray-200 hover:border-primary/40 bg-white'}`}
+                      >
+                        {layout === l.id && (
+                          <span className="absolute top-2 right-2 w-4 h-4 bg-primary rounded-full flex items-center justify-center">
+                            <span className="material-symbols-outlined text-white" style={{ fontSize: '12px' }}>check</span>
+                          </span>
+                        )}
+                        <div className="w-full aspect-[3/4] bg-gray-50 border border-gray-100 rounded-lg flex items-center justify-center mb-2">
+                          <span className="material-symbols-outlined text-gray-300 text-3xl">description</span>
+                        </div>
+                        <p className="text-xs font-bold text-text-dark">{l.name}</p>
+                        <p className="text-[10px] text-text-muted">{l.desc}</p>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
-          </div>
 
-          <div className="bg-blue-50/50 p-4 rounded-lg flex gap-3 items-start border border-blue-100">
-            <span className="material-symbols-outlined text-blue-600 mt-0.5 text-lg">info</span>
-            <p className="text-sm text-blue-800 leading-relaxed">
-              You can edit the document again after generation if needed.
-            </p>
+            {/* Customization Options */}
+            <div className="bg-surface-light p-5 rounded-xl border border-secondary/20 shadow-sm space-y-5">
+              <h3 className="text-sm font-bold text-text-dark flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary text-base">palette</span>
+                Brand Customization
+              </h3>
+
+              <div className="space-y-3">
+                <label className="block text-xs font-bold text-text-muted uppercase">Brand Color</label>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="color"
+                    value={data.brandColor || '#0ba3a3'}
+                    onChange={(e) => updateData('brandColor', e.target.value)}
+                    className="w-10 h-10 rounded cursor-pointer border-0 p-0 shadow-sm"
+                  />
+                  <div className="flex-1">
+                    <input
+                      type="text"
+                      value={data.brandColor || '#0ba3a3'}
+                      onChange={(e) => updateData('brandColor', e.target.value)}
+                      className="w-full px-3 py-2 text-sm border border-secondary/20 rounded-lg focus:outline-none focus:border-primary uppercase bg-white font-mono"
+                      placeholder="#HEXCODE"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <label className="block text-xs font-bold text-text-muted uppercase">Typography Pairing</label>
+                <div className="grid grid-cols-1 gap-2">
+                  <button
+                    onClick={() => updateData('fontPairing', 'inter')}
+                    className={`text-left px-3 py-2 rounded-lg border flex flex-col justify-center ${(!data.fontPairing || data.fontPairing === 'inter') ? 'border-primary bg-primary/5 text-primary' : 'border-gray-200 hover:border-primary/40 text-text-dark bg-white'}`}
+                  >
+                    <span className="block text-sm font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>Inter</span>
+                    <span className="block text-[10px] opacity-70 font-normal mt-0.5" style={{ fontFamily: 'Inter, sans-serif' }}>Modern & Clean (Default)</span>
+                  </button>
+                  <button
+                    onClick={() => updateData('fontPairing', 'playfair')}
+                    className={`text-left px-3 py-2 rounded-lg border flex flex-col justify-center ${(data.fontPairing === 'playfair') ? 'border-primary bg-primary/5 text-primary' : 'border-gray-200 hover:border-primary/40 text-text-dark bg-white'}`}
+                  >
+                    <span className="block text-sm font-bold" style={{ fontFamily: '"Playfair Display", serif' }}>Playfair Display</span>
+                    <span className="block text-[10px] opacity-70 font-normal mt-0.5" style={{ fontFamily: 'Inter, sans-serif' }}>Elegant & Professional</span>
+                  </button>
+                  <button
+                    onClick={() => updateData('fontPairing', 'roboto')}
+                    className={`text-left px-3 py-2 rounded-lg border flex flex-col justify-center ${(data.fontPairing === 'roboto') ? 'border-primary bg-primary/5 text-primary' : 'border-gray-200 hover:border-primary/40 text-text-dark bg-white'}`}
+                  >
+                    <span className="block text-sm font-bold" style={{ fontFamily: 'Roboto, sans-serif' }}>Roboto</span>
+                    <span className="block text-[10px] opacity-70 font-normal mt-0.5" style={{ fontFamily: 'Inter, sans-serif' }}>Corporate & Trustworthy</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>                <span className="material-symbols-outlined text-primary text-base">palette</span>
+                Brand Customization
+              </h3>
+              
+              <div className="space-y-3">
+                <label className="block text-xs font-bold text-text-muted uppercase">Brand Color</label>
+                <div className="flex items-center gap-3">
+                  <input 
+                    type="color" 
+                    value={data.brandColor || '#0ba3a3'} 
+                    onChange={(e) => updateData('brandColor', e.target.value)}
+                    className="w-10 h-10 rounded cursor-pointer border-0 p-0 shadow-sm"
+                  />
+                  <div className="flex-1">
+                    <input 
+                      type="text" 
+                      value={data.brandColor || '#0ba3a3'} 
+                      onChange={(e) => updateData('brandColor', e.target.value)}
+                      className="w-full px-3 py-2 text-sm border border-secondary/20 rounded-lg focus:outline-none focus:border-primary uppercase bg-white font-mono"
+                      placeholder="#HEXCODE"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <label className="block text-xs font-bold text-text-muted uppercase">Typography Pairing</label>
+                <div className="grid grid-cols-1 gap-2">
+                  <button 
+                    onClick={() => updateData('fontPairing', 'inter')}
+                    className={`text-left px-3 py-2 rounded-lg border flex flex-col justify-center ${(!data.fontPairing || data.fontPairing === 'inter') ? 'border-primary bg-primary/5 text-primary' : 'border-gray-200 hover:border-primary/40 text-text-dark bg-white'}`}
+                  >
+                    <span className="block text-sm font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>Inter</span>
+                    <span className="block text-[10px] opacity-70 font-normal mt-0.5" style={{ fontFamily: 'Inter, sans-serif' }}>Modern & Clean (Default)</span>
+                  </button>
+                  <button 
+                    onClick={() => updateData('fontPairing', 'playfair')}
+                    className={`text-left px-3 py-2 rounded-lg border flex flex-col justify-center ${(data.fontPairing === 'playfair') ? 'border-primary bg-primary/5 text-primary' : 'border-gray-200 hover:border-primary/40 text-text-dark bg-white'}`}
+                  >
+                    <span className="block text-sm font-bold" style={{ fontFamily: '"Playfair Display", serif' }}>Playfair Display</span>
+                    <span className="block text-[10px] opacity-70 font-normal mt-0.5" style={{ fontFamily: 'Inter, sans-serif' }}>Elegant & Professional</span>
+                  </button>
+                  <button 
+                    onClick={() => updateData('fontPairing', 'roboto')}
+                    className={`text-left px-3 py-2 rounded-lg border flex flex-col justify-center ${(data.fontPairing === 'roboto') ? 'border-primary bg-primary/5 text-primary' : 'border-gray-200 hover:border-primary/40 text-text-dark bg-white'}`}
+                  >
+                    <span className="block text-sm font-bold" style={{ fontFamily: 'Roboto, sans-serif' }}>Roboto</span>
+                    <span className="block text-[10px] opacity-70 font-normal mt-0.5" style={{ fontFamily: 'Inter, sans-serif' }}>Corporate & Trustworthy</span>
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -316,7 +335,7 @@ export default function Preview() {
           <div className="flex-grow bg-[#E5E5E5] rounded-xl p-4 lg:p-8 overflow-y-auto custom-scrollbar flex justify-center print:bg-white print:p-0 print:m-0 print:overflow-visible relative print:block">
             <div
               className="flex flex-col gap-8 items-center transition-all duration-300 origin-top print:transform-none print:gap-0 print:filter-none print:block print:m-0 print:p-0"
-              style={{ transform: `scale(${zoom})` }}
+              style={{ transform: `scale(${zoom})`, '--color-primary': brandColor } as React.CSSProperties}
             >
               {/* ====== LAYOUT 1: EDITORIAL ====== */}
               {layout === 1 && (
@@ -339,11 +358,11 @@ export default function Preview() {
                         {data.logoUrl ? (
                           <img src={data.logoUrl} alt="Logo" className="h-8 object-contain mb-1" />
                         ) : null}
-                        <p className="text-[11px] text-gray-600" style={{ fontFamily: "'Inter', sans-serif" }}>
+                        <p className="text-[11px] text-gray-600" style={{ fontFamily: fontSecondary }}>
                           {data.proposalVersion ? <span className="font-semibold text-gray-800">{data.proposalVersion}</span> : 'Project Proposal'}
                         </p>
                       </div>
-                      <p className="text-[11px] text-gray-600" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      <p className="text-[11px] text-gray-600" style={{ fontFamily: fontSecondary }}>
                         {new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
                       </p>
                     </div>
@@ -352,11 +371,11 @@ export default function Preview() {
                     <div className="flex-grow flex flex-col justify-center px-10 print:px-14 z-10">
                       <h1
                         className="leading-[1.1] text-gray-900 mb-6"
-                        style={{ fontSize: '68px', fontWeight: 400, fontFamily: "'Georgia', 'Times New Roman', serif", letterSpacing: '-0.01em' }}
+                        style={{ fontSize: '68px', fontWeight: 400, fontFamily: fontMain, letterSpacing: '-0.01em' }}
                       >
                         <span style={{ fontStyle: 'italic' }}>{data.projectTitle || 'Idea Proposals'}</span>
                       </h1>
-                      <p className="text-[13px] text-gray-600" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      <p className="text-[13px] text-gray-600" style={{ fontFamily: fontSecondary }}>
                         {data.projectContext
                           ? data.projectContext.split('.')[0] + '.'
                           : 'A new way of delivering a product'}
@@ -366,13 +385,13 @@ export default function Preview() {
                     {/* Proposed By / To */}
                     <div className="px-10 print:px-14 pb-12 z-10 space-y-4">
                       <div>
-                        <p className="text-[11px] text-gray-500 mb-0.5" style={{ fontFamily: "'Inter', sans-serif" }}>Proposed By:</p>
-                        <p className="text-[14px] font-bold text-gray-900" style={{ fontFamily: "'Inter', sans-serif" }}>{data.companyName || 'Your Company'}</p>
+                        <p className="text-[11px] text-gray-500 mb-0.5" style={{ fontFamily: fontSecondary }}>Proposed By:</p>
+                        <p className="text-[14px] font-bold text-gray-900" style={{ fontFamily: fontSecondary }}>{data.companyName || 'Your Company'}</p>
                       </div>
                       {data.clientName && (
                         <div>
-                          <p className="text-[11px] text-gray-500 mb-0.5" style={{ fontFamily: "'Inter', sans-serif" }}>Proposed To:</p>
-                          <p className="text-[14px] font-bold text-gray-900" style={{ fontFamily: "'Inter', sans-serif" }}>{data.clientName}</p>
+                          <p className="text-[11px] text-gray-500 mb-0.5" style={{ fontFamily: fontSecondary }}>Proposed To:</p>
+                          <p className="text-[14px] font-bold text-gray-900" style={{ fontFamily: fontSecondary }}>{data.clientName}</p>
                         </div>
                       )}
                     </div>
@@ -430,48 +449,40 @@ export default function Preview() {
                     </div>
                   )}
 
-                  {/* PAGE 3 - Challenges */}
-                  {challenges.filter((c: string) => c.trim()).length > 0 && (
+                  {/* PAGE 3 - Challenges & Objectives */}
+                  {(challenges.filter((c: string) => c.trim()).length > 0 || objectives.filter((o: string) => o.trim()).length > 0) && (
                     <div className="bg-white w-full max-w-[595px] border-t border-gray-100 aspect-a4 shadow-2xl flex flex-col relative overflow-hidden print:shadow-none print-dynamic-flow print:break-inside-avoid">
-                      <div className="flex-grow px-14 py-14 flex flex-col">
-                        <div className="mb-4 relative z-10 flex-grow">
-                          <h6 className="text-xs font-bold text-text-dark uppercase tracking-wider mb-2 border-b border-gray-100 pb-1">02. {data.challengesTitle || 'The Challenge'}</h6>
-                          <ul className="text-sm text-gray-600 space-y-2 mt-4 text-justify">
-                            {challenges.filter((c: string) => c.trim()).map((c: string, i: number) => (
-                              <li key={i} className="flex items-start gap-2">
-                                <span className="w-1.5 h-1.5 rounded-full bg-secondary mt-1.5 flex-shrink-0"></span>
-                                <span>{c}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
+                      <div className="flex-grow px-14 py-14 flex flex-col gap-8">
+                        {challenges.filter((c: string) => c.trim()).length > 0 && (
+                          <div className="relative z-10">
+                            <h6 className="text-xs font-bold text-text-dark uppercase tracking-wider mb-2 border-b border-gray-100 pb-1">02. {data.challengesTitle || 'The Challenge'}</h6>
+                            <ul className="text-sm text-gray-600 space-y-2 mt-4 text-justify">
+                              {challenges.filter((c: string) => c.trim()).map((c: string, i: number) => (
+                                <li key={i} className="flex items-start gap-2">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-secondary mt-1.5 flex-shrink-0"></span>
+                                  <span>{c}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                        {objectives.filter((o: string) => o.trim()).length > 0 && (
+                          <div className="relative z-10 w-full">
+                            <h6 className="text-xs font-bold text-text-dark uppercase tracking-wider mb-2 border-b border-gray-100 pb-1">03. {data.objectivesTitle || 'Objectives'}</h6>
+                            <ul className="text-sm text-gray-600 space-y-2 mt-4 text-justify">
+                              {objectives.filter((o: string) => o.trim()).map((o: string, i: number) => (
+                                <li key={i} className="flex items-start gap-2">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0"></span>
+                                  <span>{o}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
                       </div>
                       <div className="px-14 pt-4 pb-6 border-t border-gray-100 flex justify-between items-center text-[10px] text-gray-400">
                         <span>{data.companyName || 'PropQuick'} © {new Date().getFullYear()}</span>
                         <span>Page 3</span>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* PAGE 4 - Objectives */}
-                  {objectives.filter((o: string) => o.trim()).length > 0 && (
-                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative overflow-hidden print:shadow-none print-dynamic-flow print:break-inside-avoid">
-                      <div className="flex-grow px-14 py-14 flex flex-col">
-                        <div className="mb-4 relative z-10 flex-grow">
-                          <h6 className="text-xs font-bold text-text-dark uppercase tracking-wider mb-2 border-b border-gray-100 pb-1">03. {data.objectivesTitle || 'Objectives'}</h6>
-                          <ul className="text-sm text-gray-600 space-y-2 mt-4 text-justify">
-                            {objectives.filter((o: string) => o.trim()).map((o: string, i: number) => (
-                              <li key={i} className="flex items-start gap-2">
-                                <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0"></span>
-                                <span>{o}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                      <div className="px-14 pt-4 pb-6 border-t border-gray-100 flex justify-between items-center text-[10px] text-gray-400">
-                        <span>{data.companyName || 'PropQuick'} © {new Date().getFullYear()}</span>
-                        <span>Page 4</span>
                       </div>
                     </div>
                   )}
@@ -581,23 +592,23 @@ export default function Preview() {
               {layout === 2 && (
                 <>
                   {/* PAGE 1 - Minimal Cover */}
-                  <div className="bg-[#f0f0ed] w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <div className="bg-[#f0f0ed] w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: fontSecondary }}>
                     {/* Top bar */}
                     <div className="flex items-start justify-between px-10 pt-10">
                       <div className="flex items-center gap-3">
                         {data.logoUrl ? (
                           <img src={data.logoUrl} alt="Logo" className="h-10 object-contain" />
                         ) : (
-                          <div className="w-10 h-10 border-2 border-[#1a2332] rounded-full flex items-center justify-center">
-                            <span className="material-symbols-outlined text-[#1a2332] text-base">spa</span>
+                          <div className="w-10 h-10 border-2 border-primary rounded-full flex items-center justify-center">
+                            <span className="material-symbols-outlined text-primary text-base">spa</span>
                           </div>
                         )}
                         <div>
-                          <p className="text-[13px] font-semibold text-[#1a2332] leading-tight">{data.companyName || 'Arowwai'}</p>
+                          <p className="text-[13px] font-semibold text-primary leading-tight">{data.companyName || 'Arowwai'}</p>
                           <p className="text-[11px] text-[#555] leading-tight">{data.role || 'Industries'}</p>
                         </div>
                       </div>
-                      <p className="text-[12px] font-medium text-[#1a2332] pt-1">
+                      <p className="text-[12px] font-medium text-primary pt-1">
                         {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
                       </p>
                     </div>
@@ -605,20 +616,20 @@ export default function Preview() {
                     {/* Main title block */}
                     <div className="flex-grow flex flex-col justify-center px-10 pb-10">
                       <h1
-                        className="text-[72px] leading-[1.05] text-[#1a2332] mb-14"
+                        className="text-[72px] leading-[1.05] text-primary mb-14"
                         style={{ fontWeight: 300, letterSpacing: '-0.02em' }}
                       >
                         Project<br />Proposal
                       </h1>
                       <div className="space-y-1">
                         <p className="text-[12px] text-[#777]">Prepared for</p>
-                        <p className="text-[15px] font-bold text-[#1a2332]">{data.clientName || data.projectTitle || 'Your Client'}</p>
+                        <p className="text-[15px] font-bold text-primary">{data.clientName || data.projectTitle || 'Your Client'}</p>
                         {data.proposalVersion && <p className="text-[11px] text-[#999] mt-0.5">{data.proposalVersion}</p>}
                       </div>
                     </div>
 
                     {/* Dark footer */}
-                    <div className="bg-[#1a2332] px-10 py-7">
+                    <div className="bg-primary px-10 py-7">
                       <p className="text-[10px] text-[#8899aa] uppercase tracking-widest mb-1">Presented by</p>
                       <p className="text-[13px] font-bold text-white">{data.companyName || 'Studio'}</p>
                     </div>
@@ -626,11 +637,11 @@ export default function Preview() {
 
                   {/* PAGE 2 - Minimal Company Info */}
                   {(data.companyImageUrl || data.companyDescription) && (
-                    <div className="bg-[#f0f0ed] w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
-                      <div className="h-1 w-full bg-[#1a2332]"></div>
+                    <div className="bg-[#f0f0ed] w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: fontSecondary }}>
+                      <div className="h-1 w-full bg-primary"></div>
                       <div className="flex-grow px-14 pt-10 pb-10 flex flex-col">
                         <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-2">Overview</p>
-                        <h2 className="text-2xl font-light text-[#1a2332] mb-6" style={{ letterSpacing: '-0.01em' }}>About The Company</h2>
+                        <h2 className="text-2xl font-light text-primary mb-6" style={{ letterSpacing: '-0.01em' }}>About The Company</h2>
                         {(() => {
                           const imgSize = data.companyImageSize || 'medium';
                           const imgFull = imgSize === 'wide';
@@ -649,7 +660,7 @@ export default function Preview() {
                           );
                         })()}
                       </div>
-                      <div className="bg-[#1a2332] px-12 py-4 flex justify-between items-center mt-auto">
+                      <div className="bg-primary px-12 py-4 flex justify-between items-center mt-auto">
                         <span className="text-[10px] text-[#8899aa]">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
                         <span className="text-[10px] text-[#8899aa]">Company Profile</span>
                       </div>
@@ -658,78 +669,73 @@ export default function Preview() {
 
                   {/* PAGE 3 - Minimal Context */}
                   {data.projectContext && (
-                    <div className="bg-[#f0f0ed] w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
-                      <div className="h-1 w-full bg-[#1a2332]"></div>
+                    <div className="bg-[#f0f0ed] w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: fontSecondary }}>
+                      <div className="h-1 w-full bg-primary"></div>
                       <div className="flex-grow px-14 pt-10 pb-10 flex flex-col">
                         <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-2">Overview</p>
-                        <h2 className="text-2xl font-light text-[#1a2332] mb-4" style={{ letterSpacing: '-0.01em' }}>{data.projectContextTitle || 'Project Context'}</h2>
+                        <h2 className="text-2xl font-light text-primary mb-4" style={{ letterSpacing: '-0.01em' }}>{data.projectContextTitle || 'Project Context'}</h2>
                         <p className="text-sm text-gray-600 leading-relaxed flex-grow text-justify">
                           {data.projectContext || 'The goal of this proposal is to outline the strategy for the complete overhaul of the project.'}
                         </p>
                       </div>
-                      <div className="bg-[#1a2332] px-12 py-4 flex justify-between items-center mt-auto">
+                      <div className="bg-primary px-12 py-4 flex justify-between items-center mt-auto">
                         <span className="text-[10px] text-[#8899aa]">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
                         <span className="text-[10px] text-[#8899aa]">{data.projectContextTitle || 'Project Context'}</span>
                       </div>
                     </div>
                   )}
 
-                  {/* PAGE 3 - Minimal Challenges */}
-                  {challenges.filter((c: string) => c.trim()).length > 0 && (
-                    <div className="bg-[#f0f0ed] w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
-                      <div className="h-1 w-full bg-[#1a2332]"></div>
-                      <div className="flex-grow px-14 pt-10 pb-0 flex flex-col">
-                        <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-2">{data.challengesTitle || 'The Challenge'}</p>
-                        <ul className="space-y-2 mt-2 flex-grow text-justify">
-                          {challenges.filter((c: string) => c.trim()).map((challenge: string, index: number) => (
-                            <li key={`chal-${index}`} className="flex items-start gap-3 text-sm text-gray-600">
-                              <span className="text-[#1a2332] font-bold mt-0.5">—</span>
-                              <span>{challenge}</span>
-                            </li>
-                          ))}
-                        </ul>
+                  {/* PAGE 3 - Minimal Challenges & Objectives */}
+                  {(challenges.filter((c: string) => c.trim()).length > 0 || objectives.filter((o: string) => o.trim()).length > 0) && (
+                    <div className="bg-[#f0f0ed] w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: fontSecondary }}>
+                      <div className="h-1 w-full bg-primary"></div>
+                      <div className="flex-grow px-14 pt-10 pb-0 flex flex-col gap-8">
+                        {challenges.filter((c: string) => c.trim()).length > 0 && (
+                          <div>
+                            <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-2">{data.challengesTitle || 'The Challenge'}</p>
+                            <ul className="space-y-2 mt-2 text-justify">
+                              {challenges.filter((c: string) => c.trim()).map((challenge: string, index: number) => (
+                                <li key={`chal-${index}`} className="flex items-start gap-3 text-sm text-gray-600">
+                                  <span className="text-primary font-bold mt-0.5">—</span>
+                                  <span>{challenge}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                        {objectives.filter((o: string) => o.trim()).length > 0 && (
+                          <div>
+                            <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-2">{data.objectivesTitle || 'Objectives'}</p>
+                            <ul className="space-y-2 mt-2 text-justify">
+                              {objectives.filter((o: string) => o.trim()).map((objective: string, index: number) => (
+                                <li key={`obj-${index}`} className="flex items-start gap-3 text-sm text-gray-600">
+                                  <span className="text-primary font-bold mt-0.5">—</span>
+                                  <span>{objective}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
                       </div>
-                      <div className="bg-[#1a2332] px-12 py-4 flex justify-between items-center mt-auto">
+                      <div className="bg-primary px-12 py-4 flex justify-between items-center mt-auto">
                         <span className="text-[10px] text-[#8899aa]">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
                         <span className="text-[10px] text-[#8899aa]">Page 3</span>
                       </div>
                     </div>
                   )}
 
-                  {/* PAGE 4 - Minimal Objectives */}
-                  {objectives.filter((o: string) => o.trim()).length > 0 && (
-                    <div className="bg-[#f0f0ed] w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
-                      <div className="h-1 w-full bg-[#1a2332]"></div>
-                      <div className="flex-grow px-14 pt-10 pb-0 flex flex-col">
-                        <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-2">{data.objectivesTitle || 'Objectives'}</p>
-                        <ul className="space-y-2 mt-2 flex-grow text-justify">
-                          {objectives.filter((o: string) => o.trim()).map((objective: string, index: number) => (
-                            <li key={`obj-${index}`} className="flex items-start gap-3 text-sm text-gray-600">
-                              <span className="text-[#1a2332] font-bold mt-0.5">—</span>
-                              <span>{objective}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      <div className="bg-[#1a2332] px-12 py-4 flex justify-between items-center mt-auto">
-                        <span className="text-[10px] text-[#8899aa]">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
-                        <span className="text-[10px] text-[#8899aa]">Page 4</span>
-                      </div>
-                    </div>
-                  )}
-
 
                   {/* PAGE 3 - Minimal Investment + Terms */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
-                    <div className="h-1 w-full bg-[#1a2332]"></div>
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: fontSecondary }}>
+                    <div className="h-1 w-full bg-primary"></div>
                     <div className="flex-grow px-12 py-10 flex flex-col">
                       <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-4">Investment</p>
                       <table className="w-full text-sm border-collapse">
                         <thead>
-                          <tr className="border-b-2 border-[#1a2332]">
-                            <th className="py-2 text-left font-semibold text-[#1a2332]">Milestone</th>
-                            <th className="py-2 text-left font-semibold text-[#1a2332]">Due</th>
-                            <th className="py-2 text-right font-semibold text-[#1a2332]">Amount</th>
+                          <tr className="border-b-2 border-primary">
+                            <th className="py-2 text-left font-semibold text-primary">Milestone</th>
+                            <th className="py-2 text-left font-semibold text-primary">Due</th>
+                            <th className="py-2 text-right font-semibold text-primary">Amount</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -741,8 +747,8 @@ export default function Preview() {
                             </tr>
                           ))}
                           <tr>
-                            <td colSpan={2} className="pt-4 text-right text-xs font-bold uppercase tracking-wider text-[#1a2332]">Total</td>
-                            <td className="pt-4 text-right font-bold text-[#1a2332] text-xl">
+                            <td colSpan={2} className="pt-4 text-right text-xs font-bold uppercase tracking-wider text-primary">Total</td>
+                            <td className="pt-4 text-right font-bold text-primary text-xl">
                               {currencySymbol}{totalInvestment.toLocaleString()}
                             </td>
                           </tr>
@@ -770,26 +776,26 @@ export default function Preview() {
                         {data.includeTaxes ? ' Values include estimated taxes.' : ' Taxes not included.'}
                       </p>
                     </div>
-                    <div className="bg-[#1a2332] px-12 py-4 flex justify-between items-center">
+                    <div className="bg-primary px-12 py-4 flex justify-between items-center">
                       <span className="text-[10px] text-[#8899aa]">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
                       <span className="text-[10px] text-[#8899aa]">Page 3 of 4</span>
                     </div>
                   </div>
 
                   {/* PAGE 4 - Signature - Minimal */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
-                    <div className="h-1 w-full bg-[#1a2332]"></div>
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: fontSecondary }}>
+                    <div className="h-1 w-full bg-primary"></div>
                     <div className="flex-grow px-14 py-12 flex flex-col">
                       <div className="mb-8">
                         <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-1">Agreement</p>
-                        <h2 className="text-2xl font-light text-[#1a2332]" style={{ letterSpacing: '-0.01em' }}>Signatures</h2>
+                        <h2 className="text-2xl font-light text-primary" style={{ letterSpacing: '-0.01em' }}>Signatures</h2>
                         <p className="text-xs text-gray-400 mt-2 text-justify">By signing below, both parties agree to the terms outlined in this proposal.</p>
                       </div>
                       <div className="flex-grow flex flex-col justify-end pb-10">
                         <div className="grid grid-cols-2 gap-12 avoid-break">
                           <div>
                             <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-8">Client</p>
-                            <div className="border-b-2 border-[#1a2332] mb-2 h-12"></div>
+                            <div className="border-b-2 border-primary mb-2 h-12"></div>
                             <p className="text-[11px] text-gray-400">Signature</p>
                             <div className="border-b border-gray-200 mt-6 mb-2 h-8"></div>
                             <p className="text-[11px] text-gray-400">Full Name</p>
@@ -798,7 +804,7 @@ export default function Preview() {
                           </div>
                           <div>
                             <p className="text-[10px] uppercase tracking-widest text-[#aaa] mb-8">Service Provider</p>
-                            <div className="border-b-2 border-[#1a2332] mb-2 h-12"></div>
+                            <div className="border-b-2 border-primary mb-2 h-12"></div>
                             <p className="text-[11px] text-gray-400">Signature</p>
                             <div className="border-b border-gray-200 mt-6 mb-2 h-8"></div>
                             <p className="text-[11px] text-gray-400">Full Name</p>
@@ -808,7 +814,7 @@ export default function Preview() {
                         </div>
                       </div>
                     </div>
-                    <div className="bg-[#1a2332] px-12 py-4 flex justify-between items-center">
+                    <div className="bg-primary px-12 py-4 flex justify-between items-center">
                       <span className="text-[10px] text-[#8899aa]">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
                       <span className="text-[10px] text-[#8899aa]">Page 4 of 4</span>
                     </div>
@@ -820,7 +826,7 @@ export default function Preview() {
               {layout === 3 && (
                 <>
                   {/* PAGE 1 - Warm Cover */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col relative print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: fontSecondary }}>
                     {/* Top bar */}
                     <div className="flex items-start justify-between px-10 pt-10">
                       <div className="flex items-center gap-3">
@@ -857,7 +863,7 @@ export default function Preview() {
                     </div>
 
                     {/* Pastel orange footer */}
-                    <div className="px-10 py-7" style={{ backgroundColor: '#f4a261' }}>
+                    <div className="px-10 py-7" style={{ backgroundColor: brandColor }}>
                       <p className="text-[10px] text-orange-900/60 uppercase tracking-widest mb-1">Presented by</p>
                       <p className="text-[13px] font-bold text-orange-950">{data.companyName || 'Studio'}</p>
                     </div>
@@ -865,8 +871,8 @@ export default function Preview() {
 
                   {/* PAGE 2 - Warm Company Info */}
                   {(data.companyImageUrl || data.companyDescription) && (
-                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
-                      <div className="h-1 w-full" style={{ backgroundColor: '#f4a261' }}></div>
+                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: fontSecondary }}>
+                      <div className="h-1 w-full" style={{ backgroundColor: brandColor }}></div>
                       <div className="flex-grow px-14 pt-10 pb-10 flex flex-col">
                         <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-2">Overview</p>
                         <h2 className="text-2xl font-light text-gray-900 mb-6" style={{ letterSpacing: '-0.01em' }}>About The Company</h2>
@@ -891,7 +897,7 @@ export default function Preview() {
                           );
                         })()}
                       </div>
-                      <div className="px-12 py-4 flex justify-between items-center mt-auto" style={{ backgroundColor: '#f4a261' }}>
+                      <div className="px-12 py-4 flex justify-between items-center mt-auto" style={{ backgroundColor: brandColor }}>
                         <span className="text-[10px] text-orange-900/60">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
                         <span className="text-[10px] text-orange-900/60">Company Profile</span>
                       </div>
@@ -900,8 +906,8 @@ export default function Preview() {
 
                   {/* PAGE 3 - Warm Context */}
                   {data.projectContext && (
-                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
-                      <div className="h-1 w-full" style={{ backgroundColor: '#f4a261' }}></div>
+                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: fontSecondary }}>
+                      <div className="h-1 w-full" style={{ backgroundColor: brandColor }}></div>
                       <div className="flex-grow px-14 pt-10 pb-10 flex flex-col">
                         <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-2">Overview</p>
                         <h2 className="text-2xl font-light text-gray-900 mb-4" style={{ letterSpacing: '-0.01em' }}>{data.projectContextTitle || 'Project Context'}</h2>
@@ -909,66 +915,61 @@ export default function Preview() {
                           {data.projectContext || 'The goal of this proposal is to outline the strategy for the complete overhaul of the project.'}
                         </p>
                       </div>
-                      <div className="px-12 py-4 flex justify-between items-center mt-auto" style={{ backgroundColor: '#f4a261' }}>
+                      <div className="px-12 py-4 flex justify-between items-center mt-auto" style={{ backgroundColor: brandColor }}>
                         <span className="text-[10px] text-orange-900/60">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
                         <span className="text-[10px] text-orange-900/60">{data.projectContextTitle || 'Project Context'}</span>
                       </div>
                     </div>
                   )}
 
-                  {/* PAGE 3 - Warm Challenges */}
-                  {challenges.filter((c: string) => c.trim()).length > 0 && (
-                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
-                      <div className="h-1 w-full" style={{ backgroundColor: '#f4a261' }}></div>
-                      <div className="flex-grow px-14 pt-10 pb-0 flex flex-col">
-                        <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-2">{data.challengesTitle || 'The Challenge'}</p>
-                        <ul className="space-y-2 mt-2 flex-grow text-justify">
-                          {challenges.filter((c: string) => c.trim()).map((challenge: string, index: number) => (
-                            <li key={`chal-${index}`} className="flex items-start gap-3 text-sm text-gray-600">
-                              <span className="font-bold mt-0.5" style={{ color: '#f4a261' }}>—</span>
-                              <span>{challenge}</span>
-                            </li>
-                          ))}
-                        </ul>
+                  {/* PAGE 3 - Warm Challenges & Objectives */}
+                  {(challenges.filter((c: string) => c.trim()).length > 0 || objectives.filter((o: string) => o.trim()).length > 0) && (
+                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: fontSecondary }}>
+                      <div className="h-1 w-full" style={{ backgroundColor: brandColor }}></div>
+                      <div className="flex-grow px-14 pt-10 pb-0 flex flex-col gap-8">
+                        {challenges.filter((c: string) => c.trim()).length > 0 && (
+                          <div>
+                            <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-2">{data.challengesTitle || 'The Challenge'}</p>
+                            <ul className="space-y-2 mt-2 text-justify">
+                              {challenges.filter((c: string) => c.trim()).map((challenge: string, index: number) => (
+                                <li key={`chal-${index}`} className="flex items-start gap-3 text-sm text-gray-600">
+                                  <span className="font-bold mt-0.5" style={{ color: brandColor }}>—</span>
+                                  <span>{challenge}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                        {objectives.filter((o: string) => o.trim()).length > 0 && (
+                          <div>
+                            <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-2">{data.objectivesTitle || 'Objectives'}</p>
+                            <ul className="space-y-2 mt-2">
+                              {objectives.filter((o: string) => o.trim()).map((objective: string, index: number) => (
+                                <li key={`obj-${index}`} className="flex items-start gap-3 text-sm text-gray-600">
+                                  <span className="font-bold mt-0.5" style={{ color: brandColor }}>—</span>
+                                  <span>{objective}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
                       </div>
-                      <div className="px-12 py-4 flex justify-between items-center mt-auto" style={{ backgroundColor: '#f4a261' }}>
+                      <div className="px-12 py-4 flex justify-between items-center mt-auto" style={{ backgroundColor: brandColor }}>
                         <span className="text-[10px] text-orange-900/60">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
                         <span className="text-[10px] text-orange-900/60">Page 3</span>
                       </div>
                     </div>
                   )}
 
-                  {/* PAGE 4 - Warm Objectives */}
-                  {objectives.filter((o: string) => o.trim()).length > 0 && (
-                    <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
-                      <div className="h-1 w-full" style={{ backgroundColor: '#f4a261' }}></div>
-                      <div className="flex-grow px-14 pt-10 pb-0 flex flex-col">
-                        <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-2">{data.objectivesTitle || 'Objectives'}</p>
-                        <ul className="space-y-2 mt-2 flex-grow">
-                          {objectives.filter((o: string) => o.trim()).map((objective: string, index: number) => (
-                            <li key={`obj-${index}`} className="flex items-start gap-3 text-sm text-gray-600">
-                              <span className="font-bold mt-0.5" style={{ color: '#f4a261' }}>—</span>
-                              <span>{objective}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      <div className="px-12 py-4 flex justify-between items-center mt-auto" style={{ backgroundColor: '#f4a261' }}>
-                        <span className="text-[10px] text-orange-900/60">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
-                        <span className="text-[10px] text-orange-900/60">Page 4</span>
-                      </div>
-                    </div>
-                  )}
-
 
                   {/* PAGE 3 - Warm Investment + Terms */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
-                    <div className="h-1 w-full" style={{ backgroundColor: '#f4a261' }}></div>
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: fontSecondary }}>
+                    <div className="h-1 w-full" style={{ backgroundColor: brandColor }}></div>
                     <div className="flex-grow px-12 py-10 flex flex-col">
                       <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-4">Investment</p>
                       <table className="w-full text-sm border-collapse">
                         <thead>
-                          <tr style={{ borderBottom: '2px solid #f4a261' }}>
+                          <tr style={{ borderBottom: `2px solid ${brandColor}` }}>
                             <th className="py-2 text-left font-semibold text-gray-800">Milestone</th>
                             <th className="py-2 text-left font-semibold text-gray-800">Due</th>
                             <th className="py-2 text-right font-semibold text-gray-800">Amount</th>
@@ -1003,15 +1004,15 @@ export default function Preview() {
                         {data.includeTaxes ? ' Values include estimated taxes.' : ' Taxes not included.'}
                       </p>
                     </div>
-                    <div className="px-12 py-4 flex justify-between items-center" style={{ backgroundColor: '#f4a261' }}>
+                    <div className="px-12 py-4 flex justify-between items-center" style={{ backgroundColor: brandColor }}>
                       <span className="text-[10px] text-orange-900/60">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
                       <span className="text-[10px] text-orange-900/60">Page 3 of 4</span>
                     </div>
                   </div>
 
                   {/* PAGE 4 - Signature - Warm */}
-                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: "'Inter', sans-serif" }}>
-                    <div className="h-1 w-full" style={{ backgroundColor: '#f4a261' }}></div>
+                  <div className="bg-white w-full max-w-[595px] aspect-a4 shadow-2xl flex flex-col print:shadow-none print-dynamic-flow print:break-inside-avoid" style={{ fontFamily: fontSecondary }}>
+                    <div className="h-1 w-full" style={{ backgroundColor: brandColor }}></div>
                     <div className="flex-grow px-14 py-12 flex flex-col">
                       <div className="mb-8">
                         <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-1">Agreement</p>
@@ -1022,7 +1023,7 @@ export default function Preview() {
                         <div className="grid grid-cols-2 gap-12 avoid-break">
                           <div>
                             <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-8">Client</p>
-                            <div className="h-12 mb-2" style={{ borderBottom: '2px solid #f4a261' }}></div>
+                            <div className="h-12 mb-2" style={{ borderBottom: `2px solid ${brandColor}` }}></div>
                             <p className="text-[11px] text-gray-400">Signature</p>
                             <div className="border-b border-gray-200 mt-6 mb-2 h-8"></div>
                             <p className="text-[11px] text-gray-400">Full Name</p>
@@ -1031,7 +1032,7 @@ export default function Preview() {
                           </div>
                           <div>
                             <p className="text-[10px] uppercase tracking-widest text-gray-300 mb-8">Service Provider</p>
-                            <div className="h-12 mb-2" style={{ borderBottom: '2px solid #f4a261' }}></div>
+                            <div className="h-12 mb-2" style={{ borderBottom: `2px solid ${brandColor}` }}></div>
                             <p className="text-[11px] text-gray-400">Signature</p>
                             <div className="border-b border-gray-200 mt-6 mb-2 h-8"></div>
                             <p className="text-[11px] text-gray-400">Full Name</p>
@@ -1041,7 +1042,7 @@ export default function Preview() {
                         </div>
                       </div>
                     </div>
-                    <div className="px-12 py-4 flex justify-between items-center" style={{ backgroundColor: '#f4a261' }}>
+                    <div className="px-12 py-4 flex justify-between items-center" style={{ backgroundColor: brandColor }}>
                       <span className="text-[10px] text-orange-900/60">{data.companyName || 'Studio'} © {new Date().getFullYear()}</span>
                       <span className="text-[10px] text-orange-900/60">Page 4 of 4</span>
                     </div>

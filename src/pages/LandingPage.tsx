@@ -25,7 +25,7 @@ export default function LandingPage() {
               Elite freelancers don't waste hours in Word or Canva. Create irresistible business proposals with agency design and persuasive copy in under 2 minutes.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/step1" className="w-full sm:w-auto bg-primary hover:bg-primary-dark text-white text-lg px-8 py-4 rounded-lg font-bold shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
+              <Link to="/create/step/1" className="w-full sm:w-auto bg-primary hover:bg-primary-dark text-white text-lg px-8 py-4 rounded-lg font-bold shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
                 Create my Proposal Now
                 <span className="material-symbols-outlined">arrow_forward</span>
               </Link>
@@ -177,7 +177,7 @@ export default function LandingPage() {
               </div>
             </div>
             <div className="mt-16 text-center">
-              <Link to="/step1" className="bg-primary hover:bg-primary-dark text-white px-10 py-4 rounded-lg font-bold shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all text-lg">
+              <Link to="/create/step/1" className="bg-primary hover:bg-primary-dark text-white px-10 py-4 rounded-lg font-bold shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all text-lg">
                 Start Now
               </Link>
             </div>
