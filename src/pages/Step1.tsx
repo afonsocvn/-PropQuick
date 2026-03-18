@@ -19,6 +19,7 @@ export default function Step1() {
     if (!data.companyName?.trim()) newErrors.companyName = 'Required';
     if (!data.email?.trim()) newErrors.email = 'Required';
     if (!data.phone?.trim()) newErrors.phone = 'Required';
+    if (!data.website?.trim()) newErrors.website = 'Required';
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -85,6 +86,13 @@ export default function Step1() {
                 <div className="relative group">
                   <span className={`material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${errors.phone ? 'text-red-400' : 'text-gray-400 group-focus-within:text-primary'}`}>call</span>
                   <input name="phone" value={data.phone || ''} onChange={handleFieldChange} className={`w-full pl-12 pr-4 py-3.5 bg-background-light border-0 border-b-2 ${errors.phone ? 'border-red-500' : 'border-gray-200'} focus:border-primary focus:ring-0 rounded-t-lg transition-colors placeholder:text-gray-400 text-gray-800 text-base`} placeholder="+1 (555) 999-9999" type="tel" />
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="font-semibold text-gray-700 text-sm ml-1">Website <span className="text-red-500 font-bold">*</span> {errors.website && <span className="text-red-500 font-normal ml-2">{errors.website}</span>}</label>
+                <div className="relative group">
+                  <span className={`material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${errors.website ? 'text-red-400' : 'text-gray-400 group-focus-within:text-primary'}`}>language</span>
+                  <input name="website" value={data.website || ''} onChange={handleFieldChange} className={`w-full pl-12 pr-4 py-3.5 bg-background-light border-0 border-b-2 ${errors.website ? 'border-red-500' : 'border-gray-200'} focus:border-primary focus:ring-0 rounded-t-lg transition-colors placeholder:text-gray-400 text-gray-800 text-base`} placeholder="https://yoursite.com" type="url" />
                 </div>
               </div>
             </div>

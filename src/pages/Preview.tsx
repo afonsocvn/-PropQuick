@@ -66,6 +66,7 @@ function PagedContent({ children, footer, wrapperClassName = '', contentClassNam
       ))}
     </div>
   );
+}
 
 export default function Preview() {
   const { data, updateData } = useProposalData();
@@ -242,59 +243,6 @@ export default function Preview() {
                     <span className="block text-[10px] opacity-70 font-normal mt-0.5" style={{ fontFamily: 'Inter, sans-serif' }}>Elegant & Professional</span>
                   </button>
                   <button
-                    onClick={() => updateData('fontPairing', 'roboto')}
-                    className={`text-left px-3 py-2 rounded-lg border flex flex-col justify-center ${(data.fontPairing === 'roboto') ? 'border-primary bg-primary/5 text-primary' : 'border-gray-200 hover:border-primary/40 text-text-dark bg-white'}`}
-                  >
-                    <span className="block text-sm font-bold" style={{ fontFamily: 'Roboto, sans-serif' }}>Roboto</span>
-                    <span className="block text-[10px] opacity-70 font-normal mt-0.5" style={{ fontFamily: 'Inter, sans-serif' }}>Corporate & Trustworthy</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>                <span className="material-symbols-outlined text-primary text-base">palette</span>
-                Brand Customization
-              </h3>
-              
-              <div className="space-y-3">
-                <label className="block text-xs font-bold text-text-muted uppercase">Brand Color</label>
-                <div className="flex items-center gap-3">
-                  <input 
-                    type="color" 
-                    value={data.brandColor || '#0ba3a3'} 
-                    onChange={(e) => updateData('brandColor', e.target.value)}
-                    className="w-10 h-10 rounded cursor-pointer border-0 p-0 shadow-sm"
-                  />
-                  <div className="flex-1">
-                    <input 
-                      type="text" 
-                      value={data.brandColor || '#0ba3a3'} 
-                      onChange={(e) => updateData('brandColor', e.target.value)}
-                      className="w-full px-3 py-2 text-sm border border-secondary/20 rounded-lg focus:outline-none focus:border-primary uppercase bg-white font-mono"
-                      placeholder="#HEXCODE"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <label className="block text-xs font-bold text-text-muted uppercase">Typography Pairing</label>
-                <div className="grid grid-cols-1 gap-2">
-                  <button 
-                    onClick={() => updateData('fontPairing', 'inter')}
-                    className={`text-left px-3 py-2 rounded-lg border flex flex-col justify-center ${(!data.fontPairing || data.fontPairing === 'inter') ? 'border-primary bg-primary/5 text-primary' : 'border-gray-200 hover:border-primary/40 text-text-dark bg-white'}`}
-                  >
-                    <span className="block text-sm font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>Inter</span>
-                    <span className="block text-[10px] opacity-70 font-normal mt-0.5" style={{ fontFamily: 'Inter, sans-serif' }}>Modern & Clean (Default)</span>
-                  </button>
-                  <button 
-                    onClick={() => updateData('fontPairing', 'playfair')}
-                    className={`text-left px-3 py-2 rounded-lg border flex flex-col justify-center ${(data.fontPairing === 'playfair') ? 'border-primary bg-primary/5 text-primary' : 'border-gray-200 hover:border-primary/40 text-text-dark bg-white'}`}
-                  >
-                    <span className="block text-sm font-bold" style={{ fontFamily: '"Playfair Display", serif' }}>Playfair Display</span>
-                    <span className="block text-[10px] opacity-70 font-normal mt-0.5" style={{ fontFamily: 'Inter, sans-serif' }}>Elegant & Professional</span>
-                  </button>
-                  <button 
                     onClick={() => updateData('fontPairing', 'roboto')}
                     className={`text-left px-3 py-2 rounded-lg border flex flex-col justify-center ${(data.fontPairing === 'roboto') ? 'border-primary bg-primary/5 text-primary' : 'border-gray-200 hover:border-primary/40 text-text-dark bg-white'}`}
                   >
