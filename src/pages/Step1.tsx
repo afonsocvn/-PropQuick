@@ -1,9 +1,31 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useProposalData } from '../hooks/useProposalData';
 
 export default function Step1() {
   const { data, handleChange, updateData } = useProposalData();
+  const navigate = useNavigate();
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const handleFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleChange(e);
+    if (errors[e.target.name]) {
+      setErrors(prev => ({ ...prev, [e.target.name]: '' }));
+    }
+  };
+
+  const handleNext = () => {
+    const newErrors: { [key: string]: string } = {};
+    if (!data.companyName?.trim()) newErrors.companyName = 'Required';
+    if (!data.email?.trim()) newErrors.email = 'Required';
+    if (!data.phone?.trim()) newErrors.phone = 'Required';
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    navigate('/create/step/2'); // Note: routing paths will be standardized in Task 2
+  };
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -36,10 +58,10 @@ export default function Step1() {
           <form className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="flex flex-col gap-2">
-                <label className="font-semibold text-gray-700 text-sm ml-1">Company / Business Name <span className="text-gray-400 font-normal">(optional)</span></label>
+                <label className="font-semibold text-gray-700 text-sm ml-1">Company / Business Name <span className="text-red-500 font-bold">*</span> {errors.companyName && <span className="text-red-500 font-normal ml-2">{errors.companyName}</span>}</label>
                 <div className="relative group">
-                  <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">business</span>
-                  <input name="companyName" value={data.companyName || ''} onChange={handleChange} className="w-full pl-12 pr-4 py-3.5 bg-background-light border-0 border-b-2 border-gray-200 focus:border-primary focus:ring-0 rounded-t-lg transition-colors placeholder:text-gray-400 text-gray-800 text-base" placeholder="Ex: Acme Design Studio" type="text" />
+                  <span className={`material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${errors.companyName ? 'text-red-400' : 'text-gray-400 group-focus-within:text-primary'}`}>business</span>
+                  <input name="companyName" value={data.companyName || ''} onChange={handleFieldChange} className={`w-full pl-12 pr-4 py-3.5 bg-background-light border-0 border-b-2 ${errors.companyName ? 'border-red-500' : 'border-gray-200'} focus:border-primary focus:ring-0 rounded-t-lg transition-colors placeholder:text-gray-400 text-gray-800 text-base`} placeholder="Ex: Acme Design Studio" type="text" />
                 </div>
               </div>
               <div className="flex flex-col gap-2">
@@ -52,17 +74,17 @@ export default function Step1() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="flex flex-col gap-2">
-                <label className="font-semibold text-gray-700 text-sm ml-1">Email <span className="text-gray-400 font-normal">(optional)</span></label>
+                <label className="font-semibold text-gray-700 text-sm ml-1">Email <span className="text-red-500 font-bold">*</span> {errors.email && <span className="text-red-500 font-normal ml-2">{errors.email}</span>}</label>
                 <div className="relative group">
-                  <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">mail</span>
-                  <input name="email" value={data.email || ''} onChange={handleChange} className="w-full pl-12 pr-4 py-3.5 bg-background-light border-0 border-b-2 border-gray-200 focus:border-primary focus:ring-0 rounded-t-lg transition-colors placeholder:text-gray-400 text-gray-800 text-base" placeholder="you@example.com" type="email" />
+                  <span className={`material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${errors.email ? 'text-red-400' : 'text-gray-400 group-focus-within:text-primary'}`}>mail</span>
+                  <input name="email" value={data.email || ''} onChange={handleFieldChange} className={`w-full pl-12 pr-4 py-3.5 bg-background-light border-0 border-b-2 ${errors.email ? 'border-red-500' : 'border-gray-200'} focus:border-primary focus:ring-0 rounded-t-lg transition-colors placeholder:text-gray-400 text-gray-800 text-base`} placeholder="you@example.com" type="email" />
                 </div>
               </div>
               <div className="flex flex-col gap-2">
-                <label className="font-semibold text-gray-700 text-sm ml-1">Phone <span className="text-gray-400 font-normal">(optional)</span></label>
+                <label className="font-semibold text-gray-700 text-sm ml-1">Phone <span className="text-red-500 font-bold">*</span> {errors.phone && <span className="text-red-500 font-normal ml-2">{errors.phone}</span>}</label>
                 <div className="relative group">
-                  <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">call</span>
-                  <input name="phone" value={data.phone || ''} onChange={handleChange} className="w-full pl-12 pr-4 py-3.5 bg-background-light border-0 border-b-2 border-gray-200 focus:border-primary focus:ring-0 rounded-t-lg transition-colors placeholder:text-gray-400 text-gray-800 text-base" placeholder="+1 (555) 999-9999" type="tel" />
+                  <span className={`material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${errors.phone ? 'text-red-400' : 'text-gray-400 group-focus-within:text-primary'}`}>call</span>
+                  <input name="phone" value={data.phone || ''} onChange={handleFieldChange} className={`w-full pl-12 pr-4 py-3.5 bg-background-light border-0 border-b-2 ${errors.phone ? 'border-red-500' : 'border-gray-200'} focus:border-primary focus:ring-0 rounded-t-lg transition-colors placeholder:text-gray-400 text-gray-800 text-base`} placeholder="+1 (555) 999-9999" type="tel" />
                 </div>
               </div>
             </div>
@@ -125,10 +147,10 @@ export default function Step1() {
                 <span className="material-symbols-outlined text-sm font-bold">arrow_back</span>
                 Back
               </Link>
-              <Link to="/step3" className="bg-primary hover:bg-primary-dark text-white px-8 py-3 rounded-lg font-bold shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all flex items-center gap-2">
+              <button type="button" onClick={handleNext} className="bg-primary hover:bg-primary-dark text-white px-8 py-3 rounded-lg font-bold shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all flex items-center gap-2">
                 Next Step
                 <span className="material-symbols-outlined text-sm font-bold">arrow_forward</span>
-              </Link>
+              </button>
             </div>
           </form>
         </div>

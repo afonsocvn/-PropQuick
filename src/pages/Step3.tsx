@@ -1,8 +1,29 @@
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useProposalData } from '../hooks/useProposalData';
 
 export default function Step3() {
   const { data, handleChange, updateData } = useProposalData();
+  const navigate = useNavigate();
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const handleFieldChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    handleChange(e);
+    if (errors[e.target.name]) {
+      setErrors(prev => ({ ...prev, [e.target.name]: '' }));
+    }
+  };
+
+  const handleNext = () => {
+    const newErrors: { [key: string]: string } = {};
+    if (!data.website?.trim()) newErrors.website = 'Required';
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    navigate('/create/step/3'); // Routing path will updated in Task 2
+  };
 
   const challenges = data.challenges || [''];
   const objectives = data.objectives || [''];
@@ -33,7 +54,7 @@ export default function Step3() {
             <span className="text-text-muted text-sm font-medium">50% complete</span>
           </div>
           <div className="h-2 w-full bg-[#E0E8E8] rounded-full overflow-hidden">
-            <div className="h-full bg-primary rounded-full transition-all duration-500 ease-out" style={{ width: '60%' }}></div>
+            <div className="h-full bg-primary rounded-full transition-all duration-500 ease-out" style={{ width: '50%' }}></div>
           </div>
         </div>
         <div className="w-full max-w-[800px] flex flex-col gap-8">
@@ -129,10 +150,10 @@ export default function Step3() {
                   </div>
                   {/* Website */}
                   <div>
-                    <span className="block text-sm font-semibold text-[#233333] mb-2">Website / Portfolio <span className="text-text-muted font-normal">(optional)</span></span>
+                    <span className="block text-sm font-semibold text-[#233333] mb-2">Website / Portfolio <span className="text-red-500 font-bold">*</span> {errors.website && <span className="text-red-500 font-normal ml-2">{errors.website}</span>}</span>
                     <div className="relative group">
-                      <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-primary transition-colors">language</span>
-                      <input name="website" value={data.website || ''} onChange={handleChange} className="w-full pl-12 pr-4 py-3 rounded-lg border border-[#d1dbdb] bg-[#fcfdfd] text-[#233333] placeholder:text-text-muted/60 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="https://yourwebsite.com" type="url" />
+                      <span className={`material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${errors.website ? 'text-red-400' : 'text-text-muted group-focus-within:text-primary'}`}>language</span>
+                      <input name="website" value={data.website || ''} onChange={handleFieldChange} className={`w-full pl-12 pr-4 py-3 rounded-lg border bg-[#fcfdfd] text-[#233333] placeholder:text-text-muted/60 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none ${errors.website ? 'border-red-500' : 'border-[#d1dbdb]'}`} placeholder="https://yourwebsite.com" type="url" />
                     </div>
                   </div>
                 </div>
@@ -229,14 +250,14 @@ export default function Step3() {
             </div>
           </div>
           <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-4 mt-4 mb-12">
-            <Link to="/step1" className="w-full md:w-auto px-8 py-3 rounded-lg text-text-muted font-bold text-sm hover:text-text-main hover:bg-[#e5e9e9] transition-colors flex items-center justify-center gap-2">
+            <Link to="/create/step/1" className="w-full md:w-auto px-8 py-3 rounded-lg text-text-muted font-bold text-sm hover:text-text-main hover:bg-[#e5e9e9] transition-colors flex items-center justify-center gap-2">
               <span className="material-symbols-outlined text-lg">arrow_back</span>
               Back
             </Link>
-            <Link to="/step5" className="w-full md:w-auto px-10 py-3.5 rounded-lg bg-primary text-white font-bold text-sm shadow-[0_4px_14px_0_theme(colors.primary.DEFAULT/40%)] hover:shadow-[0_6px_20px_theme(colors.primary.DEFAULT/25%)] hover:bg-primary-dark transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+            <button type="button" onClick={handleNext} className="w-full md:w-auto px-10 py-3.5 rounded-lg bg-primary text-white font-bold text-sm shadow-[0_4px_14px_0_theme(colors.primary.DEFAULT/40%)] hover:shadow-[0_6px_20px_theme(colors.primary.DEFAULT/25%)] hover:bg-primary-dark transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
               Continue
               <span className="material-symbols-outlined text-lg">arrow_forward</span>
-            </Link>
+            </button>
           </div>
         </div>
       </main>

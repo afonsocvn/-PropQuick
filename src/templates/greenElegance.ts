@@ -39,21 +39,14 @@ export const greenEleganceTemplate = {
       ]
     },
     {
-      id: "challenges_page",
+      id: "challenges_and_objectives",
       type: "standard",
       elements: [
         { type: "shape", style: { background_color: "#f3ece1" }, dimensions: { width: 595.28, height: 841.89 } },
         { type: "text", content: "{{challenges_title}}", style: { font_family: "'Playfair Display', serif", font_size: 22, font_weight: "bold", color: "#3d564b" }, position: { x: 40, y: 60, is_absolute: true } },
-        { type: "text", content: "{{challenges_list}}", style: { font_family: "Inter, sans-serif", font_size: 12, color: "#3c3c3c", line_height: 1.5 }, dimensions: { width: 515 }, position: { x: 40, y: 95, is_absolute: true } }
-      ]
-    },
-    {
-      id: "objectives_page",
-      type: "standard",
-      elements: [
-        { type: "shape", style: { background_color: "#f3ece1" }, dimensions: { width: 595.28, height: 841.89 } },
-        { type: "text", content: "{{objectives_title}}", style: { font_family: "'Playfair Display', serif", font_size: 22, font_weight: "bold", color: "#3d564b" }, position: { x: 40, y: 60, is_absolute: true } },
-        { type: "text", content: "{{objectives_list}}", style: { font_family: "Inter, sans-serif", font_size: 12, color: "#3c3c3c", line_height: 1.5 }, dimensions: { width: 515 }, position: { x: 40, y: 95, is_absolute: true } }
+        { type: "text", content: "{{challenges_list}}", style: { font_family: "Inter, sans-serif", font_size: 12, color: "#3c3c3c", line_height: 1.5 }, dimensions: { width: 515 }, position: { x: 40, y: 95, is_absolute: true } },
+        { type: "text", content: "{{objectives_title}}", style: { font_family: "'Playfair Display', serif", font_size: 22, font_weight: "bold", color: "#3d564b" }, position: { x: 40, y: 400, is_absolute: true } },
+        { type: "text", content: "{{objectives_list}}", style: { font_family: "Inter, sans-serif", font_size: 12, color: "#3c3c3c", line_height: 1.5 }, dimensions: { width: 515 }, position: { x: 40, y: 435, is_absolute: true } }
       ]
     },
     {
