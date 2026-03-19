@@ -1,6 +1,32 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function LandingPage() {
+  const [email, setEmail] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleWaitlist = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim()) return;
+    setLoading(true);
+    try {
+      await fetch(
+        'https://docs.google.com/forms/d/e/1FAIpQLSd8-RCFlNotZmk3jz_-JVUYAHgjPum2LJepZF6nUgppSQA6mg/formResponse',
+        {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `entry.1058381989=${encodeURIComponent(email)}`,
+        }
+      );
+    } catch {
+      // no-cors requests always resolve opaquely — submission still goes through
+    }
+    setSubmitted(true);
+    setLoading(false);
+  };
+
   return (
     <div className="bg-background-light text-text-dark font-display antialiased min-h-screen flex flex-col">
       <header className="w-full bg-white border-b border-gray-100 px-6 py-2 sticky top-0 z-50">
@@ -12,6 +38,7 @@ export default function LandingPage() {
             <a className="text-text-soft hover:text-primary font-medium text-sm transition-colors" href="#beneficios">Benefits</a>
             <a className="text-text-soft hover:text-primary font-medium text-sm transition-colors" href="#como-funciona">How it works</a>
             <a className="text-text-soft hover:text-primary font-medium text-sm transition-colors" href="#comparativo">Compare</a>
+            <a className="bg-primary text-white text-sm font-bold px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors" href="#waitlist">Join Waitlist</a>
           </nav>
         </div>
       </header>
@@ -184,6 +211,49 @@ export default function LandingPage() {
           </div>
         </section>
       </main>
+        {/* WAITLIST SECTION */}
+        <section className="py-24 px-4 bg-primary" id="waitlist">
+          <div className="max-w-2xl mx-auto text-center">
+            <span className="inline-block bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-6">Early Access</span>
+            <h2 className="font-display text-3xl md:text-4xl font-extrabold text-white mb-4 tracking-tight leading-tight">
+              Be the first to know when we launch.
+            </h2>
+            <p className="text-white/80 text-lg mb-10">
+              Join the waitlist and get exclusive early access, special pricing, and updates straight to your inbox.
+            </p>
+
+            {submitted ? (
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-2">
+                  <span className="material-symbols-outlined text-white text-3xl">check_circle</span>
+                </div>
+                <p className="text-white text-xl font-bold">You're on the list!</p>
+                <p className="text-white/70 text-sm">We'll reach out as soon as we're ready. Thanks for joining!</p>
+              </div>
+            ) : (
+              <form onSubmit={handleWaitlist} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  className="flex-1 px-5 py-4 rounded-lg text-gray-900 placeholder:text-gray-400 font-medium focus:outline-none focus:ring-2 focus:ring-white/50 text-base"
+                />
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="bg-white text-primary font-bold px-6 py-4 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-60 whitespace-nowrap shadow-md"
+                >
+                  {loading ? 'Sending...' : 'Join Waitlist'}
+                </button>
+              </form>
+            )}
+
+            <p className="text-white/50 text-xs mt-6">No spam. Unsubscribe at any time.</p>
+          </div>
+        </section>
+
       <footer className="bg-gray-50 border-t border-gray-200 py-12 px-6">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
           <div></div>
