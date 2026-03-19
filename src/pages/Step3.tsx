@@ -16,13 +16,12 @@ export default function Step3() {
 
   const handleNext = () => {
     const newErrors: { [key: string]: string } = {};
-    if (!data.website?.trim()) newErrors.website = 'Required';
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-    navigate('/create/step/3'); // Routing path will updated in Task 2
+    navigate('/create/step/3');
   };
 
   const challenges = data.challenges || [''];
@@ -147,14 +146,6 @@ export default function Step3() {
                         </div>
                       </div>
                     )}
-                  </div>
-                  {/* Website */}
-                  <div>
-                    <span className="block text-sm font-semibold text-[#233333] mb-2">Website / Portfolio <span className="text-red-500 font-bold">*</span> {errors.website && <span className="text-red-500 font-normal ml-2">{errors.website}</span>}</span>
-                    <div className="relative group">
-                      <span className={`material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${errors.website ? 'text-red-400' : 'text-text-muted group-focus-within:text-primary'}`}>language</span>
-                      <input name="website" value={data.website || ''} onChange={handleFieldChange} className={`w-full pl-12 pr-4 py-3 rounded-lg border bg-[#fcfdfd] text-[#233333] placeholder:text-text-muted/60 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none ${errors.website ? 'border-red-500' : 'border-[#d1dbdb]'}`} placeholder="https://yourwebsite.com" type="url" />
-                    </div>
                   </div>
                 </div>
                 <div className="block space-y-2 group">

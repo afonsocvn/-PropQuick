@@ -25,7 +25,7 @@ export default function Step1() {
       setErrors(newErrors);
       return;
     }
-    navigate('/create/step/2'); // Note: routing paths will be standardized in Task 2
+    navigate('/create/step/2');
   };
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
