@@ -238,7 +238,7 @@ export default function LandingPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="your@email.com"
-                  className="flex-1 px-5 py-4 rounded-lg text-gray-900 placeholder:text-gray-400 font-medium focus:outline-none focus:ring-2 focus:ring-white/50 text-base"
+                  className="flex-1 px-5 py-4 rounded-lg text-gray-900 placeholder:text-white font-medium focus:outline-none focus:ring-2 focus:ring-white/50 text-base"
                 />
                 <button
                   type="submit"
